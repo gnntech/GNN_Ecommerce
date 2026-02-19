@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import api from "@/lib/api";
 
 interface GalleryItem {
     id: number;
@@ -13,9 +14,8 @@ const ImageGalleryScroll = () => {
     const [isHovered, setIsHovered] = React.useState(false);
 
     React.useEffect(() => {
-        fetch('http://localhost:5000/api/content/gallery')
-            .then(res => res.json())
-            .then(data => setGalleryItems(data))
+        api.get('/content/gallery')
+            .then(res => setGalleryItems(res.data))
             .catch(err => console.error(err));
     }, []);
 

@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import { Trash, Plus } from "lucide-react";
+import api from "@/lib/api";
 
 const ManageMarquee = () => {
     const [lines, setLines] = useState<string[]>([]);
@@ -12,8 +13,7 @@ const ManageMarquee = () => {
 
     const fetchContent = async () => {
         try {
-            const res = await fetch("http://localhost:5000/api/content/sections/marquee");
-            const data = await res.json();
+            const { data } = await api.get("/content/sections/marquee");
             if (data && data.description) {
                 try {
                     setLines(JSON.parse(data.description));
@@ -36,14 +36,10 @@ const ManageMarquee = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            await fetch("http://localhost:5000/api/content/sections/marquee", {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    name: "marquee", // Required by backend to identify section
-                    title: "Marquee Content",
-                    description: JSON.stringify(lines)
-                }),
+            await api.put("/content/sections/marquee", {
+                name: "marquee", // Required by backend to identify section
+                title: "Marquee Content",
+                description: JSON.stringify(lines)
             });
             toast.success("Marquee updated successfully");
         } catch (error) { toast.error("Update failed"); }

@@ -19,9 +19,8 @@ const Index = () => {
   const [collections, setCollections] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/content/collections')
-      .then(res => res.json())
-      .then(data => setCollections(data))
+    api.get('/content/collections')
+      .then(res => setCollections(res.data))
       .catch(err => console.error(err));
   }, []);
 

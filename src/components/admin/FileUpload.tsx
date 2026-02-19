@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Upload, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import api from "@/lib/api";
 
 interface FileUploadProps {
     onUpload: (url: string) => void;
@@ -20,21 +21,15 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUpload, label = "Upload Image
         formData.append('file', file);
 
         try {
-            const res = await fetch('http://localhost:5000/api/upload', {
-                method: 'POST',
-                body: formData,
+            const { data } = await api.post('/upload', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
             });
-            const data = await res.json();
 
-            if (res.ok) {
-                onUpload(data.url);
-                toast.success('File uploaded successfully');
-            } else {
-                toast.error(data.message || 'Upload failed');
-            }
-        } catch (error) {
+            onUpload(data.url);
+            toast.success('File uploaded successfully');
+        } catch (error: any) {
             console.error('Error uploading file:', error);
-            toast.error('Upload failed');
+            toast.error(error.response?.data?.message || 'Upload failed');
         } finally {
             setUploading(false);
         }

@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Trash, Edit } from "lucide-react";
 import { toast } from "sonner";
 import FileUpload from "@/components/admin/FileUpload";
+import api from "@/lib/api";
 
 const ManageCollections = () => {
     const [collections, setCollections] = useState<any[]>([]);
@@ -16,24 +17,19 @@ const ManageCollections = () => {
 
     const fetchCollections = async () => {
         try {
-            const res = await fetch("http://localhost:5000/api/content/collections");
-            setCollections(await res.json());
+            const { data } = await api.get("/content/collections");
+            setCollections(data);
         } catch (error) { console.error(error); }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const url = editingId
-                ? `http://localhost:5000/api/content/collections/${editingId}`
-                : "http://localhost:5000/api/content/collections";
-            const method = editingId ? "PUT" : "POST";
-
-            await fetch(url, {
-                method,
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData),
-            });
+            if (editingId) {
+                await api.put(`/content/collections/${editingId}`, formData);
+            } else {
+                await api.post("/content/collections", formData);
+            }
 
             toast.success(editingId ? "Collection updated" : "Collection added");
             setFormData({ title: "", description: "", image: "", link: "", order: 0 });
@@ -73,7 +69,7 @@ const ManageCollections = () => {
                             <p className="text-xs text-blue-500">Link: {item.link}</p>
                             <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 bg-white p-1 rounded shadow">
                                 <Button size="icon" variant="ghost" onClick={() => { setFormData(item); setEditingId(item._id); }}><Edit className="w-4 h-4 text-blue-500" /></Button>
-                                <Button size="icon" variant="ghost" onClick={async () => { if (confirm("Delete?")) { await fetch(`http://localhost:5000/api/content/collections/${item._id}`, { method: "DELETE" }); fetchCollections(); } }}><Trash className="w-4 h-4 text-red-500" /></Button>
+                                <Button size="icon" variant="ghost" onClick={async () => { if (confirm("Delete?")) { await api.delete(`/content/collections/${item._id}`); fetchCollections(); } }}><Trash className="w-4 h-4 text-red-500" /></Button>
                             </div>
                         </CardContent>
                     </Card>

@@ -19,8 +19,7 @@ const ManageSlider = () => {
 
     const fetchSlides = async () => {
         try {
-            const res = await fetch("http://localhost:5000/api/content/slider");
-            const data = await res.json();
+            const { data } = await api.get("/content/slider");
             setSlides(data);
         } catch (error) {
             console.error("Failed to fetch slides");
@@ -31,18 +30,10 @@ const ManageSlider = () => {
         e.preventDefault();
         try {
             if (editingId) {
-                await fetch(`http://localhost:5000/api/content/slider/${editingId}`, {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(formData),
-                });
+                await api.put(`/content/slider/${editingId}`, formData);
                 toast.success("Slide updated successfully");
             } else {
-                await fetch("http://localhost:5000/api/content/slider", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(formData),
-                });
+                await api.post("/content/slider", formData);
                 toast.success("Slide added successfully");
             }
             setFormData({ title: "", description: "", image: "", order: 0 });
@@ -66,7 +57,7 @@ const ManageSlider = () => {
     const handleDelete = async (id: string) => {
         if (!confirm("Are you sure?")) return;
         try {
-            await fetch(`http://localhost:5000/api/content/slider/${id}`, { method: "DELETE" });
+            await api.delete(`/content/slider/${id}`);
             toast.success("Slide deleted");
             fetchSlides();
         } catch (error) {

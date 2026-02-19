@@ -2,6 +2,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight, Play } from "lucide-react";
+import api from "@/lib/api";
 
 interface Review {
     id: number;
@@ -15,9 +16,8 @@ const CelebrityReviews = () => {
     const [reviews, setReviews] = useState<Review[]>([]);
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/content/reviews')
-            .then(res => res.json())
-            .then(data => setReviews(data))
+        api.get('/content/reviews')
+            .then(res => setReviews(res.data))
             .catch(err => console.error("Failed to fetch reviews", err));
     }, []);
     const [emblaRef, emblaApi] = useEmblaCarousel({

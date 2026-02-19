@@ -1,13 +1,12 @@
-
 import React, { useState, useEffect } from 'react';
+import api from '@/lib/api';
 
 const CraftsmanshipSection = () => {
     const [content, setContent] = useState<any>(null);
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/content/sections/craftsmanship')
-            .then(res => res.json())
-            .then(data => setContent(data))
+        api.get('/content/sections/craftsmanship')
+            .then(res => setContent(res.data))
             .catch(err => console.error(err));
     }, []);
 

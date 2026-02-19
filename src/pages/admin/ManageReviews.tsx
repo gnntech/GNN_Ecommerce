@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Trash, Edit } from "lucide-react";
 import { toast } from "sonner";
 import FileUpload from "@/components/admin/FileUpload";
+import api from "@/lib/api";
 
 const ManageReviews = () => {
     const [reviews, setReviews] = useState<any[]>([]);
@@ -15,24 +16,19 @@ const ManageReviews = () => {
 
     const fetchReviews = async () => {
         try {
-            const res = await fetch("http://localhost:5000/api/content/reviews");
-            setReviews(await res.json());
+            const { data } = await api.get("/content/reviews");
+            setReviews(data);
         } catch (error) { console.error(error); }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const url = editingId
-                ? `http://localhost:5000/api/content/reviews/${editingId}`
-                : "http://localhost:5000/api/content/reviews";
-            const method = editingId ? "PUT" : "POST";
-
-            await fetch(url, {
-                method,
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData),
-            });
+            if (editingId) {
+                await api.put(`/content/reviews/${editingId}`, formData);
+            } else {
+                await api.post("/content/reviews", formData);
+            }
 
             toast.success(editingId ? "Review updated" : "Review added");
             setFormData({ name: "", role: "", image: "", videoUrl: "", order: 0 });
@@ -75,7 +71,7 @@ const ManageReviews = () => {
                             <p className="text-sm text-gray-500">{item.role}</p>
                             <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 bg-white p-1 rounded shadow">
                                 <Button size="icon" variant="ghost" onClick={() => { setFormData(item); setEditingId(item._id); }}><Edit className="w-4 h-4 text-blue-500" /></Button>
-                                <Button size="icon" variant="ghost" onClick={async () => { if (confirm("Delete?")) { await fetch(`http://localhost:5000/api/content/reviews/${item._id}`, { method: "DELETE" }); fetchReviews(); } }}><Trash className="w-4 h-4 text-red-500" /></Button>
+                                <Button size="icon" variant="ghost" onClick={async () => { if (confirm("Delete?")) { await api.delete(`/content/reviews/${item._id}`); fetchReviews(); } }}><Trash className="w-4 h-4 text-red-500" /></Button>
                             </div>
                         </CardContent>
                     </Card>

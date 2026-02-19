@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import FileUpload from "@/components/admin/FileUpload";
+import api from "@/lib/api";
 
 const ManageCraftsmanship = () => {
     const [formData, setFormData] = useState({
@@ -21,8 +22,7 @@ const ManageCraftsmanship = () => {
 
     const fetchContent = async () => {
         try {
-            const res = await fetch("http://localhost:5000/api/content/sections/craftsmanship");
-            const data = await res.json();
+            const { data } = await api.get("/content/sections/craftsmanship");
             if (data) setFormData(data);
         } catch (error) { console.error(error); }
     };
@@ -30,11 +30,7 @@ const ManageCraftsmanship = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            await fetch("http://localhost:5000/api/content/sections/craftsmanship", {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData),
-            });
+            await api.put("/content/sections/craftsmanship", formData);
             toast.success("Section updated successfully");
         } catch (error) { toast.error("Update failed"); }
     };

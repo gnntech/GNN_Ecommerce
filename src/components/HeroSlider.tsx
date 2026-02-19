@@ -3,6 +3,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import api from "@/lib/api";
 
 const HeroSlider = () => {
   const [slides, setSlides] = useState<any[]>([]);
@@ -15,15 +16,14 @@ const HeroSlider = () => {
 
   useEffect(() => {
     // Fetch Slider Data
-    fetch('http://localhost:5000/api/content/slider')
-      .then(res => res.json())
-      .then(data => setSlides(data))
+    api.get('/content/slider')
+      .then(res => setSlides(res.data))
       .catch(err => console.error("Failed to load slider data", err));
 
     // Fetch Marquee Data
-    fetch('http://localhost:5000/api/content/sections/marquee')
-      .then(res => res.json())
-      .then(data => {
+    api.get('/content/sections/marquee')
+      .then((res: any) => {
+        const data = res.data;
         if (data && data.description) {
           try {
             setMarqueeLines(JSON.parse(data.description));
@@ -32,7 +32,7 @@ const HeroSlider = () => {
           }
         }
       })
-      .catch(err => console.error("Failed to load marquee data", err));
+      .catch((err: any) => console.error("Failed to load marquee data", err));
   }, []);
 
   const scrollPrev = useCallback(() => {
