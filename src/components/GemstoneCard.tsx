@@ -1,7 +1,8 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Gemstone } from "@/data/gemstones";
+import { useCart } from "@/context/CartContext";
+import { toast } from "sonner";
+import { motion } from "framer-motion";
 
 interface GemstoneCardProps {
   gemstone: Gemstone;
@@ -14,8 +15,20 @@ const GemstoneCard: React.FC<GemstoneCardProps> = ({
   index,
   onOpenPreview,
 }) => {
-  const [isLiked, setIsLiked] = useState(false);
   const navigate = useNavigate();
+  const { addToCart } = useCart();
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    addToCart({
+      id: (gemstone as any)._id || gemstone.id,
+      name: gemstone.name,
+      price: parseFloat(gemstone.price.replace(/[^0-9.]/g, '')),
+      image: gemstone.image || "/images/Gemstone.png",
+      quantity: 1
+    });
+    toast.success("Added to cart");
+  };
 
   return (
     <motion.div
@@ -51,38 +64,13 @@ const GemstoneCard: React.FC<GemstoneCardProps> = ({
           <h3 className="font-semibold text-xl text-gray-900">
             {gemstone.name}
           </h3>
-          {/* Like */}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsLiked(!isLiked);
-            }}
-            className="w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all"
-            style={{ borderColor: isLiked ? "#9B2533" : "#E5E7EB" }}
-          >
-            <svg
-              className="w-5 h-5"
-              fill={isLiked ? "#9B2533" : "none"}
-              stroke={isLiked ? "#9B2533" : "#9CA3AF"}
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-              />
-            </svg>
-          </button>
+          {/* Like Button Removed */}
         </div>
 
         {/* Description */}
         <p className="text-sm text-gray-500 mb-4 line-clamp-2">
           {gemstone.shortDescription}
         </p>
-
-        {/* Tags */}
-
 
         {/* Footer */}
         <div className="mt-auto">
@@ -92,18 +80,20 @@ const GemstoneCard: React.FC<GemstoneCardProps> = ({
             </p>
           )}
           <div className="flex gap-3">
-            <a
-              href={gemstone.buyLink || "#"}
+            <button
               className="flex-1 py-3 rounded-full font-semibold text-center text-white"
               style={{ backgroundColor: "#9B2533" }}
-              onClick={(e) => e.stopPropagation()}
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/gemstone/${(gemstone as any)._id || gemstone.id}`);
+              }}
             >
               Buy Now
-            </a>
+            </button>
             <button
               className="flex-1 py-3 rounded-full font-semibold border-2 bg-white"
               style={{ borderColor: "#9B2533", color: "#9B2533" }}
-              onClick={(e) => e.stopPropagation()}
+              onClick={handleAddToCart}
             >
               Add to Cart
             </button>

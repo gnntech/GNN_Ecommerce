@@ -1,6 +1,7 @@
-const cloudinary = require("cloudinary").v2;
-const { CloudinaryStorage } = require("multer-storage-cloudinary");
-const dotenv = require("dotenv");
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const multer = require('multer');
+const dotenv = require('dotenv');
 
 dotenv.config();
 
@@ -13,9 +14,12 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {
-        folder: "gnn-ecommerce",
-        allowed_formats: ["jpg", "png", "jpeg", "webp"],
+        folder: 'gnn-ecommerce',
+        allowed_formats: ['jpg', 'png', 'jpeg', 'webp', 'mp4'],
+        resource_type: 'auto', // Allow both images and videos
     },
 });
 
-module.exports = { cloudinary, storage };
+const upload = multer({ storage: storage });
+
+module.exports = { cloudinary, upload };

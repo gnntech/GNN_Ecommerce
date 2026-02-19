@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 interface User {
     _id: string;
@@ -26,7 +27,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     useEffect(() => {
         const storedUser = localStorage.getItem("adminUser");
         if (storedUser) {
-            setUser(JSON.parse(storedUser));
+            try {
+                const parsedUser = JSON.parse(storedUser);
+                const decoded: any = jwtDecode(parsedUser.token);
+
+                // Check if token is expired (exp is in seconds, Date.now() in ms)
+                if (decoded.exp * 1000 < Date.now()) {
+                    localStorage.removeItem("adminUser");
+                    setUser(null);
+                } else {
+                    setUser(parsedUser);
+                }
+            } catch (error) {
+                // If decoding fails, invalid token
+                localStorage.removeItem("adminUser");
+                setUser(null);
+            }
         }
         setIsLoading(false);
     }, []);

@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 import { ChevronLeft, ChevronRight, Gem, TreePalm, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import GemstoneCard from "@/components/GemstoneCard";
@@ -26,7 +27,7 @@ const FeaturedCollection: React.FC<FeaturedCollectionProps> = ({
         align: "start",
         slidesToScroll: 1,
         loop: false,
-    });
+    }, [Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEnter: true })]);
 
     const [canScrollPrev, setCanScrollPrev] = useState(false);
     const [canScrollNext, setCanScrollNext] = useState(false);

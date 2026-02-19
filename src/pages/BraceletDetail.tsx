@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 import api from "@/lib/api";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { useCart } from "@/context/CartContext";
+import { toast } from "sonner";
 
 interface BraceletProduct {
     _id: string;
@@ -23,6 +25,7 @@ interface BraceletProduct {
 const BraceletDetail = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
+    const { addToCart } = useCart();
     const [bracelet, setBracelet] = useState<BraceletProduct | null>(null);
     const [loading, setLoading] = useState(true);
 
@@ -151,6 +154,19 @@ const BraceletDetail = () => {
                                     Buy Now
                                 </button>
                                 <button
+                                    onClick={() => {
+                                        if (!bracelet) return;
+                                        const price = Number(bracelet.price?.toString().replace(/[^0-9]/g, '') || 0);
+                                        addToCart({
+                                            id: bracelet._id || bracelet.name,
+                                            name: bracelet.name,
+                                            image: bracelet.image,
+                                            price: price,
+                                            type: 'Bracelet',
+                                            qty: 1
+                                        });
+                                        toast.success("Added to cart");
+                                    }}
                                     className="flex-1 px-8 py-4 rounded-full bg-secondary border border-border text-foreground font-medium text-lg hover:bg-muted transition-all duration-300 transform active:scale-[0.98]"
                                 >
                                     Add to Cart

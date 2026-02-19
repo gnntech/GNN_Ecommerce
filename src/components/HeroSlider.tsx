@@ -1,32 +1,39 @@
 import React, { useState, useEffect, useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
-
-// Single slide enabled for the "Clone" request using the specified image
-const slides = [
-  {
-    image: "/images/slider-blue.png",
-    title: "Gaurab Nerpagar Numerologics",
-    description:
-      "Unlock the ancient wisdom of numerology to reveal your true potential, understand your destiny, and navigate life's journey with clarity and purpose.",
-  },
-  {
-    image: "/images/Trees.png",
-    title: "Sacred Spiritual Trees",
-    description:
-      "Invite harmony and positive energy into your space with our curated collection of spiritual trees, each bringing unique blessings to your home.",
-  },
-  {
-    image: "/images/S-TigerEye Bracelet.png",
-    title: "Healing Crystal Bracelets",
-    description:
-      "Adorn yourself with the power of nature. Our handcrafted crystal bracelets are designed to balance your energy and enhance your well-being.",
-  },
-];
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const HeroSlider = () => {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, duration: 40 });
+  const [slides, setSlides] = useState<any[]>([]);
+  const [marqueeLines, setMarqueeLines] = useState<string[]>([]);
+
+  // Initialize Embla with Autoplay plugin
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, duration: 40 }, [
+    Autoplay({ delay: 4000, stopOnInteraction: false })
+  ]);
+
+  useEffect(() => {
+    // Fetch Slider Data
+    fetch('http://localhost:5000/api/content/slider')
+      .then(res => res.json())
+      .then(data => setSlides(data))
+      .catch(err => console.error("Failed to load slider data", err));
+
+    // Fetch Marquee Data
+    fetch('http://localhost:5000/api/content/sections/marquee')
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.description) {
+          try {
+            setMarqueeLines(JSON.parse(data.description));
+          } catch (e) {
+            console.error("Failed to parse marquee data");
+          }
+        }
+      })
+      .catch(err => console.error("Failed to load marquee data", err));
+  }, []);
 
   const scrollPrev = useCallback(() => {
     if (emblaApi) emblaApi.scrollPrev();
@@ -35,6 +42,8 @@ const HeroSlider = () => {
   const scrollNext = useCallback(() => {
     if (emblaApi) emblaApi.scrollNext();
   }, [emblaApi]);
+
+  if (slides.length === 0) return null;
 
   return (
     <div className="relative w-full bg-background mt-0 group">
@@ -100,88 +109,48 @@ const HeroSlider = () => {
         </button>
 
         {/* Marquee - Absolute at bottom of hero section */}
-        <div
-          className="absolute bottom-0 left-0 right-0 w-full overflow-hidden flex items-center z-20"
-          style={{
-            height: "100px",
-            backgroundColor: "#9B2533", // Maroon
-            boxShadow: "0px -9px 9.4px 0px #00000040",
-          }}
-        >
-          {/* Infinite Scroll Container for Seamless Loop */}
-          <div className="flex w-full whitespace-nowrap">
-            {[0, 1].map((i) => (
-              <motion.div
-                key={i}
-                className="flex shrink-0 items-center justify-around gap-16 gap-x-16 min-w-full"
-                animate={{ x: "-100%" }}
-                transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-              >
-                <span
-                  className="flex items-center gap-4 text-white text-[20px] font-normal uppercase tracking-wide"
-                  style={{ fontFamily: "Matter, sans-serif" }}
-                >
-                  Book your consultation @ Rs. 499{" "}
-                  <span className="line-through opacity-70">Rs. 699</span>
-                </span>
-                <span
-                  className="flex items-center gap-4 text-white text-[20px] font-normal uppercase tracking-wide italic font-semibold"
-                  style={{ fontFamily: "Matter, sans-serif" }}
-                >
-                  Slots are limited
-                </span>
-                <span
-                  className="flex items-center gap-4 text-white text-[20px] font-normal uppercase tracking-wide font-bold"
-                  style={{ fontFamily: "Matter, sans-serif" }}
-                >
-                  Reserve yours now !!
-                </span>
-                <span className="text-white">•</span>
-                <span
-                  className="flex items-center gap-4 text-white text-[20px] font-normal uppercase tracking-wide"
-                  style={{ fontFamily: "Matter, sans-serif" }}
-                >
-                  Book your consultation @ Rs. 499{" "}
-                  <span className="line-through opacity-70">Rs. 699</span>
-                </span>
-                <span
-                  className="flex items-center gap-4 text-white text-[20px] font-normal uppercase tracking-wide italic font-semibold"
-                  style={{ fontFamily: "Matter, sans-serif" }}
-                >
-                  Slots are limited
-                </span>
-                <span
-                  className="flex items-center gap-4 text-white text-[20px] font-normal uppercase tracking-wide font-bold"
-                  style={{ fontFamily: "Matter, sans-serif" }}
-                >
-                  Reserve yours now !!
-                </span>
-                <span className="text-white">•</span>
-                <span
-                  className="flex items-center gap-4 text-white text-[20px] font-normal uppercase tracking-wide"
-                  style={{ fontFamily: "Matter, sans-serif" }}
-                >
-                  Book your consultation @ Rs. 499{" "}
-                  <span className="line-through opacity-70">Rs. 699</span>
-                </span>
-                <span
-                  className="flex items-center gap-4 text-white text-[20px] font-normal uppercase tracking-wide italic font-semibold"
-                  style={{ fontFamily: "Matter, sans-serif" }}
-                >
-                  Slots are limited
-                </span>
-                <span
-                  className="flex items-center gap-4 text-white text-[20px] font-normal uppercase tracking-wide font-bold"
-                  style={{ fontFamily: "Matter, sans-serif" }}
-                >
-                  Reserve yours now !!
-                </span>
-                <span className="text-white pr-16">•</span>
-              </motion.div>
-            ))}
+        {marqueeLines.length > 0 && (
+          <div
+            className="absolute bottom-0 left-0 right-0 w-full overflow-hidden flex items-center z-20 group/marquee"
+            style={{
+              height: "100px",
+              backgroundColor: "#9B2533", // Maroon
+              boxShadow: "0px -9px 9.4px 0px #00000040",
+            }}
+          >
+            {/* Infinite Scroll Container for Seamless Loop */}
+            <div className="flex w-full whitespace-nowrap marquee-track group-hover/marquee:paused">
+              {[0, 1, 2, 3].map((i) => (
+                <div key={i} className="flex shrink-0 items-center justify-around min-w-full animate-marquee">
+                  {marqueeLines.map((line, idx) => (
+                    <React.Fragment key={idx}>
+                      <span
+                        className="flex items-center gap-4 text-white text-[20px] font-normal uppercase tracking-wide px-8"
+                        style={{ fontFamily: "Matter, sans-serif" }}
+                      >
+                        {line}
+                      </span>
+                      <span className="text-white">•</span>
+                    </React.Fragment>
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
+      <style>{`
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+        .animate-marquee {
+            animation: marquee 30s linear infinite;
+        }
+        .group-hover\\/marquee:paused .animate-marquee {
+            animation-play-state: paused;
+        }
+      `}</style>
     </div>
   );
 };

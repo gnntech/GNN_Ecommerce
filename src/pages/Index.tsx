@@ -16,6 +16,14 @@ const Index = () => {
   const [gemstones, setGemstones] = useState<Gemstone[]>([]);
   const [trees, setTrees] = useState<Tree[]>([]);
   const [bracelets, setBracelets] = useState<Bracelet[]>([]);
+  const [collections, setCollections] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch('http://localhost:5000/api/content/collections')
+      .then(res => res.json())
+      .then(data => setCollections(data))
+      .catch(err => console.error(err));
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,24 +61,15 @@ const Index = () => {
         </div>
 
         <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-5 sm:gap-8 max-w-7xl mx-auto">
-          <CollectionCard
-            title="Gemstones"
-            image="/images/Gemstone.png"
-            description="Explore our hand-selected gemstones with unique energy."
-            link="/collection"
-          />
-          <CollectionCard
-            title="Bracelets"
-            image="/images/S-TigerEye Bracelet.png"
-            description="Find bracelets with numerology and spiritual significance."
-            link="/bracelets"
-          />
-          <CollectionCard
-            title="Trees"
-            image="/images/Trees.png"
-            description="Discover mystical trees that bring energy and harmony."
-            link="/trees"
-          />
+          {collections.map((col: any, index) => (
+            <CollectionCard
+              key={index}
+              title={col.title}
+              image={col.image}
+              description={col.description}
+              link={col.link}
+            />
+          ))}
         </div>
       </section>
 

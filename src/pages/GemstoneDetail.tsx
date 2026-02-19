@@ -6,12 +6,32 @@ import api from "@/lib/api";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Gemstone } from "@/data/gemstones";
+import { useCart } from "@/context/CartContext";
+import { toast } from "sonner";
 
 const GemstoneDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [gemstone, setGemstone] = useState<Gemstone | null>(null);
   const [loading, setLoading] = useState(true);
+  const { addToCart } = useCart();
+
+  const handleAddToCart = () => {
+    if (!gemstone) return;
+
+    // Parse price to number for cart
+    const price = Number(gemstone.price?.toString().replace(/[^0-9]/g, '') || 0);
+
+    addToCart({
+      id: gemstone._id || gemstone.id,
+      name: gemstone.name,
+      image: gemstone.image,
+      price: price,
+      type: 'Gemstone',
+      qty: 1
+    });
+    toast.success("Added to cart");
+  };
 
   useEffect(() => {
     const fetchGemstone = async () => {
@@ -147,6 +167,7 @@ const GemstoneDetail = () => {
                   Buy Now
                 </button>
                 <button
+                  onClick={handleAddToCart}
                   className="flex-1 px-8 py-4 rounded-full bg-secondary border border-border text-foreground font-medium text-lg hover:bg-muted transition-all duration-300 transform active:scale-[0.98]"
                 >
                   Add to Cart

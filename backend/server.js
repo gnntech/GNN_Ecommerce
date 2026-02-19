@@ -29,6 +29,14 @@ app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/payment", paymentRoutes);
 
+// Content Routes
+const contentRoutes = require("./routes/contentRoutes");
+app.use("/api/content", contentRoutes);
+
+// Upload Routes
+const uploadRoutes = require("./routes/uploadRoutes");
+app.use("/api/upload", uploadRoutes);
+
 app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server running on port ${PORT}`);
 });

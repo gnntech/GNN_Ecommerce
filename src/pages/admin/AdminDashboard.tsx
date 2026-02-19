@@ -42,6 +42,32 @@ const AdminDashboard = () => {
                         <h3 className="text-xl font-bold mb-2">Manage Bracelets</h3>
                         <p className="text-muted-foreground">Add, edit, or delete bracelets.</p>
                     </div>
+
+                    {/* New Content Management Links */}
+                    <div onClick={() => navigate("/admin/slider")} className="glass-card p-6 cursor-pointer hover:shadow-lg transition-all bg-blue-50/50">
+                        <h3 className="text-xl font-bold mb-2">Manage Slider</h3>
+                        <p className="text-muted-foreground">Update homepage hero slider.</p>
+                    </div>
+                    <div onClick={() => navigate("/admin/reviews")} className="glass-card p-6 cursor-pointer hover:shadow-lg transition-all bg-blue-50/50">
+                        <h3 className="text-xl font-bold mb-2">Manage Reviews</h3>
+                        <p className="text-muted-foreground">Update celebrity reviews & videos.</p>
+                    </div>
+                    <div onClick={() => navigate("/admin/collections")} className="glass-card p-6 cursor-pointer hover:shadow-lg transition-all bg-blue-50/50">
+                        <h3 className="text-xl font-bold mb-2">Manage Collections</h3>
+                        <p className="text-muted-foreground">Edit "Explore Our Collections".</p>
+                    </div>
+                    <div onClick={() => navigate("/admin/craftsmanship")} className="glass-card p-6 cursor-pointer hover:shadow-lg transition-all bg-blue-50/50">
+                        <h3 className="text-xl font-bold mb-2">Manage Craftsmanship</h3>
+                        <p className="text-muted-foreground">Edit craftsmanship section content.</p>
+                    </div>
+                    <div onClick={() => navigate("/admin/gallery")} className="glass-card p-6 cursor-pointer hover:shadow-lg transition-all bg-blue-50/50">
+                        <h3 className="text-xl font-bold mb-2">Manage Gallery</h3>
+                        <p className="text-muted-foreground">Edit infinity scroll image gallery.</p>
+                    </div>
+                    <div onClick={() => navigate("/admin/marquee")} className="glass-card p-6 cursor-pointer hover:shadow-lg transition-all bg-blue-50/50">
+                        <h3 className="text-xl font-bold mb-2">Manage Marquee</h3>
+                        <p className="text-muted-foreground">Edit top scrolling text.</p>
+                    </div>
                 </div>
             </div>
         </div>

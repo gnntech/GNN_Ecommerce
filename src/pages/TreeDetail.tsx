@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 import api from "@/lib/api";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { useCart } from "@/context/CartContext";
+import { toast } from "sonner";
 
 interface TreeProduct {
     _id: string;
@@ -23,6 +25,7 @@ interface TreeProduct {
 const TreeDetail = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
+    const { addToCart } = useCart();
     const [tree, setTree] = useState<TreeProduct | null>(null);
     const [loading, setLoading] = useState(true);
 
@@ -143,6 +146,7 @@ const TreeDetail = () => {
                             </div>
 
                             {/* Action Buttons */}
+                            {/* Action Buttons */}
                             <div className="flex flex-col sm:flex-row gap-4">
                                 <button
                                     onClick={() => navigate("/checkout", { state: { product: tree, type: 'Tree' } })}
@@ -151,6 +155,19 @@ const TreeDetail = () => {
                                     Buy Now
                                 </button>
                                 <button
+                                    onClick={() => {
+                                        if (!tree) return;
+                                        const price = Number(tree.price?.toString().replace(/[^0-9]/g, '') || 0);
+                                        addToCart({
+                                            id: tree._id || tree.name, // Fallback to name if id is missing in specific case
+                                            name: tree.name,
+                                            image: tree.image,
+                                            price: price,
+                                            type: 'Tree',
+                                            qty: 1
+                                        });
+                                        toast.success("Added to cart");
+                                    }}
                                     className="flex-1 px-8 py-4 rounded-full bg-secondary border border-border text-foreground font-medium text-lg hover:bg-muted transition-all duration-300 transform active:scale-[0.98]"
                                 >
                                     Add to Cart

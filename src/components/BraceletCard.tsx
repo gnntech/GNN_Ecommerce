@@ -1,7 +1,8 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Bracelet } from "@/types/collection";
+import { useCart } from "@/context/CartContext";
+import { toast } from "sonner";
+import { motion } from "framer-motion";
 
 interface Props {
   bracelet: Bracelet;
@@ -10,11 +11,23 @@ interface Props {
 
 const BraceletCard: React.FC<Props> = ({ bracelet, onOpenPreview }) => {
   const navigate = useNavigate();
-  const [isLiked, setIsLiked] = useState(false);
+  const { addToCart } = useCart();
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    addToCart({
+      id: (bracelet as any)._id || bracelet.id,
+      name: bracelet.name,
+      price: parseFloat(bracelet.price.replace(/[^0-9.]/g, '')),
+      image: bracelet.image || "/images/S-Amazonite Bracelet.png",
+      quantity: 1
+    });
+    toast.success("Added to cart");
+  };
 
   return (
     <motion.div
-      className="bg-white rounded-3xl shadow-lg p-5 flex flex-col"
+      className="bg-white rounded-3xl shadow-lg p-5 flex flex-col cursor-pointer"
       style={{ minHeight: "520px" }}
       whileHover={{
         y: -5,
@@ -45,30 +58,7 @@ const BraceletCard: React.FC<Props> = ({ bracelet, onOpenPreview }) => {
           <h3 className="font-semibold text-xl text-gray-900">
             {bracelet.name}
           </h3>
-
-          {/* Like button */}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsLiked(!isLiked);
-            }}
-            className="w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all"
-            style={{ borderColor: isLiked ? "#9B2533" : "#E5E7EB" }}
-          >
-            <svg
-              className="w-5 h-5"
-              fill={isLiked ? "#9B2533" : "none"}
-              stroke={isLiked ? "#9B2533" : "#9CA3AF"}
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-              />
-            </svg>
-          </button>
+          {/* Like button removed */}
         </div>
 
         {/* Description */}
@@ -86,15 +76,16 @@ const BraceletCard: React.FC<Props> = ({ bracelet, onOpenPreview }) => {
 
           <div className="flex gap-3">
             {/* Buy Now */}
-            <a
-              href={bracelet.buyLink}
-              target="_blank"
-              rel="noreferrer"
+            <button
               className="flex-1 py-3 rounded-full font-semibold text-center text-white"
               style={{ backgroundColor: "#9B2533" }}
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/bracelet/${(bracelet as any)._id || bracelet.id}`);
+              }}
             >
               Buy Now
-            </a>
+            </button>
 
             {/* Add to Cart */}
             <button
@@ -103,6 +94,7 @@ const BraceletCard: React.FC<Props> = ({ bracelet, onOpenPreview }) => {
                 borderColor: "#9B2533",
                 color: "#9B2533",
               }}
+              onClick={handleAddToCart}
             >
               Add to Cart
             </button>

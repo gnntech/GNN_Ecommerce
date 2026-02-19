@@ -28,9 +28,22 @@ type FormValues = z.infer<typeof formSchema>;
 const Checkout = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { product, type } = location.state || {}; // Expecting product details passed via state
+    // Support both single product (Buy Now) and multiple items (Cart)
+    const { product, type, items } = location.state || {};
 
     const [loading, setLoading] = useState(false);
+
+    // Calculate total price
+    const orderItems = items || (product ? [{
+        product: product._id || product.id,
+        name: product.name,
+        qty: 1,
+        image: product.image,
+        price: Number(product.price.toString().replace(/[^0-9]/g, '')),
+        type: type
+    }] : []);
+
+    const totalPrice = orderItems.reduce((acc: number, item: any) => acc + (item.price * item.qty), 0);
 
     const {
         register,
@@ -41,11 +54,13 @@ const Checkout = () => {
     });
 
     useEffect(() => {
-        if (!product) {
-            toast.error("No product selected for checkout");
+        if (orderItems.length === 0) {
+            toast.error("No items to checkout");
             navigate("/");
         }
-    }, [product, navigate]);
+    }, [orderItems, navigate]);
+
+
 
     const loadRazorpayScript = () => {
         return new Promise((resolve) => {
@@ -62,7 +77,7 @@ const Checkout = () => {
     };
 
     const onSubmit = async (data: FormValues) => {
-        if (!product) return;
+        if (orderItems.length === 0) return;
         setLoading(true);
 
         const res = await loadRazorpayScript();
@@ -74,26 +89,17 @@ const Checkout = () => {
         }
 
         try {
-            // Parse price: Remove "₹", ",", " " and convert to number
-            const parsedPrice = Number(product.price.toString().replace(/[^0-9]/g, ''));
-
-            if (isNaN(parsedPrice) || parsedPrice <= 0) {
-                toast.error("Invalid product price");
-                setLoading(false);
-                return;
-            }
-
             // 1. Create Order
             const orderResponse = await api.post("/payment/create-order", {
-                amount: parsedPrice,
-                products: [{
-                    product: product._id || product.id,
-                    name: product.name,
-                    qty: 1,
-                    image: product.image,
-                    price: parsedPrice,
-                    type: type // 'Gemstone', 'Tree', 'Bracelet'
-                }],
+                amount: totalPrice,
+                products: orderItems.map((item: any) => ({
+                    product: item.product || item.id, // Handle both id formats
+                    name: item.name,
+                    qty: item.qty,
+                    image: item.image,
+                    price: item.price,
+                    type: item.type
+                })),
                 user: {
                     name: data.name,
                     email: data.email,
@@ -116,7 +122,7 @@ const Checkout = () => {
                 amount: order.amount,
                 currency: order.currency,
                 name: "GNN E-commerce",
-                description: `Purchase of ${product.name}`,
+                description: `Purchase of ${orderItems.length} item(s)`,
                 image: "/images/logo.png", // Add your logo path
                 order_id: order.id,
                 handler: async function (response: any) {
@@ -133,21 +139,29 @@ const Checkout = () => {
                                     phone: data.phone,
                                     address: `${data.address}, ${data.city}, ${data.state} - ${data.pincode}`
                                 },
-                                orderItems: [{
-                                    name: product.name,
-                                    qty: 1,
-                                    image: product.image,
-                                    price: parsedPrice,
-                                    product: product._id || product.id,
-                                    type: type
-                                }],
-                                itemsPrice: parsedPrice,
-                                totalPrice: parsedPrice
+                                orderItems: orderItems.map((item: any) => ({
+                                    name: item.name,
+                                    qty: item.qty,
+                                    image: item.image,
+                                    price: item.price,
+                                    product: item.product || item.id,
+                                    type: item.type
+                                })),
+                                itemsPrice: totalPrice,
+                                totalPrice: totalPrice
                             }
                         });
 
                         if (verifyResponse.data.success) {
                             toast.success("Payment Successful!");
+                            // Clear cart on success if coming from cart
+                            if (items) {
+                                // We might need to access clearCart from context here, but we can't inside the callback easily
+                                // Better to handle it in the success page or use a custom event.
+                                // For now, we rely on the user manually clearing or implementing a cart clear on success route.
+                                localStorage.removeItem("cartItems"); // Simple hack to clear cart
+                                window.dispatchEvent(new Event("storage")); // Notify listeners
+                            }
                             navigate("/payment-success", { state: { orderId: verifyResponse.data.orderId } });
                         } else {
                             toast.error("Payment Verification Failed");
@@ -256,21 +270,27 @@ const Checkout = () => {
                         <div className="bg-white/50 backdrop-blur-sm p-6 rounded-2xl border border-border/50 shadow-sm">
                             <h2 className="text-xl font-semibold mb-6">Order Summary</h2>
 
-                            <div className="flex gap-4 mb-6">
-                                <div className="w-24 h-24 rounded-lg overflow-hidden border border-border">
-                                    <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
-                                </div>
-                                <div>
-                                    <h3 className="font-semibold text-lg">{product.name}</h3>
-                                    <p className="text-muted-foreground text-sm capitalize">{type}</p>
-                                    <p className="text-primary font-bold mt-1">₹ {product.price}</p>
-                                </div>
+                            <div className="space-y-4 mb-6">
+                                {orderItems.map((item: any, index: number) => (
+                                    <div key={index} className="flex gap-4">
+                                        <div className="w-16 h-16 rounded-lg overflow-hidden border border-border shrink-0">
+                                            <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                                        </div>
+                                        <div>
+                                            <h3 className="font-semibold text-sm">{item.name}</h3>
+                                            <p className="text-muted-foreground text-xs capitalize">{item.type}</p>
+                                            <p className="text-primary font-bold mt-1 text-sm">
+                                                ₹ {item.price} x {item.qty}
+                                            </p>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
 
                             <div className="space-y-3 pt-6 border-t border-border">
                                 <div className="flex justify-between text-sm">
                                     <span className="text-muted-foreground">Subtotal</span>
-                                    <span>₹ {product.price}</span>
+                                    <span>₹ {totalPrice}</span>
                                 </div>
                                 <div className="flex justify-between text-sm">
                                     <span className="text-muted-foreground">Shipping</span>
@@ -278,7 +298,7 @@ const Checkout = () => {
                                 </div>
                                 <div className="flex justify-between font-bold text-lg pt-3 border-t border-border">
                                     <span>Total</span>
-                                    <span>₹ {product.price}</span>
+                                    <span>₹ {totalPrice}</span>
                                 </div>
                             </div>
 

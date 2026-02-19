@@ -11,38 +11,15 @@ interface Review {
     videoUrl: string; // YouTube embed URL
 }
 
-const reviews: Review[] = [
-    {
-        id: 1,
-        name: "Celebrity 1",
-        role: "Actor",
-        image: "/images/slider-blue.png", // Using existing placeholder
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0",
-    },
-    {
-        id: 2,
-        name: "Celebrity 2",
-        role: "Singer",
-        image: "/images/slider1.png", // Using existing placeholder
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0",
-    },
-    {
-        id: 3,
-        name: "Rakesh Maini",
-        role: "Indian Idol Season - 5",
-        image: "/images/slider3.png", // Using existing placeholder
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0",
-    },
-    {
-        id: 4,
-        name: "Celebrity 4",
-        role: "Influencer",
-        image: "/images/slider2.png", // Using existing placeholder
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0",
-    },
-];
-
 const CelebrityReviews = () => {
+    const [reviews, setReviews] = useState<Review[]>([]);
+
+    useEffect(() => {
+        fetch('http://localhost:5000/api/content/reviews')
+            .then(res => res.json())
+            .then(data => setReviews(data))
+            .catch(err => console.error("Failed to fetch reviews", err));
+    }, []);
     const [emblaRef, emblaApi] = useEmblaCarousel({
         align: "start",
         slidesToScroll: 1,

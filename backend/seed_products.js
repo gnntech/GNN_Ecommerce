@@ -33,9 +33,17 @@ const seedGeneric = async (Model, data, type) => {
         for (const item of data) {
             // Check if exists
             const exists = await Model.findOne({ name: item.name });
+
+            // Should we update?
+            let shouldUpdate = false;
             if (exists) {
-                console.log(`${item.name} already exists.`);
-                continue;
+                if (exists.image && exists.image.includes("via.placeholder.com")) {
+                    console.log(`Fixing broken image for ${item.name}...`);
+                    shouldUpdate = true;
+                } else {
+                    console.log(`${item.name} already exists and has valid image.`);
+                    continue;
+                }
             }
 
             let imageUrl = item.image;
@@ -102,13 +110,37 @@ const seedGeneric = async (Model, data, type) => {
             const cloudUrl = await uploadImage(uploadPath.replace("backend\\..\\", "")); // Hacky fix for join
 
             // Ensure we use the cloud URL if successful, else generic placeholder
-            const finalImage = cloudUrl || "https://via.placeholder.com/300";
+            // key images: 
+            // Gemstones -> /images/Gemstone.png
+            // Trees -> /images/Trees.png (if specific not found)
+            // Bracelets -> /images/S-TigerEye Bracelet.png etc.
 
-            await Model.create({
-                ...item,
-                image: finalImage,
-                price: item.price || "₹0", // Ensure price exists
-            });
+            let fallback = "/images/hero-new.png";
+            if (type === 'gemstone') fallback = "/images/Gemstone.png";
+            else if (type === 'tree') fallback = "/images/Trees.png";
+            else if (type === 'bracelet') {
+                // Try to use the original path if it was in /images
+                if (item.image.startsWith("/images")) fallback = item.image;
+                else fallback = "/images/hero-new.png";
+            }
+
+            const finalImage = cloudUrl || fallback;
+
+
+
+            if (shouldUpdate && exists) {
+                exists.image = finalImage;
+                if (!exists.price) exists.price = item.price || "₹0";
+                await exists.save();
+                console.log(`Updated ${item.name}`);
+            } else {
+                await Model.create({
+                    ...item,
+                    image: finalImage,
+                    price: item.price || "₹0", // Ensure price exists
+                });
+                console.log(`Created ${item.name}`);
+            }
             console.log(`Created ${item.name}`);
         }
     } catch (error) {

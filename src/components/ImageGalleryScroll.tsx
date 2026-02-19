@@ -8,60 +8,40 @@ interface GalleryItem {
     link: string;
 }
 
-const galleryItems: GalleryItem[] = [
-    {
-        id: 1,
-        image: "/images/Gemstone.png",
-        title: "Premium Gemstones",
-        link: "/collection",
-    },
-    {
-        id: 2,
-        image: "/images/Trees.png",
-        title: "Spiritual Trees",
-        link: "/trees",
-    },
-    {
-        id: 3,
-        image: "/images/S-TigerEye Bracelet.png",
-        title: "Healing Bracelets",
-        link: "/bracelets",
-    },
-    {
-        id: 4,
-        image: "/images/section2-bg.png",
-        title: "Vedic Wisdom",
-        link: "/about",
-    },
-    {
-        id: 5,
-        image: "/images/slider-blue.png",
-        title: "Numerology",
-        link: "/contact",
-    },
-    {
-        id: 6,
-        image: "/images/slider1.png",
-        title: "Astrology",
-        link: "/contact",
-    },
-];
-
 const ImageGalleryScroll = () => {
+    const [galleryItems, setGalleryItems] = React.useState<GalleryItem[]>([]);
+    const [isHovered, setIsHovered] = React.useState(false);
+
+    React.useEffect(() => {
+        fetch('http://localhost:5000/api/content/gallery')
+            .then(res => res.json())
+            .then(data => setGalleryItems(data))
+            .catch(err => console.error(err));
+    }, []);
+
     // Duplicate items for seamless scrolling
     const scrollItems = [...galleryItems, ...galleryItems];
 
+    if (galleryItems.length === 0) return null;
+
     return (
         <section className="py-12 bg-white overflow-hidden">
-            <div className="relative w-full">
+            <div
+                className="relative w-full marquee-container"
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+            >
                 {/* Gradient Masks */}
                 <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
                 <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
 
-                <div className="flex w-max animate-scroll-left">
+                <div
+                    className="flex w-max animate-scroll-left"
+                    style={{ animationPlayState: isHovered ? 'paused' : 'running' }}
+                >
                     {scrollItems.map((item, index) => (
                         <div
-                            key={`${item.id}-${index}`}
+                            key={`${item.id || index}-${index}`}
                             className="relative w-[300px] h-[350px] mx-4 rounded-xl overflow-hidden group cursor-pointer shadow-md hover:shadow-xl transition-shadow duration-300"
                         >
                             <img
@@ -94,7 +74,7 @@ const ImageGalleryScroll = () => {
         .animate-scroll-left {
           animation: scroll-left 30s linear infinite;
         }
-        .animate-scroll-left:hover {
+        .marquee-container:hover .animate-scroll-left {
           animation-play-state: paused;
         }
       `}</style>
