@@ -36,17 +36,10 @@ const Navbar = () => {
       {/* ================= DESKTOP NAVBAR ================= */}
       <nav className="fixed top-5 left-1/2 -translate-x-1/2 z-50 hidden md:block">
         <div
-          className="
-    flex
-    items-center
-    justify-between
-    w-[90vw]
-    max-w-[1200px]
-    px-8
-    py-2
-    rounded-full
-    backdrop-blur-[10px]
-  "
+          className={`
+            flex items-center justify-between rounded-full backdrop-blur-[10px] transition-all duration-300
+            ${showStrip ? 'w-[85vw] max-w-[1000px] px-6 py-1.5' : 'w-[90vw] max-w-[1200px] px-8 py-2'}
+          `}
           style={{
             fontFamily: "Matter, sans-serif",
             background: "rgba(255, 255, 255, 0.92)",
@@ -110,17 +103,12 @@ const Navbar = () => {
       </nav>
 
       {/* ================= MOBILE NAVBAR ================= */}
-      <nav className="md:hidden fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[92vw]">
+      <nav className={`md:hidden fixed left-1/2 -translate-x-1/2 z-50 transition-all duration-300 ${showStrip ? 'top-2 w-[95vw]' : 'top-4 w-[92vw]'}`}>
         <div
-          className="
-      flex
-      items-center
-      justify-between
-      px-4
-      py-2
-      rounded-full
-      backdrop-blur-[10px]
-    "
+          className={`
+            flex items-center justify-between rounded-full backdrop-blur-[10px] transition-all duration-300
+            ${showStrip ? 'px-3 py-1.5' : 'px-4 py-2'}
+          `}
           style={{
             background: "rgba(255, 255, 255, 0.92)",
             boxShadow: "0 8px 30px rgba(0,0,0,0.08)",
