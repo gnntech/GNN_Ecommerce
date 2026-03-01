@@ -26,6 +26,7 @@ import ManageMarquee from "./pages/admin/ManageMarquee";
 import SearchResults from "./pages/SearchResults";
 import Checkout from "./pages/Checkout";
 import { AuthProvider } from "./context/AuthContext";
+import About from "./components/About";
 
 import { CartProvider } from "./context/CartContext";
 
@@ -38,7 +39,9 @@ const App = () => (
         <Toaster />
         <Sonner />
         <AuthProvider>
-          <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+          <BrowserRouter
+            future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+          >
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/cart" element={<Cart />} />
@@ -61,8 +64,14 @@ const App = () => (
               {/* Content Management Admin Routes */}
               <Route path="/admin/slider" element={<ManageSlider />} />
               <Route path="/admin/reviews" element={<ManageReviews />} />
-              <Route path="/admin/collections" element={<ManageCollections />} />
-              <Route path="/admin/craftsmanship" element={<ManageCraftsmanship />} />
+              <Route
+                path="/admin/collections"
+                element={<ManageCollections />}
+              />
+              <Route
+                path="/admin/craftsmanship"
+                element={<ManageCraftsmanship />}
+              />
               <Route path="/admin/gallery" element={<ManageGallery />} />
               <Route path="/admin/marquee" element={<ManageMarquee />} />
 
