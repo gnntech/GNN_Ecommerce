@@ -74,7 +74,7 @@ const App = () => (
               />
               <Route path="/admin/gallery" element={<ManageGallery />} />
               <Route path="/admin/marquee" element={<ManageMarquee />} />
-
+              <Route path="/about" element={<About />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
