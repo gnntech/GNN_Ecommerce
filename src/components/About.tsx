@@ -94,7 +94,7 @@ const About: React.FC = () => {
 
       {/* ================= SERVICES SECTION ================= */}
       <section className="min-h-screen flex items-center justify-center bg-white px-6 lg:px-12">
-        <div className="max-w-6xl mx-auto text-center w-full">
+        <div className="max-w-6xl mx-auto text-center w-full mb-16">
           <div className="flex items-center justify-center gap-6 mb-12">
             <img
               src="/images/D.png"
