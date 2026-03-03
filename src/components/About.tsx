@@ -95,9 +95,23 @@ const About: React.FC = () => {
       {/* ================= SERVICES SECTION ================= */}
       <section className="min-h-screen flex items-center justify-center bg-white px-6 lg:px-12">
         <div className="max-w-6xl mx-auto text-center w-full">
-          <h2 className="font-bebas text-[clamp(2rem,5vw,3rem)] text-[rgb(155,37,51)] mb-16 tracking-wide">
-            OUR PREMIUM SERVICES
-          </h2>
+          <div className="flex items-center justify-center gap-6 mb-12">
+            <img
+              src="/images/D.png"
+              alt="left decor"
+              className="w-32 sm:w-48 lg:w-72 h-auto"
+            />
+
+            <h2 className="text-6xl font-bebas text-[#9b2533] uppercase tracking-wide">
+              Our Premium Services
+            </h2>
+
+            <img
+              src="/images/D.png"
+              alt="right decor"
+              className="w-32 sm:w-48 lg:w-72 h-auto"
+            />
+          </div>
 
           <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             {[
@@ -165,10 +179,22 @@ hover:-translate-y-2 hover:shadow-2xl hover:scale-[1.02]"
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto w-full h-full flex flex-col justify-center">
-          <div className="text-white text-center mb-8 lg:mb-12 translate-y-16 sm:translate-y-4">
-            <h2 className="font-bebas text-4xl lg:text-6xl tracking-wider uppercase">
+          <div className="flex items-center justify-center gap-6 mb-8 lg:mb-12 translate-y-16 sm:translate-y-4">
+            <img
+              src="/images/Square.png"
+              alt="left decor"
+              className="w-16 sm:w-24 lg:w-36 h-auto opacity-70"
+            />
+
+            <h2 className="font-bebas text-4xl lg:text-6xl tracking-wider uppercase text-white">
               Our Expertise
             </h2>
+
+            <img
+              src="/images/Square.png"
+              alt="right decor"
+              className="w-16 sm:w-24 lg:w-36 h-auto opacity-70"
+            />
           </div>
 
           <div className="w-full h-full grid lg:grid-cols-2 gap-12 items-end">
@@ -191,7 +217,7 @@ hover:-translate-y-2 hover:shadow-2xl hover:scale-[1.02]"
                           {item.title}
                         </span>
 
-                        <span className="text-2xl font-light transition-transform duration-300 group-hover:rotate-90">
+                        <span className="text-2xl font-light ">
                           {isOpen ? "−" : "+"}
                         </span>
                       </button>
@@ -229,11 +255,25 @@ hover:-translate-y-2 hover:shadow-2xl hover:scale-[1.02]"
         </div>
       </section>
       {/* GALLERY – Desktop Sizes Restored, Mobile Optimized */}
-      <section className="w-full bg-white py-16">
+      <section className="w-full bg-white py-2">
         <div className="w-full px-4 lg:px-12">
-          <h2 className="text-center text-6xl font-bebas text-[#9b2533]  mb-12 uppercase">
-            Gallery
-          </h2>
+          <div className="flex items-center justify-center gap-6 mb-6">
+            <img
+              src="/images/FiveStars.png"
+              alt="left decor"
+              className="w-32 sm:w-48 lg:w-72 h-auto"
+            />
+
+            <h2 className="text-6xl font-bebas text-[#9b2533] uppercase tracking-wide">
+              Gallery
+            </h2>
+
+            <img
+              src="/images/FiveStars.png"
+              alt="right decor"
+              className="w-32 sm:w-48 lg:w-72 h-auto"
+            />
+          </div>
 
           <div className="flex flex-col lg:flex-row justify-start items-center lg:items-start gap-4 w-full">
             {/* Column 1: Images 1 & 4 */}
