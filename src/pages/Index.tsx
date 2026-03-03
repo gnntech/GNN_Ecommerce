@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import api from "@/lib/api";
 import Navbar from "@/components/Navbar";
-import HeroSlider from "@/components/HeroSlider";
+import Premium3DSlider from "@/components/Premium3DSlider";
 import ProductSearchSection from "@/components/ProductSearchSection";
 import Footer from "@/components/Footer";
 import CollectionCard from "@/components/CollectionCard";
@@ -45,7 +45,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <HeroSlider />
+      <Premium3DSlider />
       <ProductSearchSection />
 
       {/* ====== Explore Collections Section ====== */}

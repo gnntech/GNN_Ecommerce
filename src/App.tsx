@@ -25,6 +25,7 @@ import ManageGallery from "./pages/admin/ManageGallery";
 import ManageMarquee from "./pages/admin/ManageMarquee";
 import SearchResults from "./pages/SearchResults";
 import Checkout from "./pages/Checkout";
+import Contact from "./pages/Contact";
 import { AuthProvider } from "./context/AuthContext";
 import About from "./components/About";
 
@@ -53,6 +54,7 @@ const App = () => (
               <Route path="/trees" element={<Trees />} />
               <Route path="/search" element={<SearchResults />} />
               <Route path="/checkout" element={<Checkout />} />
+              <Route path="/contact" element={<Contact />} />
 
               {/* Admin Routes */}
               <Route path="/admin" element={<AdminLogin />} />

@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight, Play } from "lucide-react";
 import api from "@/lib/api";
 
 interface Review {
-    id: number;
+    _id: string;
     name: string;
     role: string;
     image: string; // Placeholder for the overlay image
@@ -30,7 +30,7 @@ const CelebrityReviews = () => {
     const [canScrollNext, setCanScrollNext] = useState(false);
 
     // Track which video is playing (by ID)
-    const [playingId, setPlayingId] = useState<number | null>(null);
+    const [playingId, setPlayingId] = useState<string | null>(null);
 
     const updateScrollButtons = useCallback(() => {
         if (!emblaApi) return;
@@ -53,7 +53,7 @@ const CelebrityReviews = () => {
         if (emblaApi) emblaApi.scrollNext();
     }, [emblaApi]);
 
-    const handlePlay = (id: number) => {
+    const handlePlay = (id: string) => {
         setPlayingId(id);
     };
 
@@ -71,13 +71,13 @@ const CelebrityReviews = () => {
                         <div className="flex -ml-6 pb-12">
                             {reviews.map((review) => (
                                 <div
-                                    key={review.id}
+                                    key={review._id}
                                     className="pl-6 flex-[0_0_100%] md:flex-[0_0_50%] lg:flex-[0_0_33.333%] min-w-0"
                                 >
                                     <div className="bg-transparent relative rounded-lg overflow-hidden group">
                                         {/* Video Container */}
                                         <div className="w-full h-[300px] md:h-[400px] bg-black relative shadow-lg">
-                                            {playingId === review.id ? (
+                                            {playingId === review._id ? (
                                                 <iframe
                                                     className="w-full h-full"
                                                     src={`${review.videoUrl}&autoplay=1`}
@@ -88,7 +88,7 @@ const CelebrityReviews = () => {
                                             ) : (
                                                 <div
                                                     className="w-full h-full relative cursor-pointer"
-                                                    onClick={() => handlePlay(review.id)}
+                                                    onClick={() => handlePlay(review._id)}
                                                 >
                                                     <img
                                                         src={review.image}

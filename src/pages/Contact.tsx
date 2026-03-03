@@ -378,7 +378,7 @@ const Contact: React.FC = () => {
             <section ref={contactSectionRef} className="w-full bg-white flex flex-col h-[calc(100vh-4rem)] lg:h-[115vh]">
                 <div className="w-full max-w-6xl mx-auto px-6 flex flex-col h-full py-10">
                     {/* Contact Cards */}
-                    <div className="bg-gradient-to-br from-[#7f1d1d] to-[#b91c1c] rounded-2xl p-4 flex-[0.45] lg:flex-[0.4] flex items-center shadow-lg">
+                    <div className="bg-[#9B2533] rounded-2xl p-4 flex-[0.45] lg:flex-[0.4] flex items-center shadow-lg">
                         <div className="w-full max-w-4xl mx-auto">
                             {/* Email */}
                             <div className="contact-row flex items-center space-x-2 sm:space-x-3 pb-2 sm:pb-3 border-b border-[#FFFAE5]/40">

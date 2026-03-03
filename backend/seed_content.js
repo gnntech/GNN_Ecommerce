@@ -24,22 +24,34 @@ const seedData = async () => {
         // --- Slider ---
         const sliders = [
             {
-                title: "Gaurab Nerpagar Numerologics",
-                description: "Unlock the ancient wisdom of numerology to reveal your true potential, understand your destiny, and navigate life's journey with clarity and purpose.",
-                image: "/images/slider-blue.png",
+                title: "Master Numerologist",
+                description: "Unlock the mysteries of your life path with expert numerology readings.",
+                image: "/numerologist_portrait_1772371205774.png",
                 order: 1
             },
             {
-                title: "Sacred Spiritual Trees",
-                description: "Invite harmony and positive energy into your space with our curated collection of spiritual trees, each bringing unique blessings to your home.",
-                image: "/images/Trees.png",
+                title: "Healing Gemstones",
+                description: "Discover our premium collection of mystical crystals and vibrational stones.",
+                image: "/numerology_products_gemstones_1772371227250.png",
                 order: 2
             },
             {
-                title: "Healing Crystal Bracelets",
-                description: "Adorn yourself with the power of nature. Our handcrafted crystal bracelets are designed to balance your energy and enhance your well-being.",
-                image: "/images/S-TigerEye Bracelet.png",
+                title: "Spiritual Bracelets",
+                description: "Wear the energy of the cosmos with our handcrafted numerology bracelets.",
+                image: "/numerology_products_bracelets_1772371244109.png",
                 order: 3
+            },
+            {
+                title: "Mystic Numbers",
+                description: "Uncover the hidden patterns of the universe through ancient numerology charts.",
+                image: "/numerology_chart_mystic_1772369558989.png",
+                order: 4
+            },
+            {
+                title: "Sacred Mandala",
+                description: "Radiating divine spiritual healing energy from the center of consciousness.",
+                image: "/sacred_lotus_mandala_1772369604643.png",
+                order: 5
             }
         ];
         await Slider.insertMany(sliders);
