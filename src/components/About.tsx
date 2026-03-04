@@ -37,15 +37,21 @@ const About: React.FC = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
-        className="relative min-h-screen"
+        className="relative w-full overflow-hidden"
       >
+        {/* Background Layer */}
         <div
-          className="absolute inset-0 bg-[rgb(155,37,51)]"
+          className="absolute inset-0 bg-[rgb(155,37,51)] bg-cover bg-center"
           style={{ backgroundImage: "url(/images/About_bg.png)" }}
         />
 
-        <div className="relative z-10 min-h-screen flex flex-col lg:grid lg:grid-cols-2 px-6 lg:px-12">
-          {/* Desktop Image */}
+        {/* Content Wrapper */}
+        <div
+          className="relative z-10 min-h-[90vh] lg:min-h-screen 
+                  flex flex-col lg:grid lg:grid-cols-2 
+                  px-6 sm:px-8 lg:px-12"
+        >
+          {/* ================= DESKTOP IMAGE ================= */}
           <div className="hidden lg:flex items-end justify-center">
             <img
               src="/images/GaurabNPP.png"
@@ -58,62 +64,95 @@ const About: React.FC = () => {
             />
           </div>
 
-          {/* Text Content */}
+          {/* ================= TEXT CONTENT ================= */}
           <motion.div
-            className="text-white max-w-xl mx-auto lg:mx-0 self-center pt-20 lg:pt-0 space-y-6"
+            className="text-white 
+                 max-w-xl 
+                 mx-auto lg:mx-0 
+                 flex flex-col justify-center
+                 pt-24 sm:pt-28 lg:pt-0 
+                 pb-12 lg:pb-0
+                 text-center lg:text-left
+                 space-y-6"
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
           >
             <div>
-              <h1 className="font-bebas text-[clamp(2.5rem,7vw,5.5rem)] leading-[0.9] tracking-tight">
+              <h1
+                className="font-bebas font-bold
+                       text-[clamp(2.2rem,8vw,5.5rem)] 
+                       leading-[0.9] 
+                       tracking-tight"
+              >
                 GAURAB NERPAGAR
               </h1>
-              <p className="font-bebas text-[clamp(1.2rem,3vw,2.2rem)] text-white/90 mt-2">
+
+              <p
+                className="font-bebas 
+                      text-[clamp(1rem,4vw,2.2rem)] 
+                      text-white/90 
+                      mt-4 tracking-wide"
+              >
                 NUMEROLOGY GUIDE
               </p>
             </div>
 
-            <p className="font-matter text-base lg:text-xl leading-relaxed">
+            <p
+              className="font-matter 
+                    text-sm sm:text-base lg:text-xl 
+                    leading-relaxed 
+                    text-white/95"
+            >
               I’m a numerology practitioner dedicated to helping individuals
               find clarity, balance, and deeper understanding through the
               language of numbers.
             </p>
           </motion.div>
 
-          {/* Mobile Image */}
-          <div className="lg:hidden flex justify-center items-end mt-auto h-[50vh] sm:h-[60vh]">
+          {/* ================= MOBILE IMAGE ================= */}
+          <div
+            className="lg:hidden 
+                    flex justify-center items-end 
+                    mt-auto 
+                    h-[45vh] sm:h-[55vh]"
+          >
             <img
               src="/images/GaurabNPP.png"
               alt="Gaurab Nerpagar"
-              className="object-contain w-full max-w-[320px]"
+              className="object-contain w-full max-w-[280px] sm:max-w-[340px]"
             />
           </div>
         </div>
       </motion.section>
 
       {/* ================= SERVICES SECTION ================= */}
-      <section className="min-h-screen flex items-center justify-center bg-white px-6 lg:px-12">
-        <div className="max-w-6xl mx-auto text-center w-full mb-16">
-          <div className="flex items-center justify-center gap-6 mb-12">
+      <section className="w-full bg-white py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-12">
+        <div className="max-w-6xl mx-auto text-center">
+          {/* ===== Heading with Side Decor ===== */}
+          <div className="flex items-center justify-center gap-4 sm:gap-6 mb-12 lg:mb-16">
+            {/* Left Decor */}
             <img
               src="/images/D.png"
               alt="left decor"
-              className="w-32 sm:w-48 lg:w-72 h-auto"
+              className="w-16 sm:w-28 lg:w-56 h-auto object-contain"
             />
 
-            <h2 className="text-6xl font-bebas text-[#9b2533] uppercase tracking-wide">
+            {/* Title */}
+            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bebas font-bold text-[#9b2533] uppercase tracking-wide text-center leading-tight">
               Our Premium Services
             </h2>
 
+            {/* Right Decor */}
             <img
               src="/images/D.png"
               alt="right decor"
-              className="w-32 sm:w-48 lg:w-72 h-auto"
+              className="w-16 sm:w-28 lg:w-56 h-auto object-contain"
             />
           </div>
 
-          <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          {/* ===== Cards Grid ===== */}
+          <div className="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             {[
               {
                 icon: "/images/A-Icon1o.png",
@@ -133,16 +172,25 @@ const About: React.FC = () => {
             ].map((card, index) => (
               <div
                 key={index}
-                className="relative rounded-2xl shadow-xl p-10 bg-[rgb(155,37,51)]/5 border border-[rgb(155,37,51)]/20 overflow-hidden 
-transition-all duration-300 ease-in-out 
-hover:-translate-y-2 hover:shadow-2xl hover:scale-[1.02]"
+                className="
+            relative rounded-2xl 
+            p-6 sm:p-8 lg:p-10
+            bg-[rgb(155,37,51)]/5 
+            border border-[rgb(155,37,51)]/20 
+            shadow-lg
+            overflow-hidden 
+            transition-all duration-300 ease-in-out 
+            hover:-translate-y-2 
+            hover:shadow-2xl 
+            hover:scale-[1.02]
+          "
               >
-                {/* Background PNG Layer */}
+                {/* Background Layer */}
                 <div className="absolute inset-0 z-0 pointer-events-none">
                   <img
                     src="/images/bg.png"
                     alt="card background"
-                    className="w-full h-full object-cover opacity-20"
+                    className="w-full h-full object-cover opacity-10 sm:opacity-20"
                   />
                 </div>
 
@@ -151,14 +199,14 @@ hover:-translate-y-2 hover:shadow-2xl hover:scale-[1.02]"
                   <img
                     src={card.icon}
                     alt={card.title}
-                    className="w-16 h-16 mb-6 mx-auto"
+                    className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 mb-4 sm:mb-6 mx-auto"
                   />
 
-                  <h3 className="font-bebas text-3xl text-[rgb(155,37,51)] mb-4">
+                  <h3 className="font-bebas text-2xl sm:text-3xl text-[rgb(155,37,51)] mb-3 sm:mb-4 tracking-wide">
                     {card.title.toUpperCase()}
                   </h3>
 
-                  <p className="font-matter text-gray-700 leading-relaxed">
+                  <p className="font-matter text-sm sm:text-base text-gray-700 leading-relaxed">
                     {card.desc}
                   </p>
                 </div>
@@ -186,7 +234,7 @@ hover:-translate-y-2 hover:shadow-2xl hover:scale-[1.02]"
               className="w-16 sm:w-24 lg:w-36 h-auto opacity-70"
             />
 
-            <h2 className="font-bebas text-4xl lg:text-6xl tracking-wider uppercase text-white">
+            <h2 className="font-bebas font-bold text-4xl lg:text-6xl tracking-wider uppercase text-white">
               Our Expertise
             </h2>
 
@@ -254,17 +302,232 @@ hover:-translate-y-2 hover:shadow-2xl hover:scale-[1.02]"
           </div>
         </div>
       </section>
-      {/* GALLERY – Desktop Sizes Restored, Mobile Optimized */}
+
+      {/* ABOUT ECOMMERCE SECTION – Responsive Slider */}
+      <section className="w-full bg-[#ffffff] py-20">
+        <div className="max-w-7xl mx-auto px-4 lg:px-8 text-center">
+          {/* Heading with Side Design Images */}
+          <div className="flex items-center justify-center gap-6 mb-6">
+            {/* Left Design Image */}
+            <img
+              src="./images/D.png"
+              alt="Left Design"
+              className="w-32 sm:w-48 lg:w-72 h-auto"
+            />
+
+            {/* Title */}
+            <h2 className="text-2xl lg:text-6xl font-bebas font-bold text-[#9b2533] uppercase tracking-wide text-center">
+              Our Sacred Collection
+            </h2>
+
+            {/* Right Design Image */}
+            <img
+              src="./images/D.png"
+              alt="Right Design"
+              className="w-32 sm:w-48 lg:w-72 h-auto"
+            />
+          </div>
+
+          {/* Center Description */}
+          <p className="font-matter text-gray-700 text-lg leading-relaxed max-w-4xl mx-auto mb-16">
+            Each product in our store is thoughtfully curated using
+            numerological wisdom and energetic alignment. We offer spiritually
+            meaningful tools designed to enhance positivity, prosperity, and
+            personal balance according to your unique number vibration.
+          </p>
+
+          {/* Scroll Wrapper */}
+          <div
+            className="
+        flex lg:grid
+        lg:grid-cols-4
+        gap-12
+        overflow-x-auto
+        lg:overflow-visible
+        snap-x snap-mandatory
+        scroll-smooth
+        no-scrollbar
+      "
+          >
+            {/* ITEM 1 */}
+            <div
+              className="
+          group flex flex-col items-center
+          min-w-full lg:min-w-0
+          snap-center
+          transition duration-300
+        "
+            >
+              <div
+                className="
+            w-48 h-48 lg:w-64 lg:h-64 rounded-full
+            overflow-hidden
+            shadow-md
+            border border-gray-200
+            transition-all duration-500
+            group-hover:shadow-2xl
+            group-hover:-translate-y-2
+            group-hover:border-[#9b2533]
+          "
+              >
+                <img
+                  src="./images/Circle1.png"
+                  alt="Personalized Remedies"
+                  className="
+              w-full h-full object-cover
+              transition-transform duration-700
+              group-hover:scale-110
+            "
+                />
+              </div>
+
+              <h3 className="font-bebas text-4xl text-[#9b2533] mt-6 ">
+                Personalized Remedies
+              </h3>
+
+              <p className="font-matter text-lg text-gray-600 mt-2 px-6">
+                Tailored solutions aligned with your birth number and destiny
+                path.
+              </p>
+            </div>
+
+            {/* ITEM 2 */}
+            <div
+              className="
+          group flex flex-col items-center
+          min-w-full lg:min-w-0
+          snap-center
+          transition duration-300
+        "
+            >
+              <div
+                className="
+            w-48 h-48 lg:w-64 lg:h-64 rounded-full
+            overflow-hidden
+            shadow-md
+            border border-gray-200
+            transition-all duration-500
+            group-hover:shadow-2xl
+            group-hover:-translate-y-2
+            group-hover:border-[#9b2533]
+          "
+              >
+                <img
+                  src="./images/Circle2.png"
+                  alt="Energy Accessories"
+                  className="
+              w-full h-full object-cover
+              transition-transform duration-700
+              group-hover:scale-110
+            "
+                />
+              </div>
+
+              <h3 className="font-bebas text-4xl text-[#9b2533] mt-6 ">
+                Energy Accessories
+              </h3>
+
+              <p className="font-matter text-lg text-gray-600 mt-2 px-6">
+                Bracelets, charms, and tools that balance spiritual vibrations.
+              </p>
+            </div>
+
+            {/* ITEM 3 */}
+            <div
+              className="
+          group flex flex-col items-center
+          min-w-full lg:min-w-0
+          snap-center
+          transition duration-300
+        "
+            >
+              <div
+                className="
+            w-48 h-48 lg:w-64 lg:h-64 rounded-full
+            overflow-hidden
+            shadow-md
+            border border-gray-200
+            transition-all duration-500
+            group-hover:shadow-2xl
+            group-hover:-translate-y-2
+            group-hover:border-[#9b2533]
+          "
+              >
+                <img
+                  src="./images/Circle3.png"
+                  alt="Prosperity Tools"
+                  className="
+              w-full h-full object-cover
+              transition-transform duration-700
+              group-hover:scale-110
+            "
+                />
+              </div>
+
+              <h3 className="font-bebas text-4xl text-[#9b2533] mt-6 ">
+                Prosperity Tools
+              </h3>
+
+              <p className="font-matter text-lg text-gray-600 mt-2 px-6">
+                Sacred items designed to attract abundance and growth.
+              </p>
+            </div>
+
+            {/* ITEM 4 */}
+            <div
+              className="
+          group flex flex-col items-center
+          min-w-full lg:min-w-0
+          snap-center
+          transition duration-300
+        "
+            >
+              <div
+                className="
+            w-48 h-48 lg:w-64 lg:h-64 rounded-full
+            overflow-hidden
+            shadow-md
+            border border-gray-200
+            transition-all duration-500
+            group-hover:shadow-2xl
+            group-hover:-translate-y-2
+            group-hover:border-[#9b2533]
+          "
+              >
+                <img
+                  src="./images/Circle4.png"
+                  alt="Spiritual Gifting"
+                  className="
+              w-full h-full object-cover
+              transition-transform duration-700
+              group-hover:scale-110
+            "
+                />
+              </div>
+
+              <h3 className="font-bebas text-4xl text-[#9b2533] mt-6 ">
+                Spiritual Gifting
+              </h3>
+
+              <p className="font-matter text-lg text-gray-600 mt-2 px-6">
+                Meaningful gifts aligned with destiny numbers and cosmic timing.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* GALLERY – 3x2 Equal Grid Layout */}
       <section className="w-full bg-white py-2">
         <div className="w-full px-4 lg:px-12">
-          <div className="flex items-center justify-center gap-6 mb-6">
+          {/* Heading */}
+          <div className="flex items-center justify-center gap-6 mb-10">
             <img
               src="/images/FiveStars.png"
               alt="left decor"
               className="w-32 sm:w-48 lg:w-72 h-auto"
             />
 
-            <h2 className="text-6xl font-bebas text-[#9b2533] uppercase tracking-wide">
+            <h2 className="text-6xl font-bebas font-bold text-[#9b2533] uppercase tracking-wide">
               Gallery
             </h2>
 
@@ -275,136 +538,65 @@ hover:-translate-y-2 hover:shadow-2xl hover:scale-[1.02]"
             />
           </div>
 
-          <div className="flex flex-col lg:flex-row justify-start items-center lg:items-start gap-4 w-full">
-            {/* Column 1: Images 1 & 4 */}
-            <div className="flex flex-col gap-4 shrink-0 items-center">
-              {/* Image 1 */}
-              <div className="relative w-full max-w-[393px] h-[423px] rounded-2xl overflow-hidden shadow-lg border border-gray-100 group">
-                <img
-                  src="./images/image57.png"
-                  className="w-full h-full object-cover"
-                  alt="img1"
-                />
-                {/* BOTTOM TEXT OVERLAY */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-4 sm:p-4">
-                  {/* Main Heading */}
-                  <h3 className="font-bebas text-2xl sm:text-2xl text-white leading-[0.8] tracking-wide mb-0 pb-0">
-                    MAIN TITLE
-                  </h3>
-
-                  {/* Subtext (The "Suntext") */}
-                  <p className="font-matter font-thin text-sm sm:text-sm text-white  mt-0  uppercase opacity-90">
-                    12 Jan,2026
-                  </p>
-                </div>
-              </div>
-
-              {/* Image 4 */}
-              <div className="relative w-full max-w-[393px] h-[411px] rounded-2xl overflow-hidden shadow-lg border border-gray-100 group">
-                <img
-                  src="./images/image58.png"
-                  className="w-full h-full object-cover"
-                  alt="img4"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-4 sm:p-4">
-                  {/* Main Heading */}
-                  <h3 className="font-bebas text-2xl sm:text-2xl text-white leading-none tracking-wide">
-                    MAIN TITLE
-                  </h3>
-
-                  {/* Subtext (The "Suntext") */}
-                  <p className="font-matter font-thin text-sm sm:text-sm text-white mt-0 uppercase opacity-90">
-                    13 Jan,2026
-                  </p>
-                </div>
-              </div>
+          {/* GRID */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Image 1 */}
+            <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-lg border border-gray-100">
+              <img
+                src="./images/S-Amazonite Bracelet.png"
+                className="w-full h-full object-cover"
+                alt="img1"
+              />
             </div>
 
-            {/* Column 2: Images 2 & 5 */}
-            <div className="flex flex-col gap-4 shrink-0 items-center">
-              {/* Image 2 (Hidden on mobile) */}
-              <div className="relative hidden lg:block w-[696px] h-[222px] rounded-2xl overflow-hidden shadow-lg border border-gray-100 group">
-                <img
-                  src="./images/image59.png"
-                  className="w-full h-full object-cover"
-                  alt="img2"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-4 sm:p-4">
-                  {/* Main Heading */}
-                  <h3 className="font-bebas text-2xl sm:text-2xl text-white leading-none tracking-wide">
-                    MAIN TITLE
-                  </h3>
-
-                  {/* Subtext (The "Suntext") */}
-                  <p className="font-matter font-thin text-sm sm:text-sm text-white mt-0 uppercase opacity-90">
-                    14 Jan,2026
-                  </p>
-                </div>
-              </div>
-
-              {/* Image 5 */}
-              <div className="relative w-full max-w-[393px] h-[423px] lg:max-w-none lg:w-[696px] lg:h-[602px] rounded-2xl overflow-hidden shadow-lg border border-gray-100 group">
-                <img
-                  src="./images/image60.png"
-                  className="w-full h-full object-cover"
-                  alt="img5"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-4">
-                  <h3 className="font-bebas text-xl text-white leading-none tracking-wide">
-                    MAIN TITLE
-                  </h3>
-                  <p className="font-matter font-thin text-xs text-white mt-0 uppercase opacity-90">
-                    15 Jan,2026
-                  </p>
-                </div>
-              </div>
+            {/* Image 2 */}
+            <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-lg border border-gray-100">
+              <img
+                src="./images/S-Amethyst Bracelet.png"
+                className="w-full h-full object-cover"
+                alt="img2"
+              />
             </div>
 
-            {/* Column 3: Images 3 & 6 */}
-            <div className="flex flex-col gap-4 shrink-0 items-center">
-              {/* Image 3 */}
-              <div className="relative w-full max-w-[393px] h-[423px] lg:max-w-none lg:w-[284px] lg:h-[222px] rounded-2xl overflow-hidden shadow-lg border border-gray-100 group">
-                <img
-                  src="./images/image62.png"
-                  className="w-full h-full object-cover"
-                  alt="img3"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-4 sm:p-4">
-                  {/* Main Heading */}
-                  <h3 className="font-bebas text-2xl sm:text-2xl text-white leading-none tracking-wide">
-                    MAIN TITLE
-                  </h3>
+            {/* Image 3 */}
+            <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-lg border border-gray-100">
+              <img
+                src="./images/S-Azurite Bracelet.png"
+                className="w-full h-full object-cover"
+                alt="img3"
+              />
+            </div>
 
-                  {/* Subtext (The "Suntext") */}
-                  <p className="font-matter font-thin text-sm sm:text-sm text-white mt-0 uppercase opacity-90">
-                    17 Jan,2026
-                  </p>
-                </div>
-              </div>
+            {/* Image 4 */}
+            <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-lg border border-gray-100">
+              <img
+                src="./images/Trees.png"
+                className="w-full h-full object-cover"
+                alt="img4"
+              />
+            </div>
 
-              {/* Image 6 (Hidden on mobile) */}
-              <div className="relative hidden lg:block w-[284px] h-[602px] rounded-2xl overflow-hidden shadow-lg border border-gray-100 group">
-                <img
-                  src="./images/image61.png"
-                  className="w-full h-full object-cover"
-                  alt="img6"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-4 sm:p-4">
-                  {/* Main Heading */}
-                  <h3 className="font-bebas text-2xl sm:text-2xl text-white leading-none tracking-wide">
-                    MAIN TITLE
-                  </h3>
+            {/* Image 5 */}
+            <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-lg border border-gray-100">
+              <img
+                src="./images/slider4.png"
+                className="w-full h-full object-cover"
+                alt="img5"
+              />
+            </div>
 
-                  {/* Subtext (The "Suntext") */}
-                  <p className="font-matter font-thin text-sm sm:text-sm text-white mt-0 uppercase opacity-90">
-                    18 Jan,2026
-                  </p>
-                </div>
-              </div>
+            {/* Image 6 */}
+            <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-lg border border-gray-100">
+              <img
+                src="./images/Shop1.png"
+                className="w-full h-full object-cover"
+                alt="img6"
+              />
             </div>
           </div>
         </div>
       </section>
+
       {/* WHITE SPACER */}
       <div className="w-full h-16 bg-white"></div>
 
