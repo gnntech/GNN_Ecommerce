@@ -1,6 +1,2 @@
-const multer = require("multer");
-const { storage } = require("../config/cloudinary");
-
-const upload = multer({ storage });
-
+const { upload } = require("../config/cloudinary");
 module.exports = upload;

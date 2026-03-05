@@ -8,11 +8,28 @@ import api from "@/lib/api";
 const HeroSlider = () => {
   const [slides, setSlides] = useState<any[]>([]);
   const [marqueeLines, setMarqueeLines] = useState<string[]>([]);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   // Initialize Embla with Autoplay plugin
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, duration: 40 }, [
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: true,
+    duration: 40,
+    skipSnaps: false
+  }, [
     Autoplay({ delay: 4000, stopOnInteraction: false })
   ]);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
+  }, [emblaApi, onSelect]);
 
   useEffect(() => {
     // Fetch Slider Data
@@ -46,91 +63,119 @@ const HeroSlider = () => {
   if (slides.length === 0) return null;
 
   return (
-    <div className="relative w-full bg-background mt-0 group">
-      {/* Main Hero Container - 100vh constraint */}
-      <div className="hero min-h-screen relative overflow-hidden">
-        {/* Embla Carousel Viewport */}
-        <div className="overflow-hidden h-full" ref={emblaRef}>
-          <div className="flex h-full">
-            {slides.map((slide, index) => (
-              <div key={index} className="relative flex-[0_0_100%] h-screen min-w-0">
-                {/* Background Image Layer */}
-                <div
-                  className="absolute inset-0 z-0 bg-cover bg-center transition-all duration-700"
-                  style={{ backgroundImage: `url('${slide.image}')` }}
-                />
-                {/* Dark Overlay for better text readability */}
-                <div className="absolute inset-0 bg-black/30 z-0" />
+    <div className="relative w-full bg-background mt-0 group overflow-hidden">
+      {/* Background Image Layer (Cross-fading, not sliding) */}
+      <div className="absolute inset-0 z-0">
+        {slides.map((slide, index) => (
+          <div
+            key={`bg-${index}`}
+            className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out ${index === selectedIndex ? "opacity-100" : "opacity-0"
+              }`}
+            style={{ backgroundImage: `url('${slide.image}')` }}
+          >
+            {/* Premium Faint Grey/Dark Overlay */}
+            <div className="absolute inset-0 bg-black/40 backdrop-brightness-95" />
+          </div>
+        ))}
+      </div>
 
+      {/* Main Hero Container */}
+      <div className="hero min-h-screen relative overflow-hidden z-10">
+        {/* Embla Carousel Viewport (For Text Only) */}
+        <div className="overflow-hidden h-full" ref={emblaRef}>
+          <div className="flex h-full items-center">
+            {slides.map((slide, index) => (
+              <div key={`text-${index}`} className="relative flex-[0_0_100%] h-screen min-w-0 flex items-center">
                 {/* Text Content */}
-                <div className="hero-container z-10 w-full pl-0 flex items-center h-full relative">
-                  <div className="relative p-6 md:p-14 max-w-[900px] mx-auto md:mx-0">
-                    <div className="relative z-10 space-y-4 text-center md:text-left">
-                      <h1
-                        className="font-bold tracking-tight leading-[1.1] text-white"
-                        style={{
-                          fontFamily: "Matter, sans-serif",
-                          fontSize: "clamp(32px, 2.8vw, 50px)",
-                        }}
-                      >
-                        {slide.title}
-                      </h1>
-                      <p
-                        className="text-white/90 leading-relaxed font-light italic max-w-[600px] mx-auto md:mx-0"
-                        style={{
-                          fontSize: "clamp(18px, 1.5vw, 22px)",
-                        }}
-                      >
-                        {slide.description}
-                      </p>
+                <div className="hero-container w-full px-6 md:px-20 max-w-[1400px] mx-auto">
+                  <motion.div
+                    initial={{ opacity: 0, x: 50 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    className="max-w-[800px] space-y-6 text-center md:text-left"
+                  >
+                    <h1
+                      className="font-bold tracking-tight leading-[1.1] text-white drop-shadow-lg"
+                      style={{
+                        fontFamily: "Poppins, sans-serif",
+                        fontSize: "clamp(32px, 5vw, 72px)",
+                      }}
+                    >
+                      {slide.title}
+                    </h1>
+                    <p
+                      className="text-white/90 leading-relaxed font-light max-w-[600px] mx-auto md:mx-0 drop-shadow-md"
+                      style={{
+                        fontSize: "clamp(18px, 1.5vw, 24px)",
+                        fontFamily: "Inter, sans-serif"
+                      }}
+                    >
+                      {slide.description}
+                    </p>
+
+                    <div className="pt-4">
+                      <button className="px-8 py-3 bg-white text-black font-bold rounded-full hover:bg-gray-100 transition-all transform hover:scale-105 shadow-xl">
+                        Discover More
+                      </button>
                     </div>
-                  </div>
+                  </motion.div>
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Premium Navigation Buttons */}
+        {/* Premium Minimalist Navigation Buttons */}
         <button
           onClick={scrollPrev}
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-30 p-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all duration-300 opacity-0 group-hover:opacity-100 -translate-x-10 group-hover:translate-x-0"
+          className="absolute left-8 top-1/2 -translate-y-1/2 z-30 p-4 rounded-full border-2 border-white/30 text-white hover:bg-white hover:text-black hover:border-white transition-all duration-500 opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 group/btn"
           aria-label="Previous slide"
         >
-          <ChevronLeft className="w-8 h-8" />
+          <ChevronLeft className="w-6 h-6 transform group-hover:-translate-x-1 transition-transform" />
         </button>
 
         <button
           onClick={scrollNext}
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-30 p-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all duration-300 opacity-0 group-hover:opacity-100 translate-x-10 group-hover:translate-x-0"
+          className="absolute right-8 top-1/2 -translate-y-1/2 z-30 p-4 rounded-full border-2 border-white/30 text-white hover:bg-white hover:text-black hover:border-white transition-all duration-500 opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 group/btn"
           aria-label="Next slide"
         >
-          <ChevronRight className="w-8 h-8" />
+          <ChevronRight className="w-6 h-6 transform group-hover:translate-x-1 transition-transform" />
         </button>
+
+        {/* Improved Pagination Dots */}
+        <div className="absolute bottom-32 left-1/2 -translate-x-1/2 z-30 flex gap-3">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => emblaApi?.scrollTo(index)}
+              className={`h-1.5 transition-all duration-500 rounded-full ${index === selectedIndex ? "w-8 bg-white" : "w-2 bg-white/40"
+                }`}
+            />
+          ))}
+        </div>
 
         {/* Marquee - Absolute at bottom of hero section */}
         {marqueeLines.length > 0 && (
           <div
-            className="absolute bottom-0 left-0 right-0 w-full overflow-hidden flex items-center z-20 group/marquee"
+            className="absolute bottom-0 left-0 right-0 w-full overflow-hidden flex items-center z-20"
             style={{
-              height: "100px",
+              height: "80px",
               backgroundColor: "#9B2533", // Maroon
-              boxShadow: "0px -9px 9.4px 0px #00000040",
+              boxShadow: "0px -10px 30px rgba(0,0,0,0.3)",
             }}
           >
-            {/* Infinite Scroll Container for Seamless Loop */}
-            <div className="flex w-full whitespace-nowrap marquee-track group-hover/marquee:paused">
+            <div className="flex w-full whitespace-nowrap marquee-track">
               {[0, 1, 2, 3].map((i) => (
                 <div key={i} className="flex shrink-0 items-center justify-around min-w-full animate-marquee">
                   {marqueeLines.map((line, idx) => (
                     <React.Fragment key={idx}>
                       <span
-                        className="flex items-center gap-4 text-white text-[20px] font-normal uppercase tracking-wide px-8"
-                        style={{ fontFamily: "Matter, sans-serif" }}
+                        className="flex items-center gap-4 text-white text-[16px] font-bold uppercase tracking-widest px-12"
+                        style={{ fontFamily: "Inter, sans-serif" }}
                       >
                         {line}
                       </span>
-                      <span className="text-white">•</span>
+                      <span className="text-white/50 font-black">/</span>
                     </React.Fragment>
                   ))}
                 </div>
@@ -145,10 +190,7 @@ const HeroSlider = () => {
             100% { transform: translateX(-100%); }
         }
         .animate-marquee {
-            animation: marquee 30s linear infinite;
-        }
-        .group-hover\\/marquee:paused .animate-marquee {
-            animation-play-state: paused;
+            animation: marquee 40s linear infinite;
         }
       `}</style>
     </div>

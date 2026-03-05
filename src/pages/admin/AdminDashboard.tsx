@@ -2,6 +2,21 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import Navbar from "@/components/Navbar";
+import {
+    Gem,
+    Trees as TreeIcon,
+    Watch,
+    LayoutTemplate,
+    Star,
+    Library,
+    Hammer,
+    Image as GalleryIcon,
+    Type,
+    LogOut,
+    Store,
+    MonitorPlay,
+    Sparkles
+} from "lucide-react";
 
 const AdminDashboard = () => {
     const { user, logout } = useAuth();
@@ -13,61 +28,97 @@ const AdminDashboard = () => {
         }
     }, [user, navigate]);
 
+    const categories = [
+        {
+            title: "Inventory & Shop",
+            icon: <Store className="w-6 h-6 text-[#FACC15]" />,
+            description: "Manage your physical products and inventory",
+            items: [
+                { name: "Gemstones", path: "/admin/gemstones", icon: <Gem className="w-5 h-5" />, desc: "Certified healing stones" },
+                { name: "Crystal Trees", path: "/admin/trees", icon: <TreeIcon className="w-5 h-5" />, desc: "Energy & balance trees" },
+                { name: "Bracelets", path: "/admin/bracelets", icon: <Watch className="w-5 h-5" />, desc: "Handcrafted wristwear" },
+            ]
+        },
+        {
+            title: "Website Appearance",
+            icon: <MonitorPlay className="w-6 h-6 text-[#FACC15]" />,
+            description: "Control visual elements and visual storytelling",
+            items: [
+                { name: "Hero Slider", path: "/admin/slider", icon: <LayoutTemplate className="w-5 h-5" />, desc: "Top banner images" },
+                { name: "Image Gallery", path: "/admin/gallery", icon: <GalleryIcon className="w-5 h-5" />, desc: "Infinity scroll photos" },
+                { name: "Top Marquee", path: "/admin/marquee", icon: <Type className="w-5 h-5" />, desc: "Scrolling announcement" },
+            ]
+        },
+        {
+            title: "Content & Sections",
+            icon: <Sparkles className="w-6 h-6 text-[#FACC15]" />,
+            description: "Edit informational and social proof sections",
+            items: [
+                { name: "Celebrity Reviews", path: "/admin/reviews", icon: <Star className="w-5 h-5" />, desc: "Client testimonials" },
+                { name: "Collections", path: "/admin/collections", icon: <Library className="w-5 h-5" />, desc: "Section groupings" },
+                { name: "Craftsmanship", path: "/admin/craftsmanship", icon: <Hammer className="w-5 h-5" />, desc: "Process & quality" },
+            ]
+        }
+    ];
+
     return (
-        <div className="min-h-screen bg-background">
+        <div className="min-h-screen bg-[#FDFCF6]">
             <Navbar />
-            <div className="pt-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-                <div className="flex justify-between items-center mb-8">
-                    <h1 className="text-3xl font-bold text-foreground font-display">
-                        Admin Dashboard
-                    </h1>
+            <div className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+                {/* Header Section */}
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
+                    <div>
+                        <h1 className="text-4xl font-bold text-gray-900 font-display flex items-center gap-3">
+                            Control Panel
+                        </h1>
+                        <p className="text-gray-500 mt-2 text-lg">
+                            Welcome back. What would you like to update today?
+                        </p>
+                    </div>
                     <button
                         onClick={logout}
-                        className="px-4 py-2 bg-secondary text-foreground rounded-md hover:bg-muted transition-colors"
+                        className="flex items-center gap-2 px-6 py-3 bg-red-600 text-white rounded-full hover:bg-red-700 transition-all shadow-md hover:shadow-lg font-medium"
                     >
-                        Logout
+                        <LogOut className="w-4 h-4" /> Logout
                     </button>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div onClick={() => navigate("/admin/gemstones")} className="glass-card p-6 cursor-pointer hover:shadow-lg transition-all">
-                        <h3 className="text-xl font-bold mb-2">Manage Gemstones</h3>
-                        <p className="text-muted-foreground">Add, edit, or delete gemstones.</p>
-                    </div>
-                    <div onClick={() => navigate("/admin/trees")} className="glass-card p-6 cursor-pointer hover:shadow-lg transition-all">
-                        <h3 className="text-xl font-bold mb-2">Manage Trees</h3>
-                        <p className="text-muted-foreground">Add, edit, or delete crystal trees.</p>
-                    </div>
-                    <div onClick={() => navigate("/admin/bracelets")} className="glass-card p-6 cursor-pointer hover:shadow-lg transition-all">
-                        <h3 className="text-xl font-bold mb-2">Manage Bracelets</h3>
-                        <p className="text-muted-foreground">Add, edit, or delete bracelets.</p>
-                    </div>
+                {/* Categorized Grid */}
+                <div className="space-y-16">
+                    {categories.map((category, catIdx) => (
+                        <div key={catIdx} className="space-y-6">
+                            <div className="flex items-center gap-4 pb-2 border-b border-gray-200">
+                                <div className="p-2 bg-red-50 rounded-lg">
+                                    {category.icon}
+                                </div>
+                                <div>
+                                    <h2 className="text-2xl font-bold text-gray-900">{category.title}</h2>
+                                    <p className="text-gray-500 text-sm">{category.description}</p>
+                                </div>
+                            </div>
 
-                    {/* New Content Management Links */}
-                    <div onClick={() => navigate("/admin/slider")} className="glass-card p-6 cursor-pointer hover:shadow-lg transition-all bg-blue-50/50">
-                        <h3 className="text-xl font-bold mb-2">Manage Slider</h3>
-                        <p className="text-muted-foreground">Update homepage hero slider.</p>
-                    </div>
-                    <div onClick={() => navigate("/admin/reviews")} className="glass-card p-6 cursor-pointer hover:shadow-lg transition-all bg-blue-50/50">
-                        <h3 className="text-xl font-bold mb-2">Manage Reviews</h3>
-                        <p className="text-muted-foreground">Update celebrity reviews & videos.</p>
-                    </div>
-                    <div onClick={() => navigate("/admin/collections")} className="glass-card p-6 cursor-pointer hover:shadow-lg transition-all bg-blue-50/50">
-                        <h3 className="text-xl font-bold mb-2">Manage Collections</h3>
-                        <p className="text-muted-foreground">Edit "Explore Our Collections".</p>
-                    </div>
-                    <div onClick={() => navigate("/admin/craftsmanship")} className="glass-card p-6 cursor-pointer hover:shadow-lg transition-all bg-blue-50/50">
-                        <h3 className="text-xl font-bold mb-2">Manage Craftsmanship</h3>
-                        <p className="text-muted-foreground">Edit craftsmanship section content.</p>
-                    </div>
-                    <div onClick={() => navigate("/admin/gallery")} className="glass-card p-6 cursor-pointer hover:shadow-lg transition-all bg-blue-50/50">
-                        <h3 className="text-xl font-bold mb-2">Manage Gallery</h3>
-                        <p className="text-muted-foreground">Edit infinity scroll image gallery.</p>
-                    </div>
-                    <div onClick={() => navigate("/admin/marquee")} className="glass-card p-6 cursor-pointer hover:shadow-lg transition-all bg-blue-50/50">
-                        <h3 className="text-xl font-bold mb-2">Manage Marquee</h3>
-                        <p className="text-muted-foreground">Edit top scrolling text.</p>
-                    </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {category.items.map((item, itemIdx) => (
+                                    <div
+                                        key={itemIdx}
+                                        onClick={() => navigate(item.path)}
+                                        className="group bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all cursor-pointer hover:-translate-y-1 border-l-4 border-l-transparent hover:border-l-red-600"
+                                    >
+                                        <div className="flex items-start justify-between mb-4">
+                                            <div className="p-3 bg-gray-50 group-hover:bg-red-50 rounded-xl text-gray-600 group-hover:text-red-600 transition-colors">
+                                                {item.icon}
+                                            </div>
+                                            <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <div className="w-2 h-2 border-t-2 border-r-2 border-gray-400 rotate-45 transform"></div>
+                                            </div>
+                                        </div>
+                                        <h3 className="text-lg font-bold text-gray-900 mb-1">{item.name}</h3>
+                                        <p className="text-gray-500 text-sm">{item.desc}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>

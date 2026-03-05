@@ -16,7 +16,11 @@ const createCrudController = (Model) => ({
     },
     create: async (req, res) => {
         try {
-            const newItem = new Model(req.body);
+            const data = { ...req.body };
+            if (req.file) {
+                data.image = req.file.path;
+            }
+            const newItem = new Model(data);
             await newItem.save();
             res.status(201).json(newItem);
         } catch (error) {
@@ -25,7 +29,11 @@ const createCrudController = (Model) => ({
     },
     update: async (req, res) => {
         try {
-            const updatedItem = await Model.findByIdAndUpdate(req.params.id, req.body, { new: true });
+            const data = { ...req.body };
+            if (req.file) {
+                data.image = req.file.path;
+            }
+            const updatedItem = await Model.findByIdAndUpdate(req.params.id, data, { new: true });
             if (!updatedItem) return res.status(404).json({ message: 'Item not found' });
             res.json(updatedItem);
         } catch (error) {
@@ -56,9 +64,13 @@ const sectionController = {
     },
     updateByName: async (req, res) => {
         try {
+            const data = { ...req.body };
+            if (req.file) {
+                data.image = req.file.path;
+            }
             const section = await SectionContent.findOneAndUpdate(
                 { sectionName: req.params.name },
-                req.body,
+                data,
                 { new: true, upsert: true } // Create if not exists
             );
             res.json(section);
