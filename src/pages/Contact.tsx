@@ -251,11 +251,11 @@ const Contact: React.FC = () => {
                             className="w-full max-w-lg lg:max-w-xl relative z-10 lg:pl-0"
                         >
                             <h2
-                                className="text-4xl md:text-5xl lg:text-5xl font-poppins font-bold mb-6 text-center lg:text-left text-[#FACC15] drop-shadow-[0_0_20px_rgba(255,255,255,0.25)]"
-                                style={{ lineHeight: '1.25' }}
+                                className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-poppins font-bold mb-6 text-center lg:text-left text-[#FACC15] drop-shadow-[0_0_20px_rgba(255,255,255,0.25)]"
+                                style={{ lineHeight: '1.2' }}
                             >
-                                <span className="block whitespace-nowrap">GUIDED BY NUMBERS,</span>
-                                <span className="block whitespace-nowrap">GROUNDED IN MEANING</span>
+                                <span className="block md:whitespace-nowrap mb-1">GUIDED BY NUMBERS,</span>
+                                <span className="block md:whitespace-nowrap">GROUNDED IN MEANING</span>
                             </h2>
 
                             <p
