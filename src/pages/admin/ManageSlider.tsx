@@ -44,11 +44,19 @@ const ManageSlider = () => {
         }
 
         try {
+            const storedUser = localStorage.getItem("adminUser");
+            const token = storedUser ? JSON.parse(storedUser).token : "";
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            };
+
             if (editingId) {
-                await api.put(`/content/slider/${editingId}`, data);
+                await api.put(`/content/slider/${editingId}`, data, config);
                 toast.success("Banner updated successfully");
             } else {
-                await api.post("/content/slider", data);
+                await api.post("/content/slider", data, config);
                 toast.success("New banner added to slider");
             }
             resetForm();

@@ -41,11 +41,19 @@ const ManageReviews = () => {
         }
 
         try {
+            const storedUser = localStorage.getItem("adminUser");
+            const token = storedUser ? JSON.parse(storedUser).token : "";
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            };
+
             if (editingId) {
-                await api.put(`/content/reviews/${editingId}`, data);
+                await api.put(`/content/reviews/${editingId}`, data, config);
                 toast.success("Review updated successfully");
             } else {
-                await api.post("/content/reviews", data);
+                await api.post("/content/reviews", data, config);
                 toast.success("New celebrity review added");
             }
             resetForm();

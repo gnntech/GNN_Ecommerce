@@ -60,11 +60,19 @@ const GemstoneForm: React.FC<GemstoneFormProps> = ({
         });
 
         try {
+            const storedUser = localStorage.getItem("adminUser");
+            const token = storedUser ? JSON.parse(storedUser).token : "";
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            };
+
             if (initialData) {
-                await api.put(`/products/gemstones/${initialData._id}`, data);
+                await api.put(`/products/gemstones/${initialData._id}`, data, config);
                 toast.success("Gemstone updated successfully");
             } else {
-                await api.post("/products/gemstones", data);
+                await api.post("/products/gemstones", data, config);
                 toast.success("Gemstone created successfully");
             }
             onSuccess();

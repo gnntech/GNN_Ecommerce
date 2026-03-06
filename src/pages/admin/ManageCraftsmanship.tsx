@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Hammer, Save, ArrowLeft, Video, PenTool, ExternalLink } from "lucide-react";
+import { Hammer, Save, ArrowLeft, Video, PenTool, ExternalLink, Image as ImageIcon } from "lucide-react";
 import { toast } from "sonner";
 import api from "@/lib/api";
 import Navbar from "@/components/Navbar";
@@ -53,7 +53,15 @@ const ManageCraftsmanship = () => {
         }
 
         try {
-            await api.put("/content/sections/craftsmanship", data);
+            const storedUser = localStorage.getItem("adminUser");
+            const token = storedUser ? JSON.parse(storedUser).token : "";
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            };
+
+            await api.put("/content/sections/craftsmanship", data, config);
             toast.success("Craftsmanship story updated successfully");
         } catch (error) {
             toast.error("Failed to save changes");

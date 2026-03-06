@@ -40,11 +40,19 @@ const ManageGallery = () => {
         }
 
         try {
+            const storedUser = localStorage.getItem("adminUser");
+            const token = storedUser ? JSON.parse(storedUser).token : "";
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            };
+
             if (editingId) {
-                await api.put(`/content/gallery/${editingId}`, data);
+                await api.put(`/content/gallery/${editingId}`, data, config);
                 toast.success("Gallery item updated");
             } else {
-                await api.post("/content/gallery", data);
+                await api.post("/content/gallery", data, config);
                 toast.success("New image added to gallery");
             }
             resetForm();

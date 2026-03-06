@@ -40,11 +40,19 @@ const ManageMarquee = () => {
         e.preventDefault();
         setIsSaving(true);
         try {
+            const storedUser = localStorage.getItem("adminUser");
+            const token = storedUser ? JSON.parse(storedUser).token : "";
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            };
+
             await api.put("/content/sections/marquee", {
                 name: "marquee",
                 title: "Marquee Content",
                 description: JSON.stringify(lines.filter(l => l.trim() !== ""))
-            });
+            }, config);
             toast.success("Scrolling announcements updated");
             fetchContent();
         } catch (error) {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Layers, Trash2, Edit3, Plus, ArrowLeft, Link as LinkIcon, Save, X } from "lucide-react";
+import { Layers, Trash2, Edit3, Plus, ArrowLeft, Link as LinkIcon, Save, X, Image as ImageIcon } from "lucide-react";
 import { toast } from "sonner";
 import api from "@/lib/api";
 import Navbar from "@/components/Navbar";
@@ -41,11 +41,19 @@ const ManageCollections = () => {
         }
 
         try {
+            const storedUser = localStorage.getItem("adminUser");
+            const token = storedUser ? JSON.parse(storedUser).token : "";
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            };
+
             if (editingId) {
-                await api.put(`/content/collections/${editingId}`, data);
+                await api.put(`/content/collections/${editingId}`, data, config);
                 toast.success("Collection updated successfully");
             } else {
-                await api.post("/content/collections", data);
+                await api.post("/content/collections", data, config);
                 toast.success("New collection group added");
             }
             resetForm();
