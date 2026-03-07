@@ -25,7 +25,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        const storedUser = localStorage.getItem("adminUser");
+        const storedUser = sessionStorage.getItem("adminUser");
         if (storedUser) {
             try {
                 const parsedUser = JSON.parse(storedUser);
@@ -33,14 +33,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
                 // Check if token is expired (exp is in seconds, Date.now() in ms)
                 if (decoded.exp * 1000 < Date.now()) {
-                    localStorage.removeItem("adminUser");
+                    sessionStorage.removeItem("adminUser");
                     setUser(null);
                 } else {
                     setUser(parsedUser);
                 }
             } catch (error) {
                 // If decoding fails, invalid token
-                localStorage.removeItem("adminUser");
+                sessionStorage.removeItem("adminUser");
                 setUser(null);
             }
         }
@@ -48,12 +48,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }, []);
 
     const login = (userData: User) => {
-        localStorage.setItem("adminUser", JSON.stringify(userData));
+        sessionStorage.setItem("adminUser", JSON.stringify(userData));
         setUser(userData);
     };
 
     const logout = () => {
-        localStorage.removeItem("adminUser");
+        sessionStorage.removeItem("adminUser");
         setUser(null);
     };
 

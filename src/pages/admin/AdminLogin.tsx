@@ -13,8 +13,13 @@ const AdminLogin = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        // Clear any existing session when landing on login page
+        // or if user is already an admin, redirect them
         if (user && user.isAdmin) {
             navigate("/admin/dashboard");
+        } else {
+            // Ensure any stale session is cleared
+            sessionStorage.removeItem("adminUser");
         }
     }, [user, navigate]);
 

@@ -17,7 +17,7 @@ const Hero = () => {
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse-glow" />
         <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent/20 rounded-full blur-3xl animate-pulse-glow animation-delay-400" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-secondary/30 rounded-full blur-3xl" />
-        
+
         {/* Floating particles */}
         <div className="absolute top-20 left-20 w-2 h-2 bg-primary/40 rounded-full animate-float" />
         <div className="absolute top-40 right-32 w-1.5 h-1.5 bg-primary/30 rounded-full animate-float animation-delay-200" />
@@ -41,7 +41,7 @@ const Hero = () => {
           >
             <Sparkles className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium text-foreground/80">
-              Luxury Gemstone Collection
+              Ganadhish | Luxury Gemstone Collection
             </span>
           </motion.div>
 
@@ -58,8 +58,7 @@ const Hero = () => {
             transition={{ delay: 0.4, duration: 0.8 }}
             className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mb-12"
           >
-            Explore our curated collection of the world's most precious gemstones.
-            Each stone carries its own unique energy, meaning, and timeless allure.
+            Explore the beauty, meaning, and energy behind every precious stone in our exclusive collection.
           </motion.p>
 
           {/* CTA Button */}

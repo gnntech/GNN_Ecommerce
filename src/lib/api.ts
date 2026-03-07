@@ -6,7 +6,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    const storedUser = localStorage.getItem("adminUser");
+    const storedUser = sessionStorage.getItem("adminUser");
     if (storedUser) {
       const { token } = JSON.parse(storedUser);
       if (token) {
@@ -18,6 +18,16 @@ api.interceptors.request.use(
   (error) => {
     return Promise.reject(error);
   },
+);
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      sessionStorage.removeItem("adminUser");
+      window.location.href = "/admin"; // Redirect to login
+    }
+    return Promise.reject(error);
+  }
 );
 
 export default api;
