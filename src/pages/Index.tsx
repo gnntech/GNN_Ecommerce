@@ -5,7 +5,6 @@ import HeroSlider from "@/components/HeroSlider";
 import ProductSearchSection from "@/components/ProductSearchSection";
 import Footer from "@/components/Footer";
 import CollectionCard from "@/components/CollectionCard";
-import FeaturedCollection from "@/components/FeaturedCollection";
 import ImageGalleryScroll from "@/components/ImageGalleryScroll";
 import { Gemstone } from "@/data/gemstones";
 import { Tree, Bracelet } from "@/types/collection";
@@ -72,12 +71,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* ====== Featured Collection (Unified Section) ====== */}
-      <FeaturedCollection
-        gemstones={gemstones}
-        trees={trees}
-        bracelets={bracelets}
-      />
+
 
       {/* ====== Craftsmanship Section ====== */}
       <CraftsmanshipSection />

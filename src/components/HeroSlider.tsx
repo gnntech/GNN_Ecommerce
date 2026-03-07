@@ -60,23 +60,22 @@ const HeroSlider = () => {
     if (emblaApi) emblaApi.scrollNext();
   }, [emblaApi]);
 
+  // Use a fixed static image from public folder
+  const staticImage = "/images/HeroBg.png";
+
   if (slides.length === 0) return null;
 
   return (
     <div className="relative w-full bg-background mt-0 group overflow-hidden">
-      {/* Background Image Layer (Cross-fading, not sliding) */}
+      {/* Background Image Layer (Static, Single Image) */}
       <div className="absolute inset-0 z-0">
-        {slides.map((slide, index) => (
-          <div
-            key={`bg-${index}`}
-            className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out ${index === selectedIndex ? "opacity-100" : "opacity-0"
-              }`}
-            style={{ backgroundImage: `url('${slide.image}')` }}
-          >
-            {/* Premium Faint Grey/Dark Overlay */}
-            <div className="absolute inset-0 bg-black/40 backdrop-brightness-95" />
-          </div>
-        ))}
+        <div
+          className="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out opacity-100"
+          style={{ backgroundImage: `url('${staticImage}')` }}
+        >
+          {/* Premium Faint Grey/Dark Overlay */}
+          <div className="absolute inset-0 bg-black/40 backdrop-brightness-95" />
+        </div>
       </div>
 
       {/* Main Hero Container */}
