@@ -13,9 +13,21 @@ const reviewSchema = new mongoose.Schema({
         type: String, // Placeholder image
         required: true,
     },
+    quote: {
+        type: String,
+        default: "",
+    },
+    location: {
+        type: String,
+        default: "",
+    },
     videoUrl: {
         type: String, // YouTube embed URL
         required: true,
+    },
+    isVideoTestimonial: {
+        type: Boolean,
+        default: true,
     },
     order: {
         type: Number,

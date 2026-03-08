@@ -17,7 +17,10 @@ const CelebrityReviews = () => {
 
     useEffect(() => {
         api.get('/content/reviews')
-            .then(res => setReviews(res.data))
+            .then(res => {
+                const videoReviews = res.data.filter((r: any) => r.isVideoTestimonial !== false);
+                setReviews(videoReviews);
+            })
             .catch(err => console.error("Failed to fetch reviews", err));
     }, []);
     const [emblaRef, emblaApi] = useEmblaCarousel({

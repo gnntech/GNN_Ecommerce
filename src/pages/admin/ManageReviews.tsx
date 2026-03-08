@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const ManageReviews = () => {
     const [reviews, setReviews] = useState<any[]>([]);
-    const [formData, setFormData] = useState({ name: "", role: "", image: "", videoUrl: "", order: 0, file: null as File | null });
+    const [formData, setFormData] = useState({ name: "", role: "", image: "", videoUrl: "", quote: "", location: "", isVideoTestimonial: true, order: 0, file: null as File | null });
     const [isEditing, setIsEditing] = useState(false);
     const [editingId, setEditingId] = useState<string | null>(null);
 
@@ -32,6 +32,9 @@ const ManageReviews = () => {
         data.append("name", formData.name);
         data.append("role", formData.role);
         data.append("videoUrl", formData.videoUrl);
+        data.append("quote", formData.quote);
+        data.append("location", formData.location);
+        data.append("isVideoTestimonial", formData.isVideoTestimonial.toString());
         data.append("order", formData.order.toString());
 
         if (formData.file) {
@@ -67,6 +70,9 @@ const ManageReviews = () => {
             role: item.role,
             image: item.image,
             videoUrl: item.videoUrl,
+            quote: item.quote || "",
+            location: item.location || "",
+            isVideoTestimonial: item.isVideoTestimonial !== undefined ? item.isVideoTestimonial : true,
             order: item.order || 0,
             file: null
         });
@@ -85,7 +91,7 @@ const ManageReviews = () => {
     };
 
     const resetForm = () => {
-        setFormData({ name: "", role: "", image: "", videoUrl: "", order: 0, file: null });
+        setFormData({ name: "", role: "", image: "", videoUrl: "", quote: "", location: "", isVideoTestimonial: true, order: 0, file: null });
         setEditingId(null);
         setIsEditing(false);
     };
@@ -180,15 +186,57 @@ const ManageReviews = () => {
                                     </div>
 
                                     <div className="space-y-2">
-                                        <label className="text-sm font-bold text-gray-700 flex items-center gap-2 font-medium"><Video className="w-4 h-4" /> Video URL (YouTube Embed)</label>
+                                        <label className="text-sm font-bold text-gray-700 flex items-center gap-2 font-medium">Testimonial Type</label>
+                                        <div className="flex gap-4">
+                                            <button
+                                                type="button"
+                                                onClick={() => setFormData({ ...formData, isVideoTestimonial: true })}
+                                                className={`flex-1 py-3 rounded-xl font-bold transition-all ${formData.isVideoTestimonial ? 'bg-red-600 text-white shadow-lg' : 'bg-gray-100 text-gray-600'}`}
+                                            >
+                                                Video Testimonial
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={() => setFormData({ ...formData, isVideoTestimonial: false })}
+                                                className={`flex-1 py-3 rounded-xl font-bold transition-all ${!formData.isVideoTestimonial ? 'bg-red-600 text-white shadow-lg' : 'bg-gray-100 text-gray-600'}`}
+                                            >
+                                                Text Testimonial
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-bold text-gray-700 flex items-center gap-2 font-medium">Location / City</label>
                                         <input
                                             className="w-full bg-gray-50 p-4 rounded-2xl border border-gray-200 outline-none focus:ring-2 focus:ring-red-500/20 transition-all font-medium"
-                                            placeholder="e.g. https://www.youtube.com/embed/..."
-                                            value={formData.videoUrl}
-                                            onChange={(e) => setFormData({ ...formData, videoUrl: e.target.value })}
-                                            required
+                                            placeholder="e.g. Mumbai, India"
+                                            value={formData.location}
+                                            onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                                         />
                                     </div>
+
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-bold text-gray-700 flex items-center gap-2 font-medium"><Star className="w-4 h-4" /> Quote / Text Testimonial</label>
+                                        <textarea
+                                            className="w-full bg-gray-50 p-4 rounded-2xl border border-gray-200 outline-none focus:ring-2 focus:ring-red-500/20 transition-all font-medium min-h-[120px]"
+                                            placeholder="Enter the testimonial text here..."
+                                            value={formData.quote}
+                                            onChange={(e) => setFormData({ ...formData, quote: e.target.value })}
+                                        />
+                                    </div>
+
+                                    {formData.isVideoTestimonial && (
+                                        <div className="space-y-2">
+                                            <label className="text-sm font-bold text-gray-700 flex items-center gap-2 font-medium"><Video className="w-4 h-4" /> Video URL (YouTube Embed)</label>
+                                            <input
+                                                className="w-full bg-gray-50 p-4 rounded-2xl border border-gray-200 outline-none focus:ring-2 focus:ring-red-500/20 transition-all font-medium"
+                                                placeholder="e.g. https://www.youtube.com/embed/..."
+                                                value={formData.videoUrl}
+                                                onChange={(e) => setFormData({ ...formData, videoUrl: e.target.value })}
+                                                required={formData.isVideoTestimonial}
+                                            />
+                                        </div>
+                                    )}
 
                                     <div className="space-y-2">
                                         <label className="text-sm font-bold text-gray-700 font-medium">Display Priority</label>
