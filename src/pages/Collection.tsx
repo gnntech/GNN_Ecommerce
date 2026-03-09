@@ -38,10 +38,9 @@ const Collection = () => {
         <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-[#f8f5f2] to-transparent opacity-20 pointer-events-none"></div>
       </section>
 
-      {/* SECTION 2 — PRODUCT SECTION BACKGROUND */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-[1600px] mx-auto">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
         {/* Gemstone Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {gemstones.map((gemstone, index) => (
             <GemstoneCard key={(gemstone as any)._id || gemstone.id} gemstone={gemstone} index={index} />
           ))}

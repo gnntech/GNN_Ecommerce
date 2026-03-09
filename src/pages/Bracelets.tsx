@@ -21,8 +21,7 @@ const Bracelets = () => {
         <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-[#f8f5f2] to-transparent opacity-20 pointer-events-none"></div>
       </section>
 
-      {/* SECTION 2 — PRODUCT SECTION BACKGROUND */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-[1600px] mx-auto">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
         <BraceletGrid />
       </section>
 

@@ -25,7 +25,8 @@ const GemstoneCard: React.FC<GemstoneCardProps> = ({
       name: gemstone.name,
       price: parseFloat(gemstone.price.replace(/[^0-9.]/g, '')),
       image: gemstone.image || "/images/Gemstone.png",
-      quantity: 1
+      qty: 1,
+      type: 'Gemstone'
     });
     toast.success("Added to cart");
   };
@@ -33,7 +34,7 @@ const GemstoneCard: React.FC<GemstoneCardProps> = ({
   return (
     <motion.div
       className="bg-white rounded-3xl shadow-lg p-5 flex flex-col cursor-pointer"
-      style={{ minHeight: "520px" }}
+      style={{ minHeight: "420px" }}
       whileHover={{
         y: -5,
         boxShadow: "0 25px 50px -12px rgba(0,0,0,0.25)",

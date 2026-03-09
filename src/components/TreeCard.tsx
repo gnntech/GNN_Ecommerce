@@ -20,7 +20,8 @@ const TreeCard: React.FC<Props> = ({ tree, onOpenPreview }) => {
       name: tree.name,
       price: parseFloat(tree.price.replace(/[^0-9.]/g, '')),
       image: tree.image || "/images/Trees.png",
-      quantity: 1
+      qty: 1,
+      type: 'Tree'
     });
     toast.success("Added to cart");
   };
@@ -28,7 +29,7 @@ const TreeCard: React.FC<Props> = ({ tree, onOpenPreview }) => {
   return (
     <motion.div
       className="bg-white rounded-3xl shadow-lg p-5 flex flex-col cursor-pointer"
-      style={{ minHeight: "520px" }}
+      style={{ minHeight: "420px" }}
       whileHover={{
         y: -5,
         boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",

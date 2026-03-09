@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Phone, ChevronDown } from "lucide-react";
+import { Menu, X, Phone, ChevronDown, ShoppingCart } from "lucide-react";
+import { useCart } from "@/context/CartContext";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const { cartCount } = useCart();
   const location = useLocation();
 
   const navLinks = [
@@ -107,30 +109,40 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* CALL NOW BUTTON */}
-          <a
-            href="tel:+1234567890"
-            className="
-    flex
-    items-center
-    gap-2
-    bg-maroon
-    text-white
-    px-5
-    py-2
-    rounded-full
-    text-sm
-    font-semibold
-    shrink-0
-    hover:bg-red-800
-    transition-all
-    shadow-lg
-    hover:shadow-maroon/20
-  "
-          >
-            <Phone className="w-4 h-4" />
-            Call Now
-          </a>
+          <div className="flex items-center gap-4 shrink-0">
+            <Link to="/cart" className="relative p-2 text-gray-700 hover:text-maroon transition-colors group">
+              <ShoppingCart className="w-6 h-6" />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-maroon text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-white shadow-sm group-hover:scale-110 transition-transform">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
+
+            {/* CALL NOW BUTTON */}
+            <a
+              href="tel:+1234567890"
+              className="
+      flex
+      items-center
+      gap-2
+      bg-maroon
+      text-white
+      px-5
+      py-2
+      rounded-full
+      text-sm
+      font-semibold
+      hover:bg-red-800
+      transition-all
+      shadow-lg
+      hover:shadow-maroon/20
+    "
+            >
+              <Phone className="w-4 h-4" />
+              Call Now
+            </a>
+          </div>
         </div>
       </nav>
 
@@ -151,10 +163,20 @@ const Navbar = () => {
               <img src="/images/logo.png" alt="GNN Logo" className="h-7 w-auto" />
             </Link>
 
-            {/* HAMBURGER */}
-            <button onClick={() => setIsOpen(!isOpen)} className="text-black p-2 rounded-full hover:bg-gray-100 transition-colors">
-              <Menu size={24} />
-            </button>
+            {/* CART & HAMBURGER */}
+            <div className="flex items-center gap-2">
+              <Link to="/cart" className="relative p-2 text-black hover:bg-gray-100 rounded-full transition-colors">
+                <ShoppingCart size={24} />
+                {cartCount > 0 && (
+                  <span className="absolute top-1 right-1 bg-maroon text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full border border-white">
+                    {cartCount}
+                  </span>
+                )}
+              </Link>
+              <button onClick={() => setIsOpen(!isOpen)} className="text-black p-2 rounded-full hover:bg-gray-100 transition-colors">
+                <Menu size={24} />
+              </button>
+            </div>
           </div>
         </div>
       </nav>

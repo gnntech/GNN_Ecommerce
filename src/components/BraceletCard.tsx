@@ -20,7 +20,8 @@ const BraceletCard: React.FC<Props> = ({ bracelet, onOpenPreview }) => {
       name: bracelet.name,
       price: parseFloat(bracelet.price.replace(/[^0-9.]/g, '')),
       image: bracelet.image || "/images/S-Amazonite Bracelet.png",
-      quantity: 1
+      qty: 1,
+      type: 'Bracelet'
     });
     toast.success("Added to cart");
   };
@@ -28,7 +29,7 @@ const BraceletCard: React.FC<Props> = ({ bracelet, onOpenPreview }) => {
   return (
     <motion.div
       className="bg-white rounded-3xl shadow-lg p-5 flex flex-col cursor-pointer"
-      style={{ minHeight: "520px" }}
+      style={{ minHeight: "420px" }}
       whileHover={{
         y: -5,
         boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",

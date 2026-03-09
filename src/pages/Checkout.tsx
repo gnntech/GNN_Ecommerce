@@ -195,8 +195,7 @@ const Checkout = () => {
             setLoading(false);
         }
     };
-
-    if (!product) return null;
+    if (orderItems.length === 0) return null;
 
     return (
         <div className="min-h-screen bg-background">
