@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "https://gnn-ecommerce-2.onrender.com/api",
+  baseURL: import.meta.env.VITE_API_URL || "https://gnn-ecommerce-1.onrender.com/api",
 });
 
 api.interceptors.request.use(
