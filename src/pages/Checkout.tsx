@@ -123,7 +123,7 @@ const Checkout = () => {
                 currency: order.currency,
                 name: "GNN E-commerce",
                 description: `Purchase of ${orderItems.length} item(s)`,
-                image: "/images/logo.png", // Add your logo path
+                image: "https://gnn-ecommerce.vercel.app/images/logo.png", // Use absolute URL for production
                 order_id: order.id,
                 handler: async function (response: any) {
                     try {
