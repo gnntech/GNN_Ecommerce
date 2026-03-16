@@ -12,8 +12,30 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(express.json());
+
+// CORS Configuration
+const allowedOrigins = [
+    'http://localhost:8080',
+    'http://localhost:5173',
+    'https://gnn-ecommerce.vercel.app'
+];
+
 app.use(cors({
-    origin: true, // Allow all origins (use specific origins in production)
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        
+        // Allow Vercel preview deployments (gnn-ecommerce-*.vercel.app)
+        if (origin.match(/^https:\/\/gnn-ecommerce.*\.vercel\.app$/)) {
+            return callback(null, true);
+        }
+        
+        if (allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
