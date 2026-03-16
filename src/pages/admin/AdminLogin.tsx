@@ -11,7 +11,7 @@ const AdminLogin = () => {
     const [password, setPassword] = useState("");
     const { login, user } = useAuth();
     const navigate = useNavigate();
-
+    
     useEffect(() => {
         // Clear any existing session when landing on login page
         // or if user is already an admin, redirect them
