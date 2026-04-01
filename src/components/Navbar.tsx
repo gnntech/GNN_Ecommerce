@@ -40,8 +40,8 @@ const Navbar = () => {
       <nav className="fixed top-5 left-1/2 -translate-x-1/2 z-50 hidden md:block">
         <div
           className={`
-            flex items-center justify-between rounded-full backdrop-blur-[10px] transition-all duration-300
-            ${showStrip ? 'w-[85vw] max-w-[1000px] px-6 py-1.5' : 'w-[90vw] max-w-[1200px] px-8 py-2'}
+            flex items-center justify-between rounded-full backdrop-blur-[10px] transition-all duration-500 ease-in-out
+            ${showStrip ? 'w-[88vw] max-w-[1100px] px-7 py-2' : 'w-[90vw] max-w-[1200px] px-8 py-2.5'}
           `}
           style={{
             fontFamily: "Matter, sans-serif",
@@ -51,7 +51,11 @@ const Navbar = () => {
         >
           {/* LOGO */}
           <Link to="/" className="flex items-center shrink-0">
-            <img src="/images/logo.png" alt="GNN Logo" className="h-8 w-auto" />
+            <img 
+              src="/images/logo.png" 
+              alt="GNN Logo" 
+              className={`w-auto transition-all duration-500 ease-in-out ${showStrip ? 'h-7' : 'h-8'}`}
+            />
           </Link>
 
           {/* NAV LINKS */}
@@ -66,7 +70,8 @@ const Navbar = () => {
                 >
                   <span
                     className={`
-                      cursor-pointer text-lg px-4 py-2 rounded-full font-medium transition-colors flex items-center gap-1
+                      cursor-pointer px-4 py-2 rounded-full font-medium transition-all duration-300 flex items-center gap-1
+                      ${showStrip ? 'text-base' : 'text-lg'}
                       ${openDropdown === link.name ? 'text-maroon' : 'hover:text-maroon'}
                     `}
                   >
@@ -101,7 +106,7 @@ const Navbar = () => {
                 <Link
                   key={link.name}
                   to={link.path}
-                  className="text-lg px-3 py-1 rounded-full font-medium hover:text-maroon transition-colors"
+                  className={`px-3 py-1 rounded-full font-medium hover:text-maroon transition-all duration-300 ${showStrip ? 'text-base' : 'text-lg'}`}
                 >
                   {link.name}
                 </Link>
@@ -111,7 +116,7 @@ const Navbar = () => {
 
           <div className="flex items-center gap-4 shrink-0">
             <Link to="/cart" className="relative p-2 text-gray-700 hover:text-maroon transition-colors group">
-              <ShoppingCart className="w-6 h-6" />
+              <ShoppingCart className={`transition-all duration-500 ${showStrip ? 'w-5 h-5' : 'w-6 h-6'}`} />
               {cartCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-maroon text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-white shadow-sm group-hover:scale-110 transition-transform">
                   {cartCount}
@@ -122,24 +127,13 @@ const Navbar = () => {
             {/* CALL NOW BUTTON */}
             <a
               href="tel:+1234567890"
-              className="
-      flex
-      items-center
-      gap-2
-      bg-maroon
-      text-white
-      px-5
-      py-2
-      rounded-full
-      text-sm
-      font-semibold
-      hover:bg-red-800
-      transition-all
-      shadow-lg
-      hover:shadow-maroon/20
-    "
+              className={`
+                flex items-center gap-2 bg-maroon text-white rounded-full font-semibold
+                hover:bg-red-800 transition-all duration-500 shadow-lg hover:shadow-maroon/20
+                ${showStrip ? 'px-4 py-1.5 text-sm' : 'px-5 py-2 text-sm'}
+              `}
             >
-              <Phone className="w-4 h-4" />
+              <Phone className={`transition-all duration-500 ${showStrip ? 'w-3.5 h-3.5' : 'w-4 h-4'}`} />
               Call Now
             </a>
           </div>
@@ -147,11 +141,11 @@ const Navbar = () => {
       </nav>
 
       {/* ================= MOBILE NAVBAR ================= */}
-      <nav className="md:hidden fixed top-0 left-0 w-full z-50 transition-all duration-300">
-        <div className={`bg-maroon transition-all duration-300 ${showStrip ? 'py-2' : 'py-3'} flex justify-center items-center`}>
+      <nav className="md:hidden fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out">
+        <div className={`bg-maroon transition-all duration-500 ease-in-out ${showStrip ? 'py-2' : 'py-3'} flex justify-center items-center`}>
           <div
             className={`
-              flex items-center justify-between rounded-full bg-white transition-all duration-300
+              flex items-center justify-between rounded-full bg-white transition-all duration-500 ease-in-out
               ${showStrip ? 'w-[95vw] px-3 py-1.5' : 'w-[92vw] px-4 py-2'}
             `}
             style={{
@@ -160,13 +154,17 @@ const Navbar = () => {
           >
             {/* LOGO */}
             <Link to="/" className="flex items-center shrink-0">
-              <img src="/images/logo.png" alt="GNN Logo" className="h-7 w-auto" />
+              <img 
+                src="/images/logo.png" 
+                alt="GNN Logo" 
+                className={`w-auto transition-all duration-500 ease-in-out ${showStrip ? 'h-6' : 'h-7'}`}
+              />
             </Link>
 
             {/* CART & HAMBURGER */}
             <div className="flex items-center gap-2">
               <Link to="/cart" className="relative p-2 text-black hover:bg-gray-100 rounded-full transition-colors">
-                <ShoppingCart size={24} />
+                <ShoppingCart className={`transition-all duration-500 ease-in-out ${showStrip ? 'w-5 h-5' : 'w-6 h-6'}`} />
                 {cartCount > 0 && (
                   <span className="absolute top-1 right-1 bg-maroon text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full border border-white">
                     {cartCount}
@@ -174,7 +172,7 @@ const Navbar = () => {
                 )}
               </Link>
               <button onClick={() => setIsOpen(!isOpen)} className="text-black p-2 rounded-full hover:bg-gray-100 transition-colors">
-                <Menu size={24} />
+                <Menu className={`transition-all duration-500 ease-in-out ${showStrip ? 'w-5 h-5' : 'w-6 h-6'}`} />
               </button>
             </div>
           </div>

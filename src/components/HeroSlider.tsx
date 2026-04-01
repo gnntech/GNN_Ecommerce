@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { motion } from "framer-motion";
@@ -6,38 +6,31 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import api from "@/lib/api";
 
 const HeroSlider = () => {
-  const [slides, setSlides] = useState<any[]>([]);
-  const [marqueeLines, setMarqueeLines] = useState<string[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [marqueeLines, setMarqueeLines] = useState<string[]>([]);
 
-  // Initialize Embla with Autoplay plugin
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    loop: true,
-    duration: 40,
-    skipSnaps: false
-  }, [
-    Autoplay({ delay: 4000, stopOnInteraction: false })
-  ]);
+  // Static hardcoded slides
+  const slides = [
+    {
+      title: "Unlock Ancient Wisdom",
+      description: "Discover the power of numerology and healing crystals to transform your life and unlock your true potential."
+    },
+    {
+      title: "Healing Gemstones",
+      description: "Experience the natural energy of authentic gemstones, carefully selected for their spiritual and healing properties."
+    },
+    {
+      title: "Crystal Energy Trees",
+      description: "Bring positive energy and balance to your space with our handcrafted crystal trees."
+    },
+    {
+      title: "Numerology Bracelets",
+      description: "Wear your destiny with custom numerology bracelets designed to align with your life path."
+    }
+  ];
 
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    setSelectedIndex(emblaApi.selectedScrollSnap());
-  }, [emblaApi]);
-
+  // Fetch dynamic marquee text from database
   useEffect(() => {
-    if (!emblaApi) return;
-    onSelect();
-    emblaApi.on("select", onSelect);
-    emblaApi.on("reInit", onSelect);
-  }, [emblaApi, onSelect]);
-
-  useEffect(() => {
-    // Fetch Slider Data
-    api.get('/content/slider')
-      .then(res => setSlides(res.data))
-      .catch(err => console.error("Failed to load slider data", err));
-
-    // Fetch Marquee Data
     api.get('/content/sections/marquee')
       .then((res: any) => {
         const data = res.data;
@@ -46,11 +39,48 @@ const HeroSlider = () => {
             setMarqueeLines(JSON.parse(data.description));
           } catch (e) {
             console.error("Failed to parse marquee data");
+            // Fallback to default messages
+            setMarqueeLines([
+              "Free Shipping on Orders Above ₹999",
+              "Authentic Certified Gemstones",
+              "100% Handcrafted Products",
+              "Expert Numerology Consultation"
+            ]);
           }
         }
       })
-      .catch((err: any) => console.error("Failed to load marquee data", err));
+      .catch((err: any) => {
+        console.error("Failed to load marquee data", err);
+        // Fallback to default messages
+        setMarqueeLines([
+          "Free Shipping on Orders Above ₹999",
+          "Authentic Certified Gemstones",
+          "100% Handcrafted Products",
+          "Expert Numerology Consultation"
+        ]);
+      });
   }, []);
+
+  // Initialize Embla with Autoplay plugin
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: true,
+    duration: 40,
+    skipSnaps: false
+  }, [
+    Autoplay({ delay: 5000, stopOnInteraction: false })
+  ]);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  React.useEffect(() => {
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
+  }, [emblaApi, onSelect]);
 
   const scrollPrev = useCallback(() => {
     if (emblaApi) emblaApi.scrollPrev();
@@ -60,22 +90,25 @@ const HeroSlider = () => {
     if (emblaApi) emblaApi.scrollNext();
   }, [emblaApi]);
 
-  // Use a fixed static image from public folder
-  const staticImage = "/images/HeroBg.png";
-
-  if (slides.length === 0) return null;
+  // Static video from public folder
+  const staticVideo = "/images/NewHeroVid.mp4";
 
   return (
     <div className="relative w-full bg-background mt-0 group overflow-hidden">
-      {/* Background Image Layer (Static, Single Image) */}
+      {/* Background Video Layer (Static, Muted, Autoplay, Loop) */}
       <div className="absolute inset-0 z-0">
-        <div
-          className="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out opacity-100"
-          style={{ backgroundImage: `url('${staticImage}')` }}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ pointerEvents: 'none' }}
         >
-          {/* Premium Faint Grey/Dark Overlay */}
-          <div className="absolute inset-0 bg-black/40 backdrop-brightness-95" />
-        </div>
+          <source src={staticVideo} type="video/mp4" />
+        </video>
+        {/* Premium Faint Grey/Dark Overlay */}
+        <div className="absolute inset-0 bg-black/40 backdrop-brightness-95" />
       </div>
 
       {/* Main Hero Container */}
@@ -113,9 +146,12 @@ const HeroSlider = () => {
                     </p>
 
                     <div className="pt-4">
-                      <button className="px-8 py-3 bg-white text-black font-bold rounded-full hover:bg-gray-100 transition-all transform hover:scale-105 shadow-xl">
+                      <a 
+                        href="/collection"
+                        className="inline-block px-8 py-3 bg-white text-black font-bold rounded-full hover:bg-gray-100 transition-all transform hover:scale-105 shadow-xl"
+                      >
                         Discover More
-                      </button>
+                      </a>
                     </div>
                   </motion.div>
                 </div>
@@ -153,7 +189,7 @@ const HeroSlider = () => {
           ))}
         </div>
 
-        {/* Marquee - Absolute at bottom of hero section */}
+        {/* Marquee - Dynamic from Database */}
         {marqueeLines.length > 0 && (
           <div
             className="absolute bottom-0 left-0 right-0 w-full overflow-hidden flex items-center z-20"

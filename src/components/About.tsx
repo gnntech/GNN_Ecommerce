@@ -516,18 +516,24 @@ const About: React.FC = () => {
           </div>
         </div>
       </section>
-      {/* GALLERY – 3x2 Equal Grid Layout */}
-      <section className="w-full bg-white py-2">
-        <div className="w-full px-4 lg:px-12">
+      {/* GALLERY – Bento Grid Layout */}
+      <section className="w-full bg-gradient-to-b from-white to-[#FDFCF6] py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Heading */}
-          <div className="flex items-center justify-center gap-6 mb-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="flex items-center justify-center gap-6 mb-12"
+          >
             <img
               src="/images/FiveStars.png"
               alt="left decor"
               className="w-32 sm:w-48 lg:w-72 h-auto"
             />
 
-            <h2 className="text-6xl font-bebas font-bold text-[#9b2533] uppercase tracking-wide">
+            <h2 className="text-5xl md:text-6xl font-bebas font-bold text-[#9b2533] uppercase tracking-wide">
               Gallery
             </h2>
 
@@ -536,63 +542,149 @@ const About: React.FC = () => {
               alt="right decor"
               className="w-32 sm:w-48 lg:w-72 h-auto"
             />
-          </div>
+          </motion.div>
 
-          {/* GRID */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Image 1 */}
-            <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-lg border border-gray-100">
+          {/* Bento Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[200px]">
+            {/* Large - Amazonite */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="col-span-2 row-span-2 relative group cursor-pointer rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500"
+            >
               <img
-                src="./images/S-Amazonite Bracelet.png"
-                className="w-full h-full object-cover"
-                alt="img1"
+                src="/images/S-Amazonite Bracelet.png"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                alt="Amazonite Bracelet"
               />
-            </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                <h3 className="text-white font-bold text-2xl tracking-wide">Amazonite Bracelet</h3>
+                <div className="w-16 h-1 bg-[#FACC15] mt-2" />
+              </div>
+            </motion.div>
 
-            {/* Image 2 */}
-            <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-lg border border-gray-100">
+            {/* Small - Amethyst */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="col-span-1 row-span-1 relative group cursor-pointer rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500"
+            >
               <img
-                src="./images/S-Amethyst Bracelet.png"
-                className="w-full h-full object-cover"
-                alt="img2"
+                src="/images/S-Amethyst Bracelet.png"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                alt="Amethyst Bracelet"
               />
-            </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                <h3 className="text-white font-bold text-lg">Amethyst</h3>
+                <div className="w-12 h-1 bg-[#FACC15] mt-2" />
+              </div>
+            </motion.div>
 
-            {/* Image 3 */}
-            <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-lg border border-gray-100">
+            {/* Tall - Azurite */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="col-span-1 row-span-2 relative group cursor-pointer rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500"
+            >
               <img
-                src="./images/S-Azurite Bracelet.png"
-                className="w-full h-full object-cover"
-                alt="img3"
+                src="/images/S-Azurite Bracelet.png"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                alt="Azurite Bracelet"
               />
-            </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                <h3 className="text-white font-bold text-lg">Azurite</h3>
+                <div className="w-12 h-1 bg-[#FACC15] mt-2" />
+              </div>
+            </motion.div>
 
-            {/* Image 4 */}
-            <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-lg border border-gray-100">
+            {/* Small - Trees */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="col-span-1 row-span-1 relative group cursor-pointer rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500"
+            >
               <img
-                src="./images/Trees.png"
-                className="w-full h-full object-cover"
-                alt="img4"
+                src="/images/Trees.png"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                alt="Crystal Trees"
               />
-            </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                <h3 className="text-white font-bold text-lg">Crystal Trees</h3>
+                <div className="w-12 h-1 bg-[#FACC15] mt-2" />
+              </div>
+            </motion.div>
 
-            {/* Image 5 */}
-            <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-lg border border-gray-100">
+            {/* Wide - Rose Quartz */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="col-span-2 row-span-1 relative group cursor-pointer rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500"
+            >
               <img
-                src="./images/slider4.png"
-                className="w-full h-full object-cover"
-                alt="img5"
+                src="/images/S-RoseQuartz Bracelet.png"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                alt="Rose Quartz Bracelet"
               />
-            </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                <h3 className="text-white font-bold text-xl">Rose Quartz Bracelet</h3>
+                <div className="w-16 h-1 bg-[#FACC15] mt-2" />
+              </div>
+            </motion.div>
 
-            {/* Image 6 */}
-            <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-lg border border-gray-100">
+            {/* Small - Tiger Eye */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              className="col-span-1 row-span-1 relative group cursor-pointer rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500"
+            >
               <img
-                src="./images/Shop1.png"
-                className="w-full h-full object-cover"
-                alt="img6"
+                src="/images/S-TigerEye Bracelet.png"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                alt="Tiger Eye Bracelet"
               />
-            </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                <h3 className="text-white font-bold text-lg">Tiger Eye</h3>
+                <div className="w-12 h-1 bg-[#FACC15] mt-2" />
+              </div>
+            </motion.div>
+
+            {/* Small - Citrine */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+              className="col-span-1 row-span-1 relative group cursor-pointer rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500"
+            >
+              <img
+                src="/images/S-Citrine Bracelet.png"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                alt="Citrine Bracelet"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                <h3 className="text-white font-bold text-lg">Citrine</h3>
+                <div className="w-12 h-1 bg-[#FACC15] mt-2" />
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
