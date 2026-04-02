@@ -15,7 +15,8 @@ import {
     LogOut,
     Store,
     MonitorPlay,
-    Sparkles
+    Sparkles,
+    Package
 } from "lucide-react";
 
 const AdminDashboard = () => {
@@ -37,6 +38,7 @@ const AdminDashboard = () => {
                 { name: "Gemstones", path: "/admin/gemstones", icon: <Gem className="w-5 h-5" />, desc: "Certified healing stones" },
                 { name: "Crystal Trees", path: "/admin/trees", icon: <TreeIcon className="w-5 h-5" />, desc: "Energy & balance trees" },
                 { name: "Bracelets", path: "/admin/bracelets", icon: <Watch className="w-5 h-5" />, desc: "Handcrafted wristwear" },
+                { name: "Orders", path: "/admin/orders", icon: <Package className="w-5 h-5" />, desc: "Manage customer orders" },
             ]
         },
         {

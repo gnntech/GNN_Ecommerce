@@ -30,11 +30,13 @@ app.get("/", (req, res) => {
 const authRoutes = require("./routes/authRoutes");
 const productRoutes = require("./routes/productRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
+const orderRoutes = require("./routes/orderRoutes");
 
 // Use Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/payment", paymentRoutes);
+app.use("/api/orders", orderRoutes);
 
 // Content Routes
 const contentRoutes = require("./routes/contentRoutes");

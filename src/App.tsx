@@ -23,8 +23,10 @@ import ManageCollections from "./pages/admin/ManageCollections";
 import ManageCraftsmanship from "./pages/admin/ManageCraftsmanship";
 import ManageGallery from "./pages/admin/ManageGallery";
 import ManageMarquee from "./pages/admin/ManageMarquee";
+import ManageOrders from "./pages/admin/ManageOrders";
 import SearchResults from "./pages/SearchResults";
 import Checkout from "./pages/Checkout";
+import PaymentSuccess from "./pages/PaymentSuccess";
 import Contact from "./pages/Contact";
 import Testimonials from "./pages/Testimonials";
 import { AuthProvider } from "./context/AuthContext";
@@ -55,6 +57,7 @@ const App = () => (
               <Route path="/trees" element={<Trees />} />
               <Route path="/search" element={<SearchResults />} />
               <Route path="/checkout" element={<Checkout />} />
+              <Route path="/payment-success" element={<PaymentSuccess />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/testimonials" element={<Testimonials />} />
 
@@ -78,6 +81,7 @@ const App = () => (
               />
               <Route path="/admin/gallery" element={<ManageGallery />} />
               <Route path="/admin/marquee" element={<ManageMarquee />} />
+              <Route path="/admin/orders" element={<ManageOrders />} />
               <Route path="/about" element={<About />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

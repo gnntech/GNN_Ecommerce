@@ -2,6 +2,7 @@ const Razorpay = require("razorpay");
 const crypto = require("crypto");
 const Order = require("../models/Order");
 const asyncHandler = require("express-async-handler");
+const { sendOrderConfirmationEmail } = require("./orderController");
 
 // Initialize Razorpay
 const razorpay = new Razorpay({
@@ -90,6 +91,9 @@ const verifyPayment = asyncHandler(async (req, res) => {
             });
 
             const createdOrder = await order.save();
+
+            // Send order confirmation email
+            await sendOrderConfirmationEmail(createdOrder);
 
             res.json({
                 success: true,
