@@ -19,7 +19,7 @@ const TreeCard: React.FC<Props> = ({ tree, onOpenPreview }) => {
       id: (tree as any)._id || tree.id,
       name: tree.name,
       price: parseFloat(tree.price.replace(/[^0-9.]/g, '')),
-      image: tree.image || "/images/Trees.png",
+      image: tree.image || "/images/Trees.webp",
       qty: 1,
       type: 'Tree'
     });
@@ -38,11 +38,11 @@ const TreeCard: React.FC<Props> = ({ tree, onOpenPreview }) => {
     >
       <div className="aspect-square rounded-lg overflow-hidden mb-4 bg-gray-100 relative">
         <img
-          src={tree.image || "/images/Trees.png"}
+          src={tree.image || "/images/Trees.webp"}
           alt={tree.name}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
           onError={(e) => {
-            (e.target as HTMLImageElement).src = "/images/Trees.png";
+            (e.target as HTMLImageElement).src = "/images/Trees.webp";
           }}
         />
 

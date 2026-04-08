@@ -52,7 +52,7 @@ const Navbar = () => {
           {/* LOGO */}
           <Link to="/" className="flex items-center shrink-0">
             <img 
-              src="/images/logo.png" 
+              src="/images/logo.webp" 
               alt="GNN Logo" 
               className={`w-auto transition-all duration-500 ease-in-out ${showStrip ? 'h-7' : 'h-8'}`}
             />
@@ -155,7 +155,7 @@ const Navbar = () => {
             {/* LOGO */}
             <Link to="/" className="flex items-center shrink-0">
               <img 
-                src="/images/logo.png" 
+                src="/images/logo.webp" 
                 alt="GNN Logo" 
                 className={`w-auto transition-all duration-500 ease-in-out ${showStrip ? 'h-6' : 'h-7'}`}
               />
@@ -192,7 +192,7 @@ const Navbar = () => {
             <div className="bg-maroon p-4 h-24 flex items-center justify-center relative">
               <div className="bg-white rounded-full w-full max-w-[92vw] px-4 py-2 flex items-center justify-between shadow-lg">
                 <Link to="/" onClick={() => setIsOpen(false)} className="flex items-center shrink-0">
-                  <img src="/images/logo.png" alt="GNN Logo" className="h-7 w-auto" />
+                  <img src="/images/logo.webp" alt="GNN Logo" className="h-7 w-auto" />
                 </Link>
                 <button onClick={() => setIsOpen(false)} className="text-black p-2 hover:bg-gray-100 rounded-full transition-colors">
                   <X size={24} />

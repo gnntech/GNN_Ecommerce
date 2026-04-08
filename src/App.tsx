@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import SmoothScroll from "./components/SmoothScroll";
 import Index from "./pages/Index";
 import Collection from "./pages/Collection";
 import GemstoneDetail from "./pages/GemstoneDetail";
@@ -46,6 +47,7 @@ const App = () => (
           <BrowserRouter
             future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
           >
+            <SmoothScroll />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/cart" element={<Cart />} />

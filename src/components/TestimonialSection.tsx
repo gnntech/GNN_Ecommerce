@@ -18,6 +18,7 @@ const TestimonialSection: React.FC = () => {
     const [currentVideo, setCurrentVideo] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
     const [activeCardIndex, setActiveCardIndex] = useState(0);
+    const [isPaused, setIsPaused] = useState(false);
     const videoRef = useRef<HTMLVideoElement>(null);
 
     useEffect(() => {
@@ -31,12 +32,12 @@ const TestimonialSection: React.FC = () => {
 
     // Auto-slide testimonial cards every 4 seconds
     useEffect(() => {
-        if (textTestimonials.length === 0) return;
+        if (textTestimonials.length === 0 || isPaused) return;
         const interval = setInterval(() => {
             setActiveCardIndex((prev) => (prev + 1) % textTestimonials.length);
         }, 4000);
         return () => clearInterval(interval);
-    }, [textTestimonials.length]);
+    }, [textTestimonials.length, isPaused]);
 
     // Reset activeCardIndex if it's out of bounds
     useEffect(() => {
@@ -232,12 +233,27 @@ const TestimonialSection: React.FC = () => {
                                             {textTestimonials[activeCardIndex].quote}
                                         </p>
                                         <div className="mt-auto border-t border-white/20 pt-3">
-                                            <p className="font-bold text-sm font-matter">
-                                                {textTestimonials[activeCardIndex].name}
-                                            </p>
-                                            <p className="text-xs text-white/70 font-matter">
-                                                {textTestimonials[activeCardIndex].location}
-                                            </p>
+                                            <div className="flex items-center justify-between">
+                                                <div>
+                                                    <p className="font-bold text-sm font-matter">
+                                                        {textTestimonials[activeCardIndex].name}
+                                                    </p>
+                                                    <p className="text-xs text-white/70 font-matter">
+                                                        {textTestimonials[activeCardIndex].location}
+                                                    </p>
+                                                </div>
+                                                <a
+                                                    href={textTestimonials[activeCardIndex].videoUrl}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="flex items-center gap-1 px-2 py-1 rounded text-xs font-semibold bg-white/20 text-white hover:bg-white/30 transition-all hover:scale-105"
+                                                >
+                                                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                                    </svg>
+                                                    Verified
+                                                </a>
+                                            </div>
                                         </div>
                                     </motion.div>
                                 </AnimatePresence>
@@ -257,8 +273,11 @@ const TestimonialSection: React.FC = () => {
                                                 initial={{ opacity: 0, scale: 0.8 }}
                                                 animate={{ opacity: 1, scale: isCenter ? 1 : 0.9 }}
                                                 exit={{ opacity: 0, scale: 0.8 }}
+                                                whileHover={isCenter ? { scale: 1.05 } : {}}
                                                 transition={{ duration: 0.5, ease: 'easeInOut' }}
-                                                className={`flex-shrink-0 relative rounded-xl p-6 flex flex-col transition-all duration-500 ${isCenter ? 'z-10 shadow-2xl scale-100' : 'z-0 shadow-sm opacity-60 scale-90'
+                                                onMouseEnter={() => isCenter && setIsPaused(true)}
+                                                onMouseLeave={() => isCenter && setIsPaused(false)}
+                                                className={`flex-shrink-0 relative rounded-xl p-6 flex flex-col transition-all duration-500 ${isCenter ? 'z-10 shadow-2xl scale-100 cursor-pointer' : 'z-0 shadow-sm opacity-60 scale-90'
                                                     }`}
                                                 style={{
                                                     width: 'calc(33.333% - 11px)',
@@ -279,12 +298,31 @@ const TestimonialSection: React.FC = () => {
                                                     {card.quote}
                                                 </p>
                                                 <div className={`mt-auto pt-3 border-t ${isCenter ? 'border-white/20' : 'border-gray-100'}`}>
-                                                    <p className="font-bold text-sm font-matter">
-                                                        {card.name}
-                                                    </p>
-                                                    <p className={`text-xs font-matter ${isCenter ? 'text-white/70' : 'text-gray-500'}`}>
-                                                        {card.location}
-                                                    </p>
+                                                    <div className="flex items-center justify-between">
+                                                        <div>
+                                                            <p className="font-bold text-sm font-matter">
+                                                                {card.name}
+                                                            </p>
+                                                            <p className={`text-xs font-matter ${isCenter ? 'text-white/70' : 'text-gray-500'}`}>
+                                                                {card.location}
+                                                            </p>
+                                                        </div>
+                                                        <a
+                                                            href={card.videoUrl}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className={`flex items-center gap-1 px-2 py-1 rounded text-xs font-semibold transition-all hover:scale-105 ${
+                                                                isCenter 
+                                                                    ? 'bg-white/20 text-white hover:bg-white/30' 
+                                                                    : 'bg-maroon/10 text-maroon hover:bg-maroon/20'
+                                                            }`}
+                                                        >
+                                                            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                                            </svg>
+                                                            Verified
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </motion.div>
                                         );

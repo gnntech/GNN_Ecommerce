@@ -29,7 +29,7 @@ const ProductSearchSection = () => {
     };
 
     return (
-        <section className="relative w-full py-16 md:py-28 bg-cover bg-center" style={{ backgroundImage: 'url("/images/section2-bg.png")' }}>
+        <section className="relative w-full py-16 md:py-28 bg-cover bg-center" style={{ backgroundImage: 'url("/images/section2-bg.webp")' }}>
             {/* Content Container */}
             <div className="container mx-auto px-4 md:px-8">
                 <div className="flex justify-end">

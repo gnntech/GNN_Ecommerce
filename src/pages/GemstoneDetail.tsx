@@ -105,11 +105,11 @@ const GemstoneDetail = () => {
               >
                 <div className="aspect-[4/3] rounded-xl overflow-hidden">
                   <img
-                    src={gemstone.image || "/images/Gemstone.png"}
+                    src={gemstone.image || "/images/Gemstone.webp"}
                     alt={gemstone.name}
                     className="w-full h-full object-cover"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = "/images/Gemstone.png";
+                      (e.target as HTMLImageElement).src = "/images/Gemstone.webp";
                     }}
                   />
                 </div>

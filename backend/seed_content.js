@@ -26,31 +26,31 @@ const seedData = async () => {
             {
                 title: "Master Numerologist",
                 description: "Unlock the mysteries of your life path with expert numerology readings.",
-                image: "/numerologist_portrait_1772371205774.png",
+                image: "/numerologist_portrait_1772371205774.webp",
                 order: 1
             },
             {
                 title: "Healing Gemstones",
                 description: "Discover our premium collection of mystical crystals and vibrational stones.",
-                image: "/numerology_products_gemstones_1772371227250.png",
+                image: "/numerology_products_gemstones_1772371227250.webp",
                 order: 2
             },
             {
                 title: "Spiritual Bracelets",
                 description: "Wear the energy of the cosmos with our handcrafted numerology bracelets.",
-                image: "/numerology_products_bracelets_1772371244109.png",
+                image: "/numerology_products_bracelets_1772371244109.webp",
                 order: 3
             },
             {
                 title: "Mystic Numbers",
                 description: "Uncover the hidden patterns of the universe through ancient numerology charts.",
-                image: "/numerology_chart_mystic_1772369558989.png",
+                image: "/numerology_chart_mystic_1772369558989.webp",
                 order: 4
             },
             {
                 title: "Sacred Mandala",
                 description: "Radiating divine spiritual healing energy from the center of consciousness.",
-                image: "/sacred_lotus_mandala_1772369604643.png",
+                image: "/sacred_lotus_mandala_1772369604643.webp",
                 order: 5
             }
         ];
@@ -62,28 +62,28 @@ const seedData = async () => {
             {
                 name: "Celebrity 1",
                 role: "Actor",
-                image: "/images/slider-blue.png",
+                image: "/images/slider-blue.webp",
                 videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0",
                 order: 1
             },
             {
                 name: "Celebrity 2",
                 role: "Singer",
-                image: "/images/slider1.png",
+                image: "/images/slider1.webp",
                 videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0",
                 order: 2
             },
             {
                 name: "Rakesh Maini",
                 role: "Indian Idol Season - 5",
-                image: "/images/slider3.png",
+                image: "/images/slider3.webp",
                 videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0",
                 order: 3
             },
             {
                 name: "Celebrity 4",
                 role: "Influencer",
-                image: "/images/slider2.png",
+                image: "/images/slider2.webp",
                 videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0",
                 order: 4
             }
@@ -96,21 +96,21 @@ const seedData = async () => {
             {
                 title: "Gemstones",
                 description: "Explore our hand-selected gemstones with unique energy.",
-                image: "/images/Gemstone.png",
+                image: "/images/Gemstone.webp",
                 link: "/collection",
                 order: 1
             },
             {
                 title: "Bracelets",
                 description: "Find bracelets with numerology and spiritual significance.",
-                image: "/images/S-TigerEye Bracelet.png",
+                image: "/images/S-TigerEye Bracelet.webp",
                 link: "/bracelets",
                 order: 2
             },
             {
                 title: "Trees",
                 description: "Discover mystical trees that bring energy and harmony.",
-                image: "/images/Trees.png",
+                image: "/images/Trees.webp",
                 link: "/trees",
                 order: 3
             }
@@ -120,12 +120,12 @@ const seedData = async () => {
 
         // --- Gallery ---
         const galleryItems = [
-            { title: "Premium Gemstones", image: "/images/Gemstone.png", link: "/collection", order: 1 },
-            { title: "Spiritual Trees", image: "/images/Trees.png", link: "/trees", order: 2 },
-            { title: "Healing Bracelets", image: "/images/S-TigerEye Bracelet.png", link: "/bracelets", order: 3 },
-            { title: "Vedic Wisdom", image: "/images/section2-bg.png", link: "/about", order: 4 },
-            { title: "Numerology", image: "/images/slider-blue.png", link: "/contact", order: 5 },
-            { title: "Astrology", image: "/images/slider1.png", link: "/contact", order: 6 }
+            { title: "Premium Gemstones", image: "/images/Gemstone.webp", link: "/collection", order: 1 },
+            { title: "Spiritual Trees", image: "/images/Trees.webp", link: "/trees", order: 2 },
+            { title: "Healing Bracelets", image: "/images/S-TigerEye Bracelet.webp", link: "/bracelets", order: 3 },
+            { title: "Vedic Wisdom", image: "/images/section2-bg.webp", link: "/about", order: 4 },
+            { title: "Numerology", image: "/images/slider-blue.webp", link: "/contact", order: 5 },
+            { title: "Astrology", image: "/images/slider1.webp", link: "/contact", order: 6 }
         ];
         await Gallery.insertMany(galleryItems);
         console.log("Seeded Gallery");

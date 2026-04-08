@@ -92,11 +92,11 @@ const TreeDetail = () => {
                             <div className="glass-card p-4 overflow-hidden transition-all duration-500 hover:shadow-xl">
                                 <div className="aspect-[4/3] rounded-xl overflow-hidden">
                                     <img
-                                        src={tree.image || "/images/Trees.png"}
+                                        src={tree.image || "/images/Trees.webp"}
                                         alt={tree.name}
                                         className="w-full h-full object-cover"
                                         onError={(e) => {
-                                            (e.target as HTMLImageElement).src = "/images/Trees.png";
+                                            (e.target as HTMLImageElement).src = "/images/Trees.webp";
                                         }}
                                     />
                                 </div>

@@ -42,7 +42,7 @@ const About: React.FC = () => {
         {/* Background Layer */}
         <div
           className="absolute inset-0 bg-[rgb(155,37,51)] bg-cover bg-center"
-          style={{ backgroundImage: "url(/images/About_bg.png)" }}
+          style={{ backgroundImage: "url(/images/About_bg.webp)" }}
         />
 
         {/* Content Wrapper */}
@@ -54,7 +54,7 @@ const About: React.FC = () => {
           {/* ================= DESKTOP IMAGE ================= */}
           <div className="hidden lg:flex items-end justify-center">
             <img
-              src="/images/GaurabNPP.png"
+              src="/images/GaurabNPP.webp"
               alt="Gaurab Nerpagar"
               className="object-contain object-bottom"
               style={{
@@ -118,7 +118,7 @@ const About: React.FC = () => {
                     h-[45vh] sm:h-[55vh]"
           >
             <img
-              src="/images/GaurabNPP.png"
+              src="/images/GaurabNPP.webp"
               alt="Gaurab Nerpagar"
               className="object-contain w-full max-w-[280px] sm:max-w-[340px]"
             />
@@ -133,7 +133,7 @@ const About: React.FC = () => {
           <div className="flex items-center justify-center gap-4 sm:gap-6 mb-12 lg:mb-16">
             {/* Left Decor */}
             <img
-              src="/images/D.png"
+              src="/images/D.webp"
               alt="left decor"
               className="w-16 sm:w-28 lg:w-56 h-auto object-contain"
             />
@@ -145,7 +145,7 @@ const About: React.FC = () => {
 
             {/* Right Decor */}
             <img
-              src="/images/D.png"
+              src="/images/D.webp"
               alt="right decor"
               className="w-16 sm:w-28 lg:w-56 h-auto object-contain"
             />
@@ -155,17 +155,17 @@ const About: React.FC = () => {
           <div className="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             {[
               {
-                icon: "/images/A-Icon1o.png",
+                icon: "/images/A-Icon1o.webp",
                 title: "Belief",
                 desc: "I believe that numbers are more than calculations — they are subtle guides that reflect our inner patterns, strengths, and life cycles. When understood with awareness, they offer clarity rather than limitation.",
               },
               {
-                icon: "/images/A-Icon2o.png",
+                icon: "/images/A-Icon2o.webp",
                 title: "Guidance",
                 desc: "My approach is grounded, positive, and empowering. I focus on insight rather than prediction, helping clients feel supported instead of overwhelmed. My work is guided by balance, intention, and conscious awareness.",
               },
               {
-                icon: "/images/A-Icon3o.png",
+                icon: "/images/A-Icon3o.webp",
                 title: "Approach",
                 desc: "Each individual’s journey is unique. I take time to understand personal experiences, challenges, & goals to provide guidance that feels relevant, respectful, & aligned with one’s natural rhythm.",
               },
@@ -188,7 +188,7 @@ const About: React.FC = () => {
                 {/* Background Layer */}
                 <div className="absolute inset-0 z-0 pointer-events-none">
                   <img
-                    src="/images/bg.png"
+                    src="/images/bg.webp"
                     alt="card background"
                     className="w-full h-full object-cover opacity-10 sm:opacity-20"
                   />
@@ -220,7 +220,7 @@ const About: React.FC = () => {
         {/* Background PNG Layer */}
         <div className="absolute inset-0 z-0 pointer-events-none">
           <img
-            src="/images/bg.png"
+            src="/images/bg.webp"
             alt="background texture"
             className="w-full h-full object-cover opacity-25"
           />
@@ -229,7 +229,7 @@ const About: React.FC = () => {
         <div className="relative z-10 max-w-7xl mx-auto w-full h-full flex flex-col justify-center">
           <div className="flex items-center justify-center gap-6 mb-8 lg:mb-12 translate-y-16 sm:translate-y-4">
             <img
-              src="/images/Square.png"
+              src="/images/Square.webp"
               alt="left decor"
               className="w-16 sm:w-24 lg:w-36 h-auto opacity-70"
             />
@@ -239,7 +239,7 @@ const About: React.FC = () => {
             </h2>
 
             <img
-              src="/images/Square.png"
+              src="/images/Square.webp"
               alt="right decor"
               className="w-16 sm:w-24 lg:w-36 h-auto opacity-70"
             />
@@ -294,7 +294,7 @@ const About: React.FC = () => {
             {/* RIGHT SIDE: FIXED BOTTOM IMAGE */}
             <div className="relative w-full flex justify-center mt-10 lg:mt-0">
               <img
-                src="/images/expertise.png"
+                src="/images/expertise.webp"
                 alt="Expertise"
                 className="sm:absolute w-[80%] sm:w-[100%] sm:bottom-[-220px] lg:bottom-0 object-contain sm:translate-y-16 transition-transform duration-500 "
               />
@@ -310,7 +310,7 @@ const About: React.FC = () => {
           <div className="flex items-center justify-center gap-6 mb-6">
             {/* Left Design Image */}
             <img
-              src="./images/D.png"
+              src="./images/D.webp"
               alt="Left Design"
               className="w-32 sm:w-48 lg:w-72 h-auto"
             />
@@ -322,7 +322,7 @@ const About: React.FC = () => {
 
             {/* Right Design Image */}
             <img
-              src="./images/D.png"
+              src="./images/D.webp"
               alt="Right Design"
               className="w-32 sm:w-48 lg:w-72 h-auto"
             />
@@ -371,7 +371,7 @@ const About: React.FC = () => {
           "
               >
                 <img
-                  src="./images/Circle1.png"
+                  src="./images/Circle1.webp"
                   alt="Personalized Remedies"
                   className="
               w-full h-full object-cover
@@ -413,7 +413,7 @@ const About: React.FC = () => {
           "
               >
                 <img
-                  src="./images/Circle2.png"
+                  src="./images/Circle2.webp"
                   alt="Energy Accessories"
                   className="
               w-full h-full object-cover
@@ -454,7 +454,7 @@ const About: React.FC = () => {
           "
               >
                 <img
-                  src="./images/Circle3.png"
+                  src="./images/Circle3.webp"
                   alt="Prosperity Tools"
                   className="
               w-full h-full object-cover
@@ -495,7 +495,7 @@ const About: React.FC = () => {
           "
               >
                 <img
-                  src="./images/Circle4.png"
+                  src="./images/Circle4.webp"
                   alt="Spiritual Gifting"
                   className="
               w-full h-full object-cover
@@ -528,7 +528,7 @@ const About: React.FC = () => {
             className="flex items-center justify-center gap-6 mb-12"
           >
             <img
-              src="/images/FiveStars.png"
+              src="/images/FiveStars.webp"
               alt="left decor"
               className="w-32 sm:w-48 lg:w-72 h-auto"
             />
@@ -538,7 +538,7 @@ const About: React.FC = () => {
             </h2>
 
             <img
-              src="/images/FiveStars.png"
+              src="/images/FiveStars.webp"
               alt="right decor"
               className="w-32 sm:w-48 lg:w-72 h-auto"
             />
@@ -555,7 +555,7 @@ const About: React.FC = () => {
               className="col-span-2 row-span-2 relative group cursor-pointer rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500"
             >
               <img
-                src="/images/S-Amazonite Bracelet.png"
+                src="/images/S-Amazonite Bracelet.webp"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 alt="Amazonite Bracelet"
               />
@@ -575,7 +575,7 @@ const About: React.FC = () => {
               className="col-span-1 row-span-1 relative group cursor-pointer rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500"
             >
               <img
-                src="/images/S-Amethyst Bracelet.png"
+                src="/images/S-Amethyst Bracelet.webp"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 alt="Amethyst Bracelet"
               />
@@ -595,7 +595,7 @@ const About: React.FC = () => {
               className="col-span-1 row-span-2 relative group cursor-pointer rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500"
             >
               <img
-                src="/images/S-Azurite Bracelet.png"
+                src="/images/S-Azurite Bracelet.webp"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 alt="Azurite Bracelet"
               />
@@ -615,7 +615,7 @@ const About: React.FC = () => {
               className="col-span-1 row-span-1 relative group cursor-pointer rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500"
             >
               <img
-                src="/images/Trees.png"
+                src="/images/Trees.webp"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 alt="Crystal Trees"
               />
@@ -635,7 +635,7 @@ const About: React.FC = () => {
               className="col-span-2 row-span-1 relative group cursor-pointer rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500"
             >
               <img
-                src="/images/S-RoseQuartz Bracelet.png"
+                src="/images/S-RoseQuartz Bracelet.webp"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 alt="Rose Quartz Bracelet"
               />
@@ -655,7 +655,7 @@ const About: React.FC = () => {
               className="col-span-1 row-span-1 relative group cursor-pointer rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500"
             >
               <img
-                src="/images/S-TigerEye Bracelet.png"
+                src="/images/S-TigerEye Bracelet.webp"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 alt="Tiger Eye Bracelet"
               />
@@ -675,7 +675,7 @@ const About: React.FC = () => {
               className="col-span-1 row-span-1 relative group cursor-pointer rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500"
             >
               <img
-                src="/images/S-Citrine Bracelet.png"
+                src="/images/S-Citrine Bracelet.webp"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 alt="Citrine Bracelet"
               />

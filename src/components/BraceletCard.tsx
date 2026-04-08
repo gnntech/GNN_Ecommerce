@@ -19,7 +19,7 @@ const BraceletCard: React.FC<Props> = ({ bracelet, onOpenPreview }) => {
       id: (bracelet as any)._id || bracelet.id,
       name: bracelet.name,
       price: parseFloat(bracelet.price.replace(/[^0-9.]/g, '')),
-      image: bracelet.image || "/images/S-Amazonite Bracelet.png",
+      image: bracelet.image || "/images/S-Amazonite Bracelet.webp",
       qty: 1,
       type: 'Bracelet'
     });
@@ -38,11 +38,11 @@ const BraceletCard: React.FC<Props> = ({ bracelet, onOpenPreview }) => {
     >
       <div className="aspect-square rounded-lg overflow-hidden mb-4 bg-gray-100 relative">
         <img
-          src={bracelet.image || "/images/S-Amazonite Bracelet.png"}
+          src={bracelet.image || "/images/S-Amazonite Bracelet.webp"}
           alt={bracelet.name}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
           onError={(e) => {
-            (e.target as HTMLImageElement).src = "/images/S-Amazonite Bracelet.png";
+            (e.target as HTMLImageElement).src = "/images/S-Amazonite Bracelet.webp";
           }}
         />
 

@@ -24,7 +24,7 @@ const GemstoneCard: React.FC<GemstoneCardProps> = ({
       id: (gemstone as any)._id || gemstone.id,
       name: gemstone.name,
       price: parseFloat(gemstone.price.replace(/[^0-9.]/g, '')),
-      image: gemstone.image || "/images/Gemstone.png",
+      image: gemstone.image || "/images/Gemstone.webp",
       qty: 1,
       type: 'Gemstone'
     });
@@ -45,11 +45,11 @@ const GemstoneCard: React.FC<GemstoneCardProps> = ({
       {/* Image */}
       <div className="aspect-square rounded-lg overflow-hidden mb-4 bg-gray-100 relative cursor-pointer group">
         <img
-          src={gemstone.image || "/images/Gemstone.png"}
+          src={gemstone.image || "/images/Gemstone.webp"}
           alt={gemstone.name}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
           onError={(e) => {
-            (e.target as HTMLImageElement).src = "/images/Gemstone.png";
+            (e.target as HTMLImageElement).src = "/images/Gemstone.webp";
           }}
         />
         <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">

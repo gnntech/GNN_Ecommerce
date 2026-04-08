@@ -75,22 +75,22 @@ const seedGeneric = async (Model, data, type) => {
             // But in DB we need accessible URLs.
 
             // Re-evaluating paths:
-            // Gemstones use imports: `import rubyImg from "@/assets/gemstones/ruby.jpg";` -> This resolves to a path during build.
+            // Gemstones use imports: `import rubyImg from "@/assets/gemstones/ruby.webp";` -> This resolves to a path during build.
             // We can't easily get that in Node. 
-            // We DO know the file structure: src/assets/gemstones/ruby.jpg
+            // We DO know the file structure: src/assets/gemstones/ruby.webp
 
             if (type === 'gemstone') {
                 // item.image in the TS file is the imported variable. 
                 // We can't access that variable value here easily without compiling.
                 // hardcoding the mapping based on the ID is safer.
-                localPath = `assets/gemstones/${item.id}.jpg`;
+                localPath = `assets/gemstones/${item.id}.webp`;
             } else if (type === 'tree') {
-                // trees.ts has: image: "/trees/citrine-tree.jpg"
+                // trees.ts has: image: "/trees/citrine-tree.webp"
                 // This implies they are likely in `public/trees` or `src/assets/trees`?
                 // I'll assume `public/trees` for now since it starts with /.
                 localPath = `../public${item.image}`;
             } else if (type === 'bracelet') {
-                // bracelet.ts has: image: "/images/S-BloodstoneBracelet.png"
+                // bracelet.ts has: image: "/images/S-BloodstoneBracelet.webp"
                 // Likely `public/images`
                 localPath = `../public${item.image}`;
             }
@@ -101,7 +101,7 @@ const seedGeneric = async (Model, data, type) => {
 
             let uploadPath = "";
             if (type === 'gemstone') {
-                uploadPath = path.join(__dirname, "../src/assets/gemstones", `${item.id}.jpg`);
+                uploadPath = path.join(__dirname, "../src/assets/gemstones", `${item.id}.webp`);
             } else {
                 uploadPath = path.join(__dirname, "../", localPath);
             }
@@ -111,17 +111,17 @@ const seedGeneric = async (Model, data, type) => {
 
             // Ensure we use the cloud URL if successful, else generic placeholder
             // key images: 
-            // Gemstones -> /images/Gemstone.png
-            // Trees -> /images/Trees.png (if specific not found)
-            // Bracelets -> /images/S-TigerEye Bracelet.png etc.
+            // Gemstones -> /images/Gemstone.webp
+            // Trees -> /images/Trees.webp (if specific not found)
+            // Bracelets -> /images/S-TigerEye Bracelet.webp etc.
 
-            let fallback = "/images/hero-new.png";
-            if (type === 'gemstone') fallback = "/images/Gemstone.png";
-            else if (type === 'tree') fallback = "/images/Trees.png";
+            let fallback = "/images/hero-new.webp";
+            if (type === 'gemstone') fallback = "/images/Gemstone.webp";
+            else if (type === 'tree') fallback = "/images/Trees.webp";
             else if (type === 'bracelet') {
                 // Try to use the original path if it was in /images
                 if (item.image.startsWith("/images")) fallback = item.image;
-                else fallback = "/images/hero-new.png";
+                else fallback = "/images/hero-new.webp";
             }
 
             const finalImage = cloudUrl || fallback;
@@ -239,37 +239,37 @@ const seedProducts = async () => {
     // --- TREES ---
     // Assuming images are in public/trees/
     const trees = [
-        { name: "Citrine Crystal Tree", image: "/trees/citrine-tree.jpg", numerology: "Success, abundance", price: "₹1200" },
-        { name: "Pyrite Crystal Tree", image: "/trees/pyrite-tree.jpg", numerology: "Wealth attraction", price: "₹1200" },
-        { name: "Seven Chakra Crystal Tree", image: "/trees/seven-chakra-tree.jpg", numerology: "Energy balance", price: "₹1200" },
-        { name: "Green Jade Crystal Tree", image: "/trees/green-jade-tree.jpg", numerology: "Luck, harmony", price: "₹1200" },
-        { name: "Green Aventurine Crystal Tree", image: "/trees/green-aventurine-tree.jpg", numerology: "Growth, opportunity", price: "₹1200" },
-        { name: "Amethyst Crystal Ball", image: "/trees/amethyst-ball-golden-stand.jpg", numerology: "Peace, clarity", price: "₹1800" }, // Shortened name for matching
-        { name: "Rose Quartz Crystal Ball", image: "/trees/rose-quartz-ball-golden-stand.jpg", numerology: "Love, harmony", price: "₹1800" }
+        { name: "Citrine Crystal Tree", image: "/trees/citrine-tree.webp", numerology: "Success, abundance", price: "₹1200" },
+        { name: "Pyrite Crystal Tree", image: "/trees/pyrite-tree.webp", numerology: "Wealth attraction", price: "₹1200" },
+        { name: "Seven Chakra Crystal Tree", image: "/trees/seven-chakra-tree.webp", numerology: "Energy balance", price: "₹1200" },
+        { name: "Green Jade Crystal Tree", image: "/trees/green-jade-tree.webp", numerology: "Luck, harmony", price: "₹1200" },
+        { name: "Green Aventurine Crystal Tree", image: "/trees/green-aventurine-tree.webp", numerology: "Growth, opportunity", price: "₹1200" },
+        { name: "Amethyst Crystal Ball", image: "/trees/amethyst-ball-golden-stand.webp", numerology: "Peace, clarity", price: "₹1800" }, // Shortened name for matching
+        { name: "Rose Quartz Crystal Ball", image: "/trees/rose-quartz-ball-golden-stand.webp", numerology: "Love, harmony", price: "₹1800" }
     ];
     console.log("\nSeeding Trees...");
     await seedGeneric(Tree, trees, 'tree');
 
     // --- BRACELETS ---
     const bracelets = [
-        { name: "Bloodstone Bracelet", image: "/images/S-BloodstoneBracelet.png", numerology: "Strength", price: "₹900" },
-        { name: "Tiger Eye Bracelet", image: "/images/S-TigerEye Bracelet.png", numerology: "Confidence", price: "₹900" },
-        { name: "Moonstone Bracelet", image: "/images/S-MoonStone Bracelet.png", numerology: "Emotional Balance", price: "₹1200" },
-        { name: "Howlite Bracelet", image: "/images/S-Howlite Bracelet.png", numerology: "Calmness", price: "₹900" },
-        { name: "Amazonite Bracelet", image: "/images/S-Amazonite Bracelet.png", numerology: "Harmony", price: "₹900" },
-        { name: "Turquoise Bracelet", image: "/images/S-Turquoise Bracelet.png", numerology: "Protection", price: "₹900" },
-        { name: "Seven Chakra Bracelet", image: "/images/S-CatEye Bracelet.png", numerology: "Balance", price: "₹1000" },
-        { name: "Sulemani Hakik Bracelet", image: "/images/S-SulemaniHaquik Bracelet.png", numerology: "Protection", price: "₹1000" },
-        { name: "Green Jade Bracelet", image: "/images/S-GreenJade Bracelet.png", numerology: "Luck", price: "₹900" },
-        { name: "Green Aventurine Bracelet", image: "/images/S-GreenAventurian Bracelet.png", numerology: "Opportunity", price: "₹900" },
-        { name: "Rose Quartz Bracelet", image: "/images/S-RoseQuartz Bracelet.png", numerology: "Love", price: "₹900" },
-        { name: "Dragon Vein Bracelet", image: "/images/S-DragonVein Bracelet.png", numerology: "Energy", price: "₹900" },
-        { name: "Cat’s Eye Bracelet", image: "/images/S-CatEye Bracelet.png", numerology: "Protection", price: "₹1000" },
-        { name: "Azurite Bracelet", image: "/images/S-Azurite Bracelet.png", numerology: "Wisdom", price: "₹900" },
-        { name: "Amethyst Bracelet", image: "/images/S-Amethyst Bracelet.png", numerology: "Peace", price: "₹1000" },
-        { name: "Red Jasper Bracelet", image: "/images/S-ReadJasper Bracelet.png", numerology: "Grounding", price: "₹900" },
-        { name: "Lava Stone Bracelet", image: "/images/S-Lava Bracelet.png", numerology: "Strength", price: "₹900" },
-        { name: "Citrine Bracelet", image: "/images/S-Citrine Bracelet.png", numerology: "Success", price: "₹900" },
+        { name: "Bloodstone Bracelet", image: "/images/S-BloodstoneBracelet.webp", numerology: "Strength", price: "₹900" },
+        { name: "Tiger Eye Bracelet", image: "/images/S-TigerEye Bracelet.webp", numerology: "Confidence", price: "₹900" },
+        { name: "Moonstone Bracelet", image: "/images/S-MoonStone Bracelet.webp", numerology: "Emotional Balance", price: "₹1200" },
+        { name: "Howlite Bracelet", image: "/images/S-Howlite Bracelet.webp", numerology: "Calmness", price: "₹900" },
+        { name: "Amazonite Bracelet", image: "/images/S-Amazonite Bracelet.webp", numerology: "Harmony", price: "₹900" },
+        { name: "Turquoise Bracelet", image: "/images/S-Turquoise Bracelet.webp", numerology: "Protection", price: "₹900" },
+        { name: "Seven Chakra Bracelet", image: "/images/S-CatEye Bracelet.webp", numerology: "Balance", price: "₹1000" },
+        { name: "Sulemani Hakik Bracelet", image: "/images/S-SulemaniHaquik Bracelet.webp", numerology: "Protection", price: "₹1000" },
+        { name: "Green Jade Bracelet", image: "/images/S-GreenJade Bracelet.webp", numerology: "Luck", price: "₹900" },
+        { name: "Green Aventurine Bracelet", image: "/images/S-GreenAventurian Bracelet.webp", numerology: "Opportunity", price: "₹900" },
+        { name: "Rose Quartz Bracelet", image: "/images/S-RoseQuartz Bracelet.webp", numerology: "Love", price: "₹900" },
+        { name: "Dragon Vein Bracelet", image: "/images/S-DragonVein Bracelet.webp", numerology: "Energy", price: "₹900" },
+        { name: "Cat’s Eye Bracelet", image: "/images/S-CatEye Bracelet.webp", numerology: "Protection", price: "₹1000" },
+        { name: "Azurite Bracelet", image: "/images/S-Azurite Bracelet.webp", numerology: "Wisdom", price: "₹900" },
+        { name: "Amethyst Bracelet", image: "/images/S-Amethyst Bracelet.webp", numerology: "Peace", price: "₹1000" },
+        { name: "Red Jasper Bracelet", image: "/images/S-ReadJasper Bracelet.webp", numerology: "Grounding", price: "₹900" },
+        { name: "Lava Stone Bracelet", image: "/images/S-Lava Bracelet.webp", numerology: "Strength", price: "₹900" },
+        { name: "Citrine Bracelet", image: "/images/S-Citrine Bracelet.webp", numerology: "Success", price: "₹900" },
     ];
     console.log("\nSeeding Bracelets...");
     await seedGeneric(Bracelet, bracelets, 'bracelet');
