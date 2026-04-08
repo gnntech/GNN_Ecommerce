@@ -64,7 +64,6 @@ const seedTestimonials = async () => {
                 isVideoTestimonial: false,
                 order: 5
             },
-            // Video Testimonials
             {
                 name: "Tejas Nimbalkar",
                 role: "Client",
