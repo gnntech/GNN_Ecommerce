@@ -26,6 +26,15 @@ app.get("/", (req, res) => {
     res.send("GNN E-commerce Backend is running");
 });
 
+// Health check endpoint - lightweight, no DB dependency
+app.get("/api/ping", (req, res) => {
+    res.status(200).json({
+        status: "ok",
+        message: "Server is awake",
+        timestamp: new Date().toISOString()
+    });
+});
+
 // Import Routes
 const authRoutes = require("./routes/authRoutes");
 const productRoutes = require("./routes/productRoutes");
