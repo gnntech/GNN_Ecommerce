@@ -1,8 +1,29 @@
 import { motion } from "framer-motion";
-import { gemstones } from "@/data/gemstones";
+import { useState, useEffect } from "react";
+import api from "@/lib/api";
 import GemstoneCard from "./GemstoneCard";
+import ProductSkeletonGrid from "./ProductSkeletonGrid";
 
 const GemstoneGrid = () => {
+  const [gemstones, setGemstones] = useState<any[]>();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchGemstones = async () => {
+      setLoading(true);
+      try {
+        const { data } = await api.get("/products/gemstones");
+        setGemstones(data);
+      } catch (error) {
+        console.error("Failed to fetch gemstones", error);
+        setGemstones([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchGemstones();
+  }, []);
+
   return (
     <section className="py-24 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -26,12 +47,27 @@ const GemstoneGrid = () => {
           <div className="divider-glow mt-8 max-w-xs mx-auto" />
         </motion.div>
 
-        {/* Gemstone Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
-          {gemstones.map((gemstone, index) => (
-            <GemstoneCard key={gemstone.id} gemstone={gemstone} index={index} />
-          ))}
-        </div>
+        {/* Skeleton while loading */}
+        {loading || !gemstones ? (
+          <ProductSkeletonGrid count={8} />
+        ) : gemstones.length === 0 ? (
+          <div className="text-center py-16">
+            <p className="text-gray-500 text-lg">No gemstones found.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
+            {gemstones.map((gemstone, index) => (
+              <motion.div
+                key={gemstone._id || gemstone.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.08 }}
+              >
+                <GemstoneCard gemstone={gemstone} index={index} />
+              </motion.div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

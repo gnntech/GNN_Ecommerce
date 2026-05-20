@@ -3,6 +3,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const path = require("path");
 const connectDB = require("./config/db");
+const { generalLimiter } = require("./middleware/rateLimitMiddleware");
 
 dotenv.config();
 connectDB();
@@ -12,6 +13,9 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(express.json());
+
+// Apply general rate limiting to all requests
+app.use(generalLimiter);
 
 // CORS Configuration - Allow all origins in production
 app.use(cors({

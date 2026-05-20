@@ -16,4 +16,9 @@ const braceletSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
+// Indexes for performance
+braceletSchema.index({ name: 1 }); // For name searches
+braceletSchema.index({ createdAt: -1 }); // For sorting by newest
+braceletSchema.index({ name: 'text', shortDescription: 'text', meaning: 'text' }); // For text search
+
 module.exports = mongoose.model("Bracelet", braceletSchema);

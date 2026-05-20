@@ -16,4 +16,9 @@ const treeSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
+// Indexes for performance
+treeSchema.index({ name: 1 }); // For name searches
+treeSchema.index({ createdAt: -1 }); // For sorting by newest
+treeSchema.index({ name: 'text', shortDescription: 'text', meaning: 'text' }); // For text search
+
 module.exports = mongoose.model("Tree", treeSchema);

@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const { upload } = require('../config/cloudinary');
+const { uploadLimiter } = require('../middleware/rateLimitMiddleware');
 
-router.post('/', upload.single('file'), (req, res) => {
+// Apply rate limiting to upload endpoint
+router.post('/', uploadLimiter, upload.single('file'), (req, res) => {
     try {
         if (!req.file) {
             return res.status(400).json({ message: 'No file uploaded' });

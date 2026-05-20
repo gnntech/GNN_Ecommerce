@@ -46,4 +46,16 @@ const orderSchema = new mongoose.Schema(
     }
 );
 
+// Indexes for performance
+orderSchema.index({ 'user.email': 1 }); // For finding orders by user email
+orderSchema.index({ status: 1 }); // For filtering by order status
+orderSchema.index({ isPaid: 1 }); // For filtering paid/unpaid orders
+orderSchema.index({ isDelivered: 1 }); // For filtering delivered orders
+orderSchema.index({ createdAt: -1 }); // For sorting by newest orders
+orderSchema.index({ 'paymentInfo.razorpayOrderId': 1 }); // For payment verification
+orderSchema.index({ 'paymentInfo.razorpayPaymentId': 1 }); // For payment tracking
+// Compound index for common queries
+orderSchema.index({ status: 1, createdAt: -1 }); // For status-based sorting
+orderSchema.index({ isPaid: 1, createdAt: -1 }); // For payment status sorting
+
 module.exports = mongoose.model("Order", orderSchema);

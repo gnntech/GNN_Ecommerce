@@ -16,6 +16,7 @@ const Index = () => {
   const [trees, setTrees] = useState<Tree[]>([]);
   const [bracelets, setBracelets] = useState<Bracelet[]>([]);
   const [collections, setCollections] = useState<any[]>([]);
+  const [productsLoading, setProductsLoading] = useState(true);
 
   useEffect(() => {
     api.get('/content/collections')
@@ -25,6 +26,7 @@ const Index = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setProductsLoading(true);
       try {
         const [gemstonesRes, treesRes, braceletsRes] = await Promise.all([
           api.get("/products/gemstones"),
@@ -36,6 +38,8 @@ const Index = () => {
         setBracelets(braceletsRes.data);
       } catch (error) {
         console.error("Failed to fetch products", error);
+      } finally {
+        setProductsLoading(false);
       }
     };
     fetchData();

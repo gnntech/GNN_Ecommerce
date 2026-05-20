@@ -19,4 +19,8 @@ const gallerySchema = new mongoose.Schema({
     },
 }, { timestamps: true });
 
+// Indexes for performance
+gallerySchema.index({ order: 1 }); // For sorting gallery items by order
+gallerySchema.index({ createdAt: -1 }); // For sorting by newest
+
 module.exports = mongoose.model('Gallery', gallerySchema);

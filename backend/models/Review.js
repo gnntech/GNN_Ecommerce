@@ -35,4 +35,9 @@ const reviewSchema = new mongoose.Schema({
     },
 }, { timestamps: true });
 
+// Indexes for performance
+reviewSchema.index({ order: 1 }); // For sorting testimonials by order
+reviewSchema.index({ isVideoTestimonial: 1 }); // For filtering video testimonials
+reviewSchema.index({ createdAt: -1 }); // For sorting by newest
+
 module.exports = mongoose.model('Review', reviewSchema);

@@ -4,8 +4,10 @@ const {
     createOrder,
     verifyPayment,
 } = require("../controllers/paymentController");
+const { paymentLimiter } = require("../middleware/rateLimitMiddleware");
 
-router.post("/create-order", createOrder);
-router.post("/verify-payment", verifyPayment);
+// Apply strict rate limiting to payment endpoints
+router.post("/create-order", paymentLimiter, createOrder);
+router.post("/verify-payment", paymentLimiter, verifyPayment);
 
 module.exports = router;

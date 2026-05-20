@@ -23,4 +23,8 @@ const collectionSchema = new mongoose.Schema({
     },
 }, { timestamps: true });
 
+// Indexes for performance
+collectionSchema.index({ order: 1 }); // For sorting collections by order
+collectionSchema.index({ createdAt: -1 }); // For sorting by newest
+
 module.exports = mongoose.model('Collection', collectionSchema);

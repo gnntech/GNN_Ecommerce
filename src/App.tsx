@@ -30,9 +30,9 @@ import Checkout from "./pages/Checkout";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import Contact from "./pages/Contact";
 import Testimonials from "./pages/Testimonials";
+import SkeletonDemo from "./pages/SkeletonDemo";
 import { AuthProvider } from "./context/AuthContext";
 import About from "./components/About";
-
 import { CartProvider } from "./context/CartContext";
 
 const queryClient = new QueryClient();
@@ -62,6 +62,7 @@ const App = () => (
               <Route path="/payment-success" element={<PaymentSuccess />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/testimonials" element={<Testimonials />} />
+              <Route path="/skeleton-demo" element={<SkeletonDemo />} />
 
               {/* Admin Routes */}
               <Route path="/admin" element={<AdminLogin />} />

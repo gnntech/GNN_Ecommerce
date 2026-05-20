@@ -6,10 +6,11 @@ const {
     getOrderById,
     updateOrderStatus,
 } = require("../controllers/orderController");
+const { orderLimiter } = require("../middleware/rateLimitMiddleware");
 
-// Admin routes
-router.route("/").get(protect, admin, getAllOrders);
+// Admin routes with rate limiting
+router.route("/").get(protect, admin, orderLimiter, getAllOrders);
 router.route("/:id").get(protect, admin, getOrderById);
-router.route("/:id/status").put(protect, admin, updateOrderStatus);
+router.route("/:id/status").put(protect, admin, orderLimiter, updateOrderStatus);
 
 module.exports = router;

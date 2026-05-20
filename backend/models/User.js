@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
-        unique: true,
+        unique: true, // This already creates an index
     },
     password: {
         type: String,
@@ -16,6 +16,10 @@ const userSchema = new mongoose.Schema({
         default: false,
     },
 });
+
+// Indexes for performance
+// Note: username index is automatically created by unique: true
+userSchema.index({ isAdmin: 1 }); // For admin filtering
 
 // Match user entered password to hashed password in database
 userSchema.methods.matchPassword = async function (enteredPassword) {

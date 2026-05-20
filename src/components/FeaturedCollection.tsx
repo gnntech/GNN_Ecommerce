@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import GemstoneCard from "@/components/GemstoneCard";
 import TreeCard from "@/components/TreeCard";
 import BraceletCard from "@/components/BraceletCard";
+import ProductSkeleton from "@/components/ProductSkeleton";
 import { Gemstone } from "@/data/gemstones";
 import { Tree, Bracelet } from "@/types/collection";
 
@@ -13,6 +14,7 @@ interface FeaturedCollectionProps {
     gemstones: Gemstone[];
     trees: Tree[];
     bracelets: Bracelet[];
+    loading?: boolean;
 }
 
 type Tab = "gemstones" | "trees" | "bracelets";
@@ -21,6 +23,7 @@ const FeaturedCollection: React.FC<FeaturedCollectionProps> = ({
     gemstones,
     trees,
     bracelets,
+    loading = false,
 }) => {
     const [activeTab, setActiveTab] = useState<Tab>("gemstones");
     const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -167,36 +170,53 @@ const FeaturedCollection: React.FC<FeaturedCollectionProps> = ({
                     </div>
 
                     {/* Right Side - Carousel */}
-                    <div className="w-full lg:w-[75%] p-6 flex flex-col justify-center bg-[#FDFBF7]"> {/* Light bg for carousel area */}
+                    <div className="w-full lg:w-[75%] p-6 flex flex-col justify-center bg-[#FDFBF7]">
                         <div className="relative px-8">
-                            <div className="overflow-hidden p-4 -m-4" ref={emblaRef}>
-                                <div className="flex -ml-4">
-                                    {currentProducts.map((product: any) => (
+
+                            {/* Skeleton placeholders while loading */}
+                            {loading || currentProducts.length === 0 ? (
+                                <div className="flex gap-4 overflow-hidden">
+                                    {[0, 1, 2].map((i) => (
                                         <div
-                                            key={product._id || product.id}
-                                            className="pl-4 flex-[0_0_85%] sm:flex-[0_0_50%] md:flex-[0_0_33.33%] lg:flex-[0_0_33.33%] min-w-0"
+                                            key={i}
+                                            className="flex-[0_0_85%] sm:flex-[0_0_50%] md:flex-[0_0_33.33%] min-w-0"
                                         >
-                                            {renderCard(product)}
+                                            <ProductSkeleton />
                                         </div>
                                     ))}
                                 </div>
-                            </div>
+                            ) : (
+                                <>
+                                    <div className="overflow-hidden p-4 -m-4" ref={emblaRef}>
+                                        <div className="flex -ml-4">
+                                            {currentProducts.map((product: any) => (
+                                                <div
+                                                    key={product._id || product.id}
+                                                    className="pl-4 flex-[0_0_85%] sm:flex-[0_0_50%] md:flex-[0_0_33.33%] lg:flex-[0_0_33.33%] min-w-0"
+                                                >
+                                                    {renderCard(product)}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
 
-                            <button
-                                onClick={scrollPrev}
-                                disabled={!canScrollPrev}
-                                className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full border border-maroon text-maroon flex items-center justify-center transition-all hover:bg-maroon hover:text-white disabled:opacity-30 disabled:cursor-not-allowed bg-white/80 backdrop-blur-sm`}
-                            >
-                                <ChevronLeft className="w-5 h-5" />
-                            </button>
+                                    <button
+                                        onClick={scrollPrev}
+                                        disabled={!canScrollPrev}
+                                        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full border border-maroon text-maroon flex items-center justify-center transition-all hover:bg-maroon hover:text-white disabled:opacity-30 disabled:cursor-not-allowed bg-white/80 backdrop-blur-sm"
+                                    >
+                                        <ChevronLeft className="w-5 h-5" />
+                                    </button>
 
-                            <button
-                                onClick={scrollNext}
-                                disabled={!canScrollNext}
-                                className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full border border-maroon text-maroon flex items-center justify-center transition-all hover:bg-maroon hover:text-white disabled:opacity-30 disabled:cursor-not-allowed bg-white/80 backdrop-blur-sm`}
-                            >
-                                <ChevronRight className="w-5 h-5" />
-                            </button>
+                                    <button
+                                        onClick={scrollNext}
+                                        disabled={!canScrollNext}
+                                        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full border border-maroon text-maroon flex items-center justify-center transition-all hover:bg-maroon hover:text-white disabled:opacity-30 disabled:cursor-not-allowed bg-white/80 backdrop-blur-sm"
+                                    >
+                                        <ChevronRight className="w-5 h-5" />
+                                    </button>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>
