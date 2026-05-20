@@ -7,6 +7,10 @@
     "start": "node server.js",
     "dev": "node --watch server.js",
     "build:indexes": "node build-indexes.js",
+    "migrate:products": "node migrate-to-unified-products.js",
+    "migrate:verify": "node migrate-to-unified-products.js verify-only",
+    "migrate:backup": "node migrate-to-unified-products.js backup-only",
+    "test:api": "node test-unified-api.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

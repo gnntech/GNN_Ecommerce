@@ -25,6 +25,12 @@ import ManageCraftsmanship from "./pages/admin/ManageCraftsmanship";
 import ManageGallery from "./pages/admin/ManageGallery";
 import ManageMarquee from "./pages/admin/ManageMarquee";
 import ManageOrders from "./pages/admin/ManageOrders";
+import ManageCategories from "./pages/admin/ManageCategories";
+import ManageProducts from "./pages/admin/ManageProducts";
+import CreateProduct from "./pages/admin/CreateProduct";
+import EditProduct from "./pages/admin/EditProduct";
+import CategoryPage from "./pages/CategoryPage";
+import ProductDetail from "./pages/ProductDetail";
 import SearchResults from "./pages/SearchResults";
 import Checkout from "./pages/Checkout";
 import PaymentSuccess from "./pages/PaymentSuccess";
@@ -55,6 +61,8 @@ const App = () => (
               <Route path="/gemstone/:id" element={<GemstoneDetail />} />
               <Route path="/tree/:id" element={<TreeDetail />} />
               <Route path="/bracelet/:id" element={<BraceletDetail />} />
+              <Route path="/products/:id" element={<ProductDetail />} />
+              <Route path="/product/:id" element={<ProductDetail />} />
               <Route path="/bracelets" element={<Bracelets />} />
               <Route path="/trees" element={<Trees />} />
               <Route path="/search" element={<SearchResults />} />
@@ -85,7 +93,15 @@ const App = () => (
               <Route path="/admin/gallery" element={<ManageGallery />} />
               <Route path="/admin/marquee" element={<ManageMarquee />} />
               <Route path="/admin/orders" element={<ManageOrders />} />
+              <Route path="/admin/categories" element={<ManageCategories />} />
+              <Route path="/admin/products" element={<ManageProducts />} />
+              <Route path="/admin/products/create" element={<CreateProduct />} />
+              <Route path="/admin/products/edit/:id" element={<EditProduct />} />
               <Route path="/about" element={<About />} />
+              
+              {/* Dynamic Category Route - must be before catch-all */}
+              <Route path="/:slug" element={<CategoryPage />} />
+              
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

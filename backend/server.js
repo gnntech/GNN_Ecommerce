@@ -57,6 +57,10 @@ app.use("/api/orders", orderRoutes);
 const contentRoutes = require("./routes/contentRoutes");
 app.use("/api/content", contentRoutes);
 
+// Category Routes (drives Navbar dropdown dynamically)
+const categoryRoutes = require("./routes/categoryRoutes");
+app.use("/api/categories", categoryRoutes);
+
 // Upload Routes
 const uploadRoutes = require("./routes/uploadRoutes");
 app.use("/api/upload", uploadRoutes);
@@ -64,11 +68,14 @@ app.use("/api/upload", uploadRoutes);
 app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server running on port ${PORT}`);
     console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log('=== BACKEND CODE VERSION: 2026-05-20-v2 ===');
 });
 
 // Global error handler
 app.use((err, req, res, next) => {
+    console.error('=== GLOBAL ERROR HANDLER ===');
     console.error('Error:', err.message);
+    console.error('Stack:', err.stack);
     res.status(err.status || 500).json({
         error: err.message || 'Internal Server Error',
         stack: process.env.NODE_ENV === 'development' ? err.stack : undefined

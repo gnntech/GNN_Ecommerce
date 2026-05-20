@@ -3,6 +3,7 @@ const crypto = require("crypto");
 const Order = require("../models/Order");
 const asyncHandler = require("express-async-handler");
 const { sendOrderConfirmationEmail } = require("./orderController");
+const { validateOrderPrices } = require("./productController");
 
 // Initialize Razorpay
 const razorpay = new Razorpay({
@@ -75,6 +76,25 @@ const verifyPayment = asyncHandler(async (req, res) => {
         // Payment is successful, save order to DB
         try {
             const { user, orderItems, itemsPrice, totalPrice } = orderData;
+
+            // ── Backend price validation ──────────────────────────────────
+            // Re-calculate total from DB prices to prevent client-side manipulation
+            let serverTotal;
+            try {
+                serverTotal = await validateOrderPrices(orderItems);
+            } catch (validationError) {
+                res.status(400);
+                throw new Error(`Order validation failed: ${validationError.message}`);
+            }
+
+            // Allow ₹1 tolerance for rounding differences
+            if (Math.abs(serverTotal - totalPrice) > 1) {
+                res.status(400);
+                throw new Error(
+                    `Total price mismatch: expected ₹${serverTotal}, received ₹${totalPrice}`
+                );
+            }
+            // ─────────────────────────────────────────────────────────────
 
             const order = new Order({
                 user,

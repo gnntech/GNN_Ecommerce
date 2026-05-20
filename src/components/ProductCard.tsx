@@ -1,189 +1,316 @@
-import { useNavigate } from "react-router-dom";
-import { useCart } from "@/context/CartContext";
-import { toast } from "sonner";
+import { useState } from "react";
 import { motion } from "framer-motion";
-
-/**
- * Generic Product Interface
- * Can be used for Bracelets, Gemstones, Trees, or any product type
- */
-export interface Product {
-  _id?: string;
-  id?: string;
-  name: string;
-  price: string | number;
-  image?: string;
-  description?: string;
-  numerology?: string;
-  type?: string;
-}
+import { Heart, ShoppingCart, Eye, Star, Package } from "lucide-react";
+import { Product, ProductVariant } from "@/types/collection";
+import ProductStatusBadge from "./ProductStatusBadge";
+import { cn } from "@/lib/utils";
 
 interface ProductCardProps {
   product: Product;
-  productType?: "Bracelet" | "Gemstone" | "Tree" | "Product";
-  onOpenPreview?: (product: Product) => void;
+  showCategory?: boolean;
+  showStatus?: boolean;
+  showRating?: boolean;
+  onAddToCart?: (product: Product, variant?: ProductVariant) => void;
+  onQuickView?: (product: Product) => void;
+  onWishlist?: (product: Product) => void;
+  className?: string;
 }
 
-/**
- * ProductCard Component
- * 
- * A reusable, modern product card component for e-commerce
- * 
- * Features:
- * - Hover animations with framer-motion
- * - Add to cart functionality
- * - Buy now navigation
- * - Responsive design
- * - Matches skeleton loader layout exactly
- * - Premium UI with smooth transitions
- * 
- * Props:
- * - product: Product data object
- * - productType: Type of product (Bracelet, Gemstone, Tree, Product)
- * - onOpenPreview: Optional preview handler
- * 
- * Usage:
- * ```tsx
- * <ProductCard 
- *   product={bracelet} 
- *   productType="Bracelet"
- * />
- * ```
- */
+const ProductCard = ({
+  product,
+  showCategory = false,
+  showStatus = true,
+  showRating = true,
+  onAddToCart,
+  onQuickView,
+  onWishlist,
+  className
+}: ProductCardProps) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | undefined>(
+    product.variants?.[0]
+  );
 
-const ProductCard: React.FC<ProductCardProps> = ({ 
-  product, 
-  productType = "Product",
-  onOpenPreview 
-}) => {
-  const navigate = useNavigate();
-  const { addToCart } = useCart();
-
-  // Get product ID
-  const productId = (product as any)._id || product.id;
-
-  // Format price
-  const formatPrice = (price: string | number): string => {
-    if (typeof price === "number") {
-      return `₹${price.toLocaleString()}`;
+  // Calculate display price
+  const getDisplayPrice = () => {
+    if (selectedVariant?.price) {
+      return `₹${selectedVariant.price.toLocaleString('en-IN')}`;
     }
-    return price;
+    return product.priceDisplay || `₹${product.price.toLocaleString('en-IN')}`;
   };
 
-  // Parse price for cart
-  const parsePrice = (price: string | number): number => {
-    if (typeof price === "number") return price;
-    return parseFloat(price.replace(/[^0-9.]/g, ''));
+  // Check if product can be purchased
+  const canPurchase = () => {
+    if (product.status !== 'active') return false;
+    
+    if (product.hasVariants && selectedVariant) {
+      return selectedVariant.isActive && selectedVariant.stock > 0;
+    }
+    
+    return product.isInStock && product.stock > 0;
   };
+
+  // Get stock info
+  const getStockInfo = () => {
+    if (product.hasVariants && selectedVariant) {
+      return {
+        stock: selectedVariant.stock,
+        isInStock: selectedVariant.stock > 0
+      };
+    }
+    return {
+      stock: product.stock,
+      isInStock: product.isInStock
+    };
+  };
+
+  const stockInfo = getStockInfo();
 
   // Handle add to cart
   const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
-    addToCart({
-      id: productId,
-      name: product.name,
-      price: parsePrice(product.price),
-      image: product.image || "/images/S-Amazonite Bracelet.webp",
-      qty: 1,
-      type: productType
-    });
-    toast.success("Added to cart", {
-      description: `${product.name} has been added to your cart`,
-    });
+    
+    if (canPurchase() && onAddToCart) {
+      onAddToCart(product, selectedVariant);
+    }
   };
 
-  // Handle buy now
-  const handleBuyNow = (e: React.MouseEvent) => {
+  // Handle quick view
+  const handleQuickView = (e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
-    const routeType = productType.toLowerCase();
-    navigate(`/${routeType}/${productId}`);
+    
+    if (onQuickView) {
+      onQuickView(product);
+    }
   };
 
-  // Handle card click
-  const handleCardClick = () => {
-    if (onOpenPreview) {
-      onOpenPreview(product);
-    } else {
-      const routeType = productType.toLowerCase();
-      navigate(`/${routeType}/${productId}`);
+  // Handle wishlist
+  const handleWishlist = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (onWishlist) {
+      onWishlist(product);
     }
   };
 
   return (
     <motion.div
-      className="bg-white rounded-3xl shadow-lg p-5 flex flex-col cursor-pointer group"
-      style={{ minHeight: "420px" }}
-      whileHover={{
-        y: -5,
-        boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
-      }}
-      transition={{ duration: 0.3, ease: "easeOut" }}
-      onClick={handleCardClick}
+      className={cn(
+        "group relative bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden transition-all duration-300",
+        "hover:shadow-lg hover:border-gray-300",
+        className
+      )}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      whileHover={{ y: -2 }}
     >
-      {/* Product Image */}
-      <div className="aspect-square rounded-lg overflow-hidden mb-4 bg-gray-100 relative">
+      {/* Image Container */}
+      <div className="relative aspect-square overflow-hidden bg-gray-100">
         <img
-          src={product.image || "/images/S-Amazonite Bracelet.webp"}
+          src={product.image}
           alt={product.name}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-          onError={(e) => {
-            (e.target as HTMLImageElement).src = "/images/S-Amazonite Bracelet.webp";
-          }}
+          className={cn(
+            "w-full h-full object-cover transition-all duration-500",
+            imageLoaded ? "opacity-100 scale-100" : "opacity-0 scale-105",
+            isHovered && "scale-110"
+          )}
+          onLoad={() => setImageLoaded(true)}
         />
 
-        {/* Hover Overlay */}
-        <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-          <span className="bg-white/90 text-black px-4 py-2 rounded-full text-sm font-semibold shadow-md transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-            View Details
-          </span>
-        </div>
+        {/* Status Badge */}
+        {showStatus && (
+          <div className="absolute top-3 left-3">
+            <ProductStatusBadge 
+              status={product.status} 
+              stock={stockInfo.stock}
+              size="sm"
+            />
+          </div>
+        )}
+
+        {/* Category Badge */}
+        {showCategory && (
+          <div className="absolute top-3 right-3">
+            <span className="px-2 py-1 bg-white/90 backdrop-blur-sm text-xs font-medium text-gray-700 rounded-full capitalize">
+              {product.category}
+            </span>
+          </div>
+        )}
+
+        {/* Featured Badge */}
+        {product.featured && (
+          <div className="absolute top-3 right-3">
+            <span className="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs font-medium rounded-full">
+              ⭐ Featured
+            </span>
+          </div>
+        )}
+
+        {/* Hover Actions */}
+        <motion.div
+          className="absolute inset-0 bg-black/20 flex items-center justify-center gap-2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isHovered ? 1 : 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          {onQuickView && (
+            <button
+              onClick={handleQuickView}
+              className="p-2 bg-white rounded-full shadow-lg hover:bg-gray-50 transition-colors"
+              title="Quick View"
+            >
+              <Eye className="w-4 h-4 text-gray-700" />
+            </button>
+          )}
+
+          {onWishlist && (
+            <button
+              onClick={handleWishlist}
+              className="p-2 bg-white rounded-full shadow-lg hover:bg-gray-50 transition-colors"
+              title="Add to Wishlist"
+            >
+              <Heart className="w-4 h-4 text-gray-700" />
+            </button>
+          )}
+        </motion.div>
+
+        {/* Discount Badge */}
+        {product.compareAtPrice && product.compareAtPrice > product.price && (
+          <div className="absolute bottom-3 left-3">
+            <span className="px-2 py-1 bg-red-500 text-white text-xs font-bold rounded-full">
+              {Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)}% OFF
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Content */}
-      <div className="flex-1 flex flex-col px-1">
-        {/* Title */}
-        <div className="mb-1">
-          <h3 className="font-semibold text-xl text-gray-900 group-hover:text-[#9B2533] transition-colors duration-300">
+      <div className="p-4 space-y-3">
+        {/* Title and Description */}
+        <div>
+          <h3 className="font-semibold text-gray-900 line-clamp-2 group-hover:text-blue-600 transition-colors">
             {product.name}
           </h3>
+          
+          {(product.shortDescription || product.numerology) && (
+            <p className="text-sm text-gray-600 mt-1 line-clamp-2">
+              {product.shortDescription || product.numerology}
+            </p>
+          )}
         </div>
 
-        {/* Description */}
-        <p className="text-sm text-gray-500 mb-4 line-clamp-2">
-          {product.description || product.numerology || "Premium quality product"}
-        </p>
-
-        {/* Footer */}
-        <div className="mt-auto">
-          {/* Price */}
-          <p className="text-3xl font-bold text-gray-900 mb-4">
-            {formatPrice(product.price)}
-          </p>
-
-          {/* Action Buttons */}
-          <div className="flex gap-3">
-            {/* Buy Now Button */}
-            <button
-              className="flex-1 py-3 rounded-full font-semibold text-center text-white transition-all duration-300 hover:shadow-lg hover:scale-105 active:scale-95"
-              style={{ backgroundColor: "#9B2533" }}
-              onClick={handleBuyNow}
-            >
-              Buy Now
-            </button>
-
-            {/* Add to Cart Button */}
-            <button
-              className="flex-1 py-3 rounded-full font-semibold border-2 bg-white transition-all duration-300 hover:bg-[#9B2533] hover:text-white active:scale-95"
-              style={{
-                borderColor: "#9B2533",
-                color: "#9B2533",
-              }}
-              onClick={handleAddToCart}
-            >
-              Add to Cart
-            </button>
+        {/* Rating */}
+        {showRating && product.rating > 0 && (
+          <div className="flex items-center gap-1">
+            <div className="flex items-center">
+              {Array.from({ length: 5 }, (_, i) => (
+                <Star
+                  key={i}
+                  className={cn(
+                    "w-3 h-3",
+                    i < Math.floor(product.rating)
+                      ? "text-yellow-400 fill-current"
+                      : "text-gray-300"
+                  )}
+                />
+              ))}
+            </div>
+            <span className="text-xs text-gray-600">
+              ({product.reviewCount || 0})
+            </span>
           </div>
+        )}
+
+        {/* Variants */}
+        {product.hasVariants && product.variants && product.variants.length > 0 && (
+          <div className="space-y-2">
+            <div className="flex items-center gap-1">
+              <Package className="w-3 h-3 text-gray-500" />
+              <span className="text-xs text-gray-600">Variants available</span>
+            </div>
+            
+            <div className="flex flex-wrap gap-1">
+              {product.variants.slice(0, 3).map((variant) => (
+                <button
+                  key={variant._id}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setSelectedVariant(variant);
+                  }}
+                  className={cn(
+                    "px-2 py-1 text-xs rounded border transition-colors",
+                    selectedVariant?._id === variant._id
+                      ? "border-blue-500 bg-blue-50 text-blue-700"
+                      : "border-gray-200 text-gray-600 hover:border-gray-300"
+                  )}
+                >
+                  {variant.size || variant.color || variant.label}
+                </button>
+              ))}
+              
+              {product.variants.length > 3 && (
+                <span className="px-2 py-1 text-xs text-gray-500">
+                  +{product.variants.length - 3} more
+                </span>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Price */}
+        <div className="flex items-center justify-between">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <span className="text-lg font-bold text-gray-900">
+                {getDisplayPrice()}
+              </span>
+              
+              {product.compareAtPrice && product.compareAtPrice > product.price && (
+                <span className="text-sm text-gray-500 line-through">
+                  ₹{product.compareAtPrice.toLocaleString('en-IN')}
+                </span>
+              )}
+            </div>
+            
+            {stockInfo.stock <= 5 && stockInfo.stock > 0 && (
+              <p className="text-xs text-orange-600">
+                Only {stockInfo.stock} left!
+              </p>
+            )}
+          </div>
+
+          {/* Add to Cart Button */}
+          {onAddToCart && (
+            <button
+              onClick={handleAddToCart}
+              disabled={!canPurchase()}
+              className={cn(
+                "flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-all",
+                canPurchase()
+                  ? "bg-blue-600 text-white hover:bg-blue-700 active:scale-95"
+                  : "bg-gray-100 text-gray-400 cursor-not-allowed"
+              )}
+            >
+              <ShoppingCart className="w-4 h-4" />
+              {product.status === 'out-of-stock' || !stockInfo.isInStock 
+                ? "Out of Stock" 
+                : "Add to Cart"
+              }
+            </button>
+          )}
         </div>
+
+        {/* Additional Info */}
+        {product.soldCount > 0 && (
+          <div className="text-xs text-gray-500">
+            {product.soldCount} sold
+          </div>
+        )}
       </div>
     </motion.div>
   );

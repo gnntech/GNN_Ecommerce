@@ -6,6 +6,15 @@ import { Trash2, Edit3, Plus, ArrowLeft, Gem } from "lucide-react";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 
+const STATUS_STYLES: Record<string, string> = {
+  active:        "bg-green-100 text-green-700",
+  "out-of-stock":"bg-red-100 text-red-700",
+  inactive:      "bg-gray-100 text-gray-500",
+};
+const STATUS_LABELS: Record<string, string> = {
+  active: "Active", "out-of-stock": "Out of Stock", inactive: "Inactive",
+};
+
 const ManageGemstones = () => {
     const [gemstones, setGemstones] = useState<any[]>([]);
     const [isEditing, setIsEditing] = useState(false);
@@ -13,7 +22,7 @@ const ManageGemstones = () => {
 
     const fetchGemstones = async () => {
         try {
-            const { data } = await api.get("/products/gemstones");
+            const { data } = await api.get("/products/gemstones?all=true");
             setGemstones(data);
         } catch (error) {
             console.error("Failed to fetch gemstones", error);
@@ -33,6 +42,18 @@ const ManageGemstones = () => {
             } catch (error) {
                 toast.error("Failed to delete record");
             }
+        }
+    };
+
+    const handleStatusChange = async (id: string, status: string) => {
+        try {
+            const formData = new FormData();
+            formData.append("status", status);
+            await api.put(`/products/gemstones/${id}`, formData);
+            toast.success(`Status updated to ${STATUS_LABELS[status]}`);
+            fetchGemstones();
+        } catch {
+            toast.error("Failed to update status");
         }
     };
 
@@ -130,23 +151,38 @@ const ManageGemstones = () => {
                                     </div>
 
                                     <div className="space-y-2">
-                                        <h3 className="font-bold text-2xl text-gray-900 group-hover:text-red-700 transition-colors uppercase tracking-tight">{gemstone.name}</h3>
+                                        <div className="flex items-center justify-between gap-2">
+                                            <h3 className="font-bold text-xl text-gray-900 group-hover:text-red-700 transition-colors uppercase tracking-tight">{gemstone.name}</h3>
+                                            <span className={`text-xs font-semibold px-2 py-1 rounded-full shrink-0 ${STATUS_STYLES[gemstone.status] || STATUS_STYLES.inactive}`}>
+                                                {STATUS_LABELS[gemstone.status] || gemstone.status}
+                                            </span>
+                                        </div>
                                         <p className="text-gray-500 text-sm line-clamp-2 leading-relaxed">{gemstone.shortDescription}</p>
+                                        <p className="text-xs text-gray-400">Stock: <span className="font-semibold text-gray-700">{gemstone.stock ?? 0}</span></p>
                                     </div>
 
                                     <div className="flex gap-3 mt-auto pt-4 border-t border-gray-50">
+                                        <select
+                                            value={gemstone.status || "active"}
+                                            onChange={(e) => handleStatusChange(gemstone._id, e.target.value)}
+                                            className="flex-1 text-xs border border-gray-200 rounded-xl px-2 py-2 bg-white focus:outline-none focus:border-red-400"
+                                            onClick={(e) => e.stopPropagation()}
+                                        >
+                                            <option value="active">✅ Active</option>
+                                            <option value="out-of-stock">🚫 Out of Stock</option>
+                                            <option value="inactive">🔒 Inactive</option>
+                                        </select>
                                         <button
                                             onClick={() => handleEdit(gemstone)}
-                                            className="flex-1 px-4 py-3 bg-gray-900 text-white rounded-xl hover:bg-gray-800 flex items-center justify-center gap-2 transition-all font-medium"
+                                            className="px-4 py-2 bg-gray-900 text-white rounded-xl hover:bg-gray-800 flex items-center gap-1 transition-all font-medium text-sm"
                                         >
-                                            <Edit3 className="w-4 h-4" /> Edit
+                                            <Edit3 className="w-4 h-4" />
                                         </button>
                                         <button
                                             onClick={() => handleDelete(gemstone._id)}
-                                            className="px-4 py-3 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 flex items-center justify-center transition-all"
-                                            title="Delete Gemstone"
+                                            className="px-4 py-2 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 flex items-center justify-center transition-all"
                                         >
-                                            <Trash2 className="w-5 h-5" />
+                                            <Trash2 className="w-4 h-4" />
                                         </button>
                                     </div>
                                 </motion.div>

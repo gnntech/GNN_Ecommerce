@@ -6,7 +6,7 @@ import ProductSearchSection from "@/components/ProductSearchSection";
 import Footer from "@/components/Footer";
 import CollectionCard from "@/components/CollectionCard";
 import ImageGalleryScroll from "@/components/ImageGalleryScroll";
-import { Gemstone } from "@/data/gemstones";
+import { Gemstone } from "@/types/collection";
 import { Tree, Bracelet } from "@/types/collection";
 import CraftsmanshipSection from "@/components/CraftsmanshipSection";
 import CelebrityReviews from "@/components/CelebrityReviews";
@@ -29,9 +29,9 @@ const Index = () => {
       setProductsLoading(true);
       try {
         const [gemstonesRes, treesRes, braceletsRes] = await Promise.all([
-          api.get("/products/gemstones"),
-          api.get("/products/trees"),
-          api.get("/products/bracelets"),
+          api.get("/products/gemstones?all=true"),
+          api.get("/products/trees?all=true"),
+          api.get("/products/bracelets?all=true"),
         ]);
         setGemstones(gemstonesRes.data);
         setTrees(treesRes.data);

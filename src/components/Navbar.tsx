@@ -3,27 +3,61 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Phone, ChevronDown, ShoppingCart } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { motion, AnimatePresence } from "framer-motion";
+import api from "@/lib/api";
+
+interface NavCategory {
+  _id: string;
+  name: string;
+  slug: string;
+}
+
+const DEFAULT_CATEGORIES: NavCategory[] = [
+  { _id: "gemstones", name: "Gemstones", slug: "/collection" },
+  { _id: "bracelets", name: "Bracelets", slug: "/bracelets"  },
+  { _id: "trees",     name: "Trees",     slug: "/trees"      },
+];
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [categories, setCategories] = useState<NavCategory[]>(DEFAULT_CATEGORIES);
   const { cartCount } = useCart();
   const location = useLocation();
+
+  // Fetch dynamic categories from backend
+  useEffect(() => {
+    const fetchCategories = () => {
+      api.get("/categories")
+        .then(res => { 
+          if (res.data?.length) {
+            // Format categories with proper paths
+            const formattedCategories = res.data.map((cat: NavCategory) => ({
+              ...cat,
+              slug: cat.slug.startsWith('/') ? cat.slug : `/${cat.slug}`
+            }));
+            setCategories(formattedCategories);
+          }
+        })
+        .catch(() => { /* keep defaults on error */ });
+    };
+
+    // Fetch on mount
+    fetchCategories();
+
+    // Refetch when location changes (to pick up new categories)
+    fetchCategories();
+  }, [location.pathname]);
 
   const navLinks = [
     { name: "Home", path: "/" },
     {
       name: "Products",
       path: "/products",
-      children: [
-        { name: "Gemstones", path: "/collection" },
-        { name: "Bracelets", path: "/bracelets" },
-        { name: "Trees", path: "/trees" },
-      ],
+      children: categories.map(c => ({ name: c.name, path: c.slug })),
     },
-    { name: "About", path: "/about" },
+    { name: "About",        path: "/about"        },
     { name: "Testimonials", path: "/testimonials" },
-    { name: "Contact", path: "/contact" },
+    { name: "Contact",      path: "/contact"      },
   ];
 
   const [showStrip, setShowStrip] = useState(false);

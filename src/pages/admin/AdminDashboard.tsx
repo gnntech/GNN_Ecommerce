@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import Navbar from "@/components/Navbar";
+import api from "@/lib/api";
 import {
     Gem,
     Trees as TreeIcon,
@@ -16,12 +17,23 @@ import {
     Store,
     MonitorPlay,
     Sparkles,
-    Package
+    Package,
+    Tag
 } from "lucide-react";
+
+interface Category {
+    _id: string;
+    name: string;
+    slug: string;
+    icon?: string;
+    sortOrder: number;
+    isActive: boolean;
+}
 
 const AdminDashboard = () => {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
+    const [categories, setCategories] = useState<Category[]>([]);
 
     useEffect(() => {
         if (!user || !user.isAdmin) {
@@ -29,16 +41,35 @@ const AdminDashboard = () => {
         }
     }, [user, navigate]);
 
-    const categories = [
+    // Fetch all categories (including inactive) for admin
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const { data } = await api.get("/categories?all=true");
+                setCategories(data);
+            } catch (error) {
+                console.error("Failed to fetch categories:", error);
+            }
+        };
+        fetchCategories();
+    }, []);
+
+    const dashboardCategories = [
         {
             title: "Inventory & Shop",
             icon: <Store className="w-6 h-6 text-[#FACC15]" />,
             description: "Manage your physical products and inventory",
             items: [
-                { name: "Gemstones", path: "/admin/gemstones", icon: <Gem className="w-5 h-5" />, desc: "Certified healing stones" },
-                { name: "Crystal Trees", path: "/admin/trees", icon: <TreeIcon className="w-5 h-5" />, desc: "Energy & balance trees" },
-                { name: "Bracelets", path: "/admin/bracelets", icon: <Watch className="w-5 h-5" />, desc: "Handcrafted wristwear" },
-                { name: "Orders", path: "/admin/orders", icon: <Package className="w-5 h-5" />, desc: "Manage customer orders" },
+                // Dynamic category items - only if categories are loaded
+                ...(categories.length > 0 ? categories.map(cat => ({
+                    name: cat.name,
+                    path: `/admin/products?category=${cat.slug.replace('/', '')}`,
+                    icon: <Package className="w-5 h-5" />,
+                    desc: `Manage ${cat.name.toLowerCase()}`
+                })) : []),
+                // Static items
+                { name: "Orders",     path: "/admin/orders",     icon: <Package className="w-5 h-5" />, desc: "Manage customer orders" },
+                { name: "Categories", path: "/admin/categories", icon: <Tag     className="w-5 h-5" />, desc: "Navbar dropdown categories" },
             ]
         },
         {
@@ -87,7 +118,7 @@ const AdminDashboard = () => {
 
                 {/* Categorized Grid */}
                 <div className="space-y-16">
-                    {categories.map((category, catIdx) => (
+                    {dashboardCategories.map((category, catIdx) => (
                         <div key={catIdx} className="space-y-6">
                             <div className="flex items-center gap-4 pb-2 border-b border-gray-200">
                                 <div className="p-2 bg-red-50 rounded-lg">

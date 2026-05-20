@@ -7,7 +7,7 @@ import GemstoneCard from "@/components/GemstoneCard";
 import TreeCard from "@/components/TreeCard";
 import BraceletCard from "@/components/BraceletCard";
 import ProductSkeleton from "@/components/ProductSkeleton";
-import { Gemstone } from "@/data/gemstones";
+import { Gemstone } from "@/types/collection";
 import { Tree, Bracelet } from "@/types/collection";
 
 interface FeaturedCollectionProps {

@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import api from "@/lib/api";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Gemstone } from "@/data/gemstones";
+import { Gemstone } from "@/types/collection";
 import { useCart } from "@/context/CartContext";
 import { toast } from "sonner";
 
@@ -160,18 +160,26 @@ const GemstoneDetail = () => {
 
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
-                <button
-                  onClick={() => navigate("/checkout", { state: { product: gemstone, type: 'Gemstone' } })}
-                  className="flex-1 px-8 py-4 rounded-full bg-primary text-primary-foreground font-medium text-lg hover:shadow-lg hover:shadow-primary/25 transition-all duration-300 transform active:scale-[0.98]"
-                >
-                  Buy Now
-                </button>
-                <button
-                  onClick={handleAddToCart}
-                  className="flex-1 px-8 py-4 rounded-full bg-secondary border border-border text-foreground font-medium text-lg hover:bg-muted transition-all duration-300 transform active:scale-[0.98]"
-                >
-                  Add to Cart
-                </button>
+                {gemstone.status !== "out-of-stock" && gemstone.status !== "inactive" ? (
+                  <>
+                    <button
+                      onClick={() => navigate("/checkout", { state: { product: gemstone, type: 'Gemstone' } })}
+                      className="flex-1 px-8 py-4 rounded-full bg-primary text-primary-foreground font-medium text-lg hover:shadow-lg hover:shadow-primary/25 transition-all duration-300 transform active:scale-[0.98]"
+                    >
+                      Buy Now
+                    </button>
+                    <button
+                      onClick={handleAddToCart}
+                      className="flex-1 px-8 py-4 rounded-full bg-secondary border border-border text-foreground font-medium text-lg hover:bg-muted transition-all duration-300 transform active:scale-[0.98]"
+                    >
+                      Add to Cart
+                    </button>
+                  </>
+                ) : (
+                  <div className="flex-1 px-8 py-4 rounded-full bg-gray-100 text-gray-400 font-medium text-lg text-center cursor-not-allowed">
+                    {gemstone.status === "inactive" ? "Currently Unavailable" : "Out of Stock"}
+                  </div>
+                )}
               </div>
 
               {/* Standardized Product Details Grid */}

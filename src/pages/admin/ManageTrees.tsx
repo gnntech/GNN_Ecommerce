@@ -6,6 +6,15 @@ import { Trash2, Edit3, Plus, ArrowLeft, Trees as TreeIcon } from "lucide-react"
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 
+const STATUS_STYLES: Record<string, string> = {
+  active:        "bg-green-100 text-green-700",
+  "out-of-stock":"bg-red-100 text-red-700",
+  inactive:      "bg-gray-100 text-gray-500",
+};
+const STATUS_LABELS: Record<string, string> = {
+  active: "Active", "out-of-stock": "Out of Stock", inactive: "Inactive",
+};
+
 const ManageTrees = () => {
     const [trees, setTrees] = useState<any[]>([]);
     const [isEditing, setIsEditing] = useState(false);
@@ -13,7 +22,7 @@ const ManageTrees = () => {
 
     const fetchTrees = async () => {
         try {
-            const { data } = await api.get("/products/trees");
+            const { data } = await api.get("/products/trees?all=true");
             setTrees(data);
         } catch (error) {
             console.error("Failed to fetch trees", error);
@@ -33,6 +42,18 @@ const ManageTrees = () => {
             } catch (error) {
                 toast.error("Failed to delete record");
             }
+        }
+    };
+
+    const handleStatusChange = async (id: string, status: string) => {
+        try {
+            const formData = new FormData();
+            formData.append("status", status);
+            await api.put(`/products/trees/${id}`, formData);
+            toast.success(`Status updated to ${STATUS_LABELS[status]}`);
+            fetchTrees();
+        } catch {
+            toast.error("Failed to update status");
         }
     };
 
@@ -101,15 +122,31 @@ const ManageTrees = () => {
                                         </div>
                                     </div>
                                     <div className="space-y-2">
-                                        <h3 className="font-bold text-2xl text-gray-900 uppercase tracking-tight">{tree.name}</h3>
+                                        <div className="flex items-center justify-between gap-2">
+                                            <h3 className="font-bold text-2xl text-gray-900 uppercase tracking-tight">{tree.name}</h3>
+                                            <span className={`text-xs font-semibold px-2 py-1 rounded-full shrink-0 ${STATUS_STYLES[tree.status] || STATUS_STYLES.inactive}`}>
+                                                {STATUS_LABELS[tree.status] || tree.status}
+                                            </span>
+                                        </div>
                                         <p className="text-gray-500 text-sm line-clamp-2 leading-relaxed">{tree.numerology}</p>
+                                        <p className="text-xs text-gray-400">Stock: <span className="font-semibold text-gray-700">{tree.stock ?? 0}</span></p>
                                     </div>
                                     <div className="flex gap-3 mt-auto pt-4 border-t border-gray-50">
-                                        <button onClick={() => handleEdit(tree)} className="flex-1 px-4 py-3 bg-gray-900 text-white rounded-xl hover:bg-gray-800 flex items-center justify-center gap-2 transition-all font-medium">
-                                            <Edit3 className="w-4 h-4" /> Edit Details
+                                        <select
+                                            value={tree.status || "active"}
+                                            onChange={(e) => handleStatusChange(tree._id, e.target.value)}
+                                            className="flex-1 text-xs border border-gray-200 rounded-xl px-2 py-2 bg-white focus:outline-none focus:border-red-400"
+                                            onClick={(e) => e.stopPropagation()}
+                                        >
+                                            <option value="active">✅ Active</option>
+                                            <option value="out-of-stock">🚫 Out of Stock</option>
+                                            <option value="inactive">🔒 Inactive</option>
+                                        </select>
+                                        <button onClick={() => handleEdit(tree)} className="px-4 py-2 bg-gray-900 text-white rounded-xl hover:bg-gray-800 flex items-center gap-1 transition-all font-medium text-sm">
+                                            <Edit3 className="w-4 h-4" />
                                         </button>
-                                        <button onClick={() => handleDelete(tree._id)} className="px-4 py-3 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 transition-all">
-                                            <Trash2 className="w-5 h-5" />
+                                        <button onClick={() => handleDelete(tree._id)} className="px-4 py-2 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 transition-all">
+                                            <Trash2 className="w-4 h-4" />
                                         </button>
                                     </div>
                                 </motion.div>

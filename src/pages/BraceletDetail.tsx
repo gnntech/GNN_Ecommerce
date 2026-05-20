@@ -16,10 +16,14 @@ interface BraceletProduct {
     numerology?: string;
     image: string;
     price?: string;
+    priceNum?: number;
     buyLink?: string;
     benefits?: string[];
     whoShouldWear?: string[];
     careInstructions?: string[];
+    stock?: number;
+    isInStock?: boolean;
+    status?: "active" | "inactive" | "out-of-stock";
 }
 
 const BraceletDetail = () => {

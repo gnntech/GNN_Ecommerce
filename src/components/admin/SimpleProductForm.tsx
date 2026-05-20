@@ -27,6 +27,8 @@ const SimpleProductForm: React.FC<SimpleProductFormProps> = ({
         benefits: initialData?.benefits?.join("\n") || "",
         whoShouldWear: initialData?.whoShouldWear?.join("\n") || "",
         careInstructions: initialData?.careInstructions?.join("\n") || "",
+        stock: initialData?.stock ?? 0,
+        status: initialData?.status || "active",
     });
 
     const handleChange = (
@@ -94,6 +96,35 @@ const SimpleProductForm: React.FC<SimpleProductFormProps> = ({
                     <div className="space-y-2">
                         <label className="text-sm font-semibold text-gray-700">Price Display</label>
                         <input name="price" placeholder="e.g. ₹1,250" value={formData.price} onChange={handleChange} className="w-full bg-gray-50 p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-red-500/20 outline-none transition-all" />
+                    </div>
+                </div>
+
+                {/* Stock & Status row */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                        <label className="text-sm font-semibold text-gray-700">Stock Quantity</label>
+                        <input
+                            name="stock"
+                            type="number"
+                            min="0"
+                            placeholder="e.g. 10"
+                            value={formData.stock}
+                            onChange={handleChange}
+                            className="w-full bg-gray-50 p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-red-500/20 outline-none transition-all"
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-sm font-semibold text-gray-700">Product Status</label>
+                        <select
+                            name="status"
+                            value={formData.status}
+                            onChange={(e) => setFormData(prev => ({ ...prev, status: e.target.value }))}
+                            className="w-full bg-gray-50 p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-red-500/20 outline-none transition-all"
+                        >
+                            <option value="active">✅ Active (visible to customers)</option>
+                            <option value="out-of-stock">🚫 Out of Stock</option>
+                            <option value="inactive">🔒 Inactive (hidden)</option>
+                        </select>
                     </div>
                 </div>
 
